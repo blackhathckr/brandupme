@@ -1,5 +1,25 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+
+  "//": [
+    "framework is deliberately null, NOT 'nextjs'.",
+    "",
+    "With output:'export' there is no server, no routes-manifest.json and no",
+    "serverless functions - just HTML in out/. Pointing Vercel's Next.js",
+    "builder at that directory fails ('routes-manifest.json couldn't be",
+    "found'), and letting it auto-detect Next produced a 404 at the root.",
+    "",
+    "framework:null tells Vercel to treat this as a plain static site and",
+    "serve outputDirectory verbatim, which is exactly what a static export is.",
+    "",
+    "If the root still 404s, check the Vercel dashboard: Settings > Build and",
+    "Deployment. A dashboard override for Framework Preset or Output Directory",
+    "set before this file existed will keep winning."
+  ],
+  "framework": null,
+  "buildCommand": "next build",
+  "outputDirectory": "out",
+
   "headers": [
     {
       "source": "/_next/static/(.*)",
