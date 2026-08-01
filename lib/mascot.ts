@@ -14,15 +14,19 @@
  * sets swap cleanly despite having completely different file names.
  *
  * PLACEMENT RULE
- * Four appearances on the homepage, each with a different job AND a different
- * scale. Four cut-outs at the same size reads as filler; four at different
- * scales reads as rhythm. Adding a fifth means removing one.
+ * Each appearance needs a different job AND a different scale. Same-size
+ * cut-outs repeated down a page read as filler; varied ones read as rhythm.
  *
- *   watermark  hero, ~6% opacity              atmosphere
- *   headset    services payoff card           personality
- *   momentum   calculator band, ~10% opacity  energy
- *   presence   closing CTA band, ~13%         brand sign-off
+ *   watermark  hero, 22%                      atmosphere
+ *   momentum   how-it-works panel, 16%        fills the fixed-height gap
+ *   momentum   calculator band, 30%           energy
+ *   headset    services payoff card, full     the one real character
+ *   presence   closing CTA band, full         brand sign-off
  *   emblem     registration success           a moment, only after submitting
+ *
+ * That is five on the homepage, up from the four originally intended. If it
+ * starts to feel busy, the hero watermark is the one to drop - it is the most
+ * decorative and the least load-bearing.
  */
 
 export const FAMILY: "v1" | "v2" = "v2";

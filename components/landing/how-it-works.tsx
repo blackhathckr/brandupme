@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
+import { MASCOT } from "@/lib/mascot";
 import { Check } from "lucide-react";
 import { STAGES } from "@/lib/content";
 import { SectionHead } from "@/components/ui/section-head";
@@ -102,6 +104,19 @@ export function HowItWorks() {
             <div
               aria-hidden
               className="pointer-events-none absolute -right-16 -top-16 size-64 rounded-full bg-gold-300/25 blur-3xl"
+            />
+
+            {/* The panel is held to a fixed height on desktop so it stops
+                resizing as you move down the rail, which leaves dead space
+                under the shorter stages. The bull fills it. Sits outside
+                AnimatePresence so it stays put while stages change. */}
+            <Image
+              src={MASCOT.momentum.src}
+              alt=""
+              width={MASCOT.momentum.w}
+              height={MASCOT.momentum.h}
+              aria-hidden
+              className="pointer-events-none absolute -bottom-6 -right-8 hidden w-[300px] select-none object-contain opacity-[0.16] lg:block"
             />
 
             <AnimatePresence mode="wait">

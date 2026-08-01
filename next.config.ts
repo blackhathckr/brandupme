@@ -13,6 +13,19 @@ const nextConfig: NextConfig = {
    * middleware, no next/image optimisation - none of which a marketing landing
    * page needs. Ref: node_modules/next/dist/docs/01-app/02-guides/static-exports.md
    */
+  /**
+   * DEPLOYMENT NOTE - why vercel.json sets `"framework": null`
+   *
+   * Static export emits plain HTML into out/. There is no server, no
+   * routes-manifest.json and no functions, so Vercel's Next.js builder cannot
+   * deploy it. Pointing that builder at out/ fails the build outright, and
+   * letting Vercel auto-detect Next deploys but then serves 404 at the root.
+   * `framework: null` makes Vercel treat this as a plain static site.
+   *
+   * Do not "fix" vercel.json back to "framework": "nextjs".
+   * (The note lives here because vercel.json rejects unknown keys, including
+   * comment keys - its schema is strict.)
+   */
   output: "export",
 
   /**
