@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Check, Loader2 } from "lucide-react";
 import {
@@ -104,6 +105,16 @@ export function Register() {
       <section id="register" className="py-14 lg:py-20">
         <div className="container-page">
           <Reveal className="mx-auto max-w-xl rounded-2xl border border-gold-300 bg-surface p-10 text-center shadow-e3">
+            {/* Success is exactly where a mascot earns its place - a moment
+                worth marking, not decoration. */}
+            <Image
+              src="/mascot/celebrate.webp"
+              alt=""
+              width={508}
+              height={700}
+              aria-hidden
+              className="mx-auto mb-2 w-36 select-none object-contain"
+            />
             <span className="mx-auto mb-6 flex size-16 items-center justify-center rounded-full bg-success/12">
               <Check className="size-7 text-success-text" strokeWidth={2.5} />
             </span>

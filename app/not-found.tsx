@@ -6,11 +6,13 @@ export default function NotFound() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-canvas px-6 text-center">
       <Image
-        src="/brand/mark-192.png"
+        src="/mascot/wave.webp"
         alt=""
-        width={72}
-        height={72}
-        className="size-16 object-contain"
+        width={604}
+        height={700}
+        priority
+        aria-hidden
+        className="w-40 select-none object-contain sm:w-48"
       />
 
       <p className="mt-8 font-display text-[clamp(3.5rem,12vw,6rem)] font-extrabold leading-none tracking-[-0.05em] text-brand-600">

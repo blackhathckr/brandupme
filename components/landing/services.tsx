@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Check, CheckCheck, Phone } from "lucide-react";
 import { SERVICES } from "@/lib/content";
 import { SectionHead } from "@/components/ui/section-head";
@@ -160,22 +161,38 @@ export function Services() {
             </RevealItem>
           ))}
 
-          {/* Fills the bento's last two columns rather than leaving a hole */}
+          {/* Fills the bento's last two columns rather than leaving a hole.
+              The mascot appears here, at the section's payoff - deliberately
+              not in every card, or it stops being noticed. */}
           <RevealItem className="sm:col-span-2">
-            <article className="flex h-full flex-col justify-between gap-6 rounded-2xl border border-gold-300 bg-gradient-to-br from-gold-100/70 to-surface p-6 lg:p-7">
-              <div>
+            <article className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-2xl border border-gold-300 bg-gradient-to-br from-gold-100/70 to-surface p-6 lg:p-7">
+              <Image
+                src="/mascot/headset.webp"
+                alt=""
+                width={594}
+                height={700}
+                aria-hidden
+                className="pointer-events-none absolute -bottom-4 -right-6 hidden w-44 select-none object-contain opacity-95 sm:block lg:w-52"
+              />
+
+              <div className="relative sm:max-w-[62%]">
                 <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-bronze">
                   All of it, one fee
                 </p>
                 <h3 className="mt-3 font-display text-[clamp(1.35rem,2.4vw,1.75rem)] font-bold leading-tight tracking-[-0.03em] text-ink">
                   One person doing all eight, every working day.
                 </h3>
-                <p className="mt-3 flex items-center gap-2 text-[14px] text-ink-2">
-                  <Check className="size-4 text-success-text" strokeWidth={2.5} aria-hidden />
+                <p className="mt-3 flex items-start gap-2 text-[14px] text-ink-2">
+                  <Check
+                    className="mt-0.5 size-4 shrink-0 text-success-text"
+                    strokeWidth={2.5}
+                    aria-hidden
+                  />
                   No salary, visa, office or HR to manage
                 </p>
               </div>
-              <div className="flex justify-center">
+
+              <div className="relative flex justify-center sm:justify-start">
                 <MorphButton href="#pricing">See what it costs</MorphButton>
               </div>
             </article>
