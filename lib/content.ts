@@ -69,27 +69,22 @@ export const HERO = {
   secondaryCta: "See how it works",
 } as const;
 
-/** Illustrative until the client supplies real figures. Labelled as such. */
-export const TICKER = [
-  {
-    label: "Calls made",
-    meta: "across partner businesses",
-    value: 47,
-    tone: "red" as const,
-  },
-  {
-    label: "Follow-ups sent",
-    meta: "WhatsApp and email",
-    value: 128,
-    tone: "gold" as const,
-  },
-  {
-    label: "Meetings booked",
-    meta: "qualified and confirmed",
-    value: 9,
-    tone: "green" as const,
-  },
-];
+/**
+ * Hero card. Deliberately text only.
+ *
+ * This previously showed invented daily metrics, which needed a disclaimer
+ * underneath admitting they were illustrative - and that disclaimer undercut
+ * the card the moment anyone read it. Stating what the representative does is
+ * both stronger and honest, with nothing to caveat.
+ *
+ * Mirrors the services payoff card exactly: eyebrow, display heading,
+ * one supporting line.
+ */
+export const HERO_CARD = {
+  eyebrow: "Your dedicated representative",
+  heading: "Calling, messaging and following up on your behalf, every working day.",
+  line: "You step in only when the meeting is booked",
+} as const;
 
 export const MARQUEE = [
   "Cold calling",

@@ -2,11 +2,17 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { PhoneCall, MessageCircle, Mail, Users, TrendingUp } from "lucide-react";
-import { HERO, TICKER, CONFIG, MARQUEE } from "@/lib/content";
+import {
+  PhoneCall,
+  MessageCircle,
+  Mail,
+  Users,
+  TrendingUp,
+  Check,
+} from "lucide-react";
+import { HERO, HERO_CARD, CONFIG, MARQUEE } from "@/lib/content";
 import { MorphButton, Button } from "@/components/ui/brand-button";
 import { MASCOT } from "@/lib/mascot";
-import { Counter } from "@/components/ui/counter";
 import { EASE } from "@/lib/motion";
 
 const CHIPS = [
@@ -141,7 +147,7 @@ export function Hero() {
           </motion.ul>
         </div>
 
-        {/* ── Live activity card ────────────────────────────────────────── */}
+        {/* ── What your representative does, card ───────────────────────── */}
         <motion.div
           initial={{ opacity: 0, y: 30, scale: 0.97 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -153,54 +159,35 @@ export function Hero() {
               on the page now rhyme instead of looking unrelated. */}
           <div className="relative overflow-hidden rounded-2xl border border-gold-300 bg-gradient-to-br from-gold-100/70 via-surface to-surface p-6 shadow-e4">
             <Image
-              src={MASCOT.profile.src}
+              src={MASCOT.headset.src}
               alt=""
-              width={MASCOT.profile.w}
-              height={MASCOT.profile.h}
+              width={MASCOT.headset.w}
+              height={MASCOT.headset.h}
               aria-hidden
-              className="pointer-events-none absolute -bottom-8 -right-8 w-36 select-none object-contain opacity-[0.14]"
+              className="pointer-events-none absolute -bottom-6 -right-8 w-40 select-none object-contain lg:w-48"
             />
 
-            {/* No divider rules and no coloured dots - the payoff card has
-                neither, and they were what made this look like a different
-                design language. Spacing and type weight carry the structure. */}
-            <div className="relative">
+            {/* Same text structure as the services payoff card: bronze
+                eyebrow, display heading, one supporting line with a tick.
+                Text only - the invented daily metrics that used to sit here
+                needed a disclaimer admitting they were illustrative, and that
+                disclaimer undercut the card the moment anyone read it. */}
+            <div className="relative max-w-[70%]">
               <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-bronze">
-                Today&rsquo;s outreach
+                {HERO_CARD.eyebrow}
               </p>
 
-              <ul className="mt-5 flex flex-col gap-4">
-                {TICKER.map((row, i) => (
-                  <motion.li
-                    key={row.label}
-                    initial={{ opacity: 0, x: 16 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{
-                      delay: D.card + 0.25 + i * 0.12,
-                      duration: 0.6,
-                      ease: EASE,
-                    }}
-                    className="flex items-baseline gap-4"
-                  >
-                    <Counter
-                      to={row.value}
-                      className="w-14 shrink-0 font-display text-[30px] font-extrabold leading-none tracking-[-0.04em] text-brand-600"
-                    />
-                    <span className="min-w-0 flex-1">
-                      <span className="block font-display text-[15px] font-semibold tracking-[-0.02em] text-ink">
-                        {row.label}
-                      </span>
-                      <span className="block text-[12.5px] text-muted-foreground">
-                        {row.meta}
-                      </span>
-                    </span>
-                  </motion.li>
-                ))}
-              </ul>
+              <h2 className="mt-3 font-display text-[clamp(1.35rem,2.4vw,1.75rem)] font-bold leading-tight tracking-[-0.03em] text-ink">
+                {HERO_CARD.heading}
+              </h2>
 
-              <p className="mt-6 text-[11.5px] leading-relaxed text-muted-foreground">
-                Illustrative figures shown while onboarding. Replaced with your
-                own reporting once your partnership is live.
+              <p className="mt-3 flex items-start gap-2 text-[14px] text-ink-2">
+                <Check
+                  className="mt-0.5 size-4 shrink-0 text-success-text"
+                  strokeWidth={2.5}
+                  aria-hidden
+                />
+                {HERO_CARD.line}
               </p>
             </div>
           </div>

@@ -3,7 +3,6 @@ import { CalendarCheck, Check, CheckCheck, Mail, Phone } from "lucide-react";
 import { SERVICES } from "@/lib/content";
 import { SectionHead } from "@/components/ui/section-head";
 import { RevealGroup, RevealItem } from "@/components/ui/reveal";
-import { Icon } from "@/components/ui/icon";
 import { MorphButton } from "@/components/ui/brand-button";
 import { MASCOT } from "@/lib/mascot";
 
@@ -113,7 +112,7 @@ const DEMOS: Record<string, React.ReactNode> = {
 
 function Strip({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-[38px] items-center gap-2 rounded-lg border border-line bg-canvas px-3 text-[11.5px]">
+    <div className="flex h-[38px] items-center gap-2 overflow-hidden rounded-lg border border-line bg-canvas px-3 text-[11.5px]">
       {children}
     </div>
   );
@@ -231,7 +230,9 @@ const MICRO: Record<string, React.ReactNode> = {
           />
         ))}
       </svg>
-      <span className="ml-auto shrink-0 text-ink-2">Conversations, month on month</span>
+      {/* min-w-0 + truncate, never shrink-0 - a fixed-width label in a
+          quarter-width card is what pushed this text past the border. */}
+      <span className="ml-auto min-w-0 truncate text-ink-2">Month on month</span>
     </Strip>
   ),
 };
@@ -251,13 +252,14 @@ export function Services() {
         />
 
         <RevealGroup className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
           {/* Two double-width cards carrying a live-looking sample */}
-          {featured.map((s) => (
+          {featured.map((s, i) => (
             <RevealItem key={s.title} className="sm:col-span-2">
               <article className="flex h-full flex-col rounded-2xl border border-line bg-surface p-6 shadow-e2 lg:p-7">
-                <div className="flex items-center gap-3">
-                  <span className="flex size-11 items-center justify-center rounded-xl bg-brand-600 text-white shadow-glow-red">
-                    <Icon name={s.icon} className="size-5" />
+                <div className="flex items-baseline gap-3">
+                  <span className="font-display text-[34px] font-extrabold leading-none tracking-[-0.05em] text-brand-600">
+                    {String(i + 1).padStart(2, "0")}
                   </span>
                   <h3 className="font-display text-[19px] font-semibold tracking-[-0.025em] text-ink">
                     {s.title}
@@ -271,64 +273,12 @@ export function Services() {
             </RevealItem>
           ))}
 
-          {/* The remaining six.
-              These were flat white with a small icon, which read as unfinished
-              next to the two mock-up cards and the gold payoff card. Lifted
-              with a warm gradient, a ghosted index numeral, a ringed icon and
-              a top hairline that fills in on hover - enough depth to belong in
-              the same grid, while still ranking below the payoff card. */}
-          {rest.map((s, i) => (
-            <RevealItem key={s.title}>
-              <article
-                className="group relative flex h-full flex-col overflow-hidden rounded-2xl
-                  border border-line bg-gradient-to-br from-surface to-surface-2 p-6
-                  shadow-e1 transition-all duration-[240ms] ease-brand
-                  hover:-translate-y-1 hover:border-gold-300 hover:shadow-e3"
-              >
-                {/* Gold hairline that draws in from the left on hover */}
-                <span
-                  aria-hidden
-                  className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-gradient-to-r
-                    from-brand-600 to-gold-500 transition-transform duration-[400ms]
-                    ease-brand group-hover:scale-x-100"
-                />
-
-                {/* Ghosted numeral. Editorial structure at almost no visual cost. */}
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute -right-1 top-1 select-none
-                    font-display text-[68px] font-extrabold leading-none tracking-[-0.05em]
-                    text-ink opacity-[0.045]"
-                >
-                  {String(i + 3).padStart(2, "0")}
-                </span>
-
-                <span
-                  className="relative mb-4 flex size-12 items-center justify-center rounded-xl
-                    bg-gradient-to-br from-brand-50 to-gold-50 text-brand-600
-                    ring-1 ring-inset ring-brand-100 transition-all duration-[240ms]
-                    group-hover:ring-gold-300 group-hover:text-bronze"
-                >
-                  <Icon name={s.icon} className="size-5" />
-                </span>
-
-                <h3 className="relative font-display text-[16.5px] font-semibold tracking-[-0.02em] text-ink">
-                  {s.title}
-                </h3>
-                <p className="relative mt-2 text-[13.5px] leading-[1.6] text-muted-foreground">
-                  {s.body}
-                </p>
-
-                {/* mt-auto so every strip bottom-aligns regardless of how
-                    long the description above it runs */}
-                <div className="relative mt-auto pt-5">{MICRO[s.title]}</div>
-              </article>
-            </RevealItem>
-          ))}
-
-          {/* Fills the bento's last two columns rather than leaving a hole.
-              The mascot appears here, at the section's payoff - deliberately
-              not in every card, or it stops being noticed. */}
+          {/* Sits between the two demo rows and the six compact cards.
+              ORDER MATTERS FOR HEIGHT: grid rows stretch to their tallest
+              item, so the two tall demo cards are paired in row 1. Dropping
+              this card above them would push a tall demo next to two short
+              ones and open a gap inside each short card. The mascot appears
+              here only - in every card it would stop being noticed. */}
           <RevealItem className="sm:col-span-2">
             <article className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-2xl border border-gold-300 bg-gradient-to-br from-gold-100/70 to-surface p-6 lg:p-7">
               {/* Desktop: decorative, bleeding off the card corner.
@@ -375,6 +325,55 @@ export function Services() {
               </div>
             </article>
           </RevealItem>
+
+          {/* The remaining six.
+              These were flat white with a small icon, which read as unfinished
+              next to the two mock-up cards and the gold payoff card. Lifted
+              with a warm gradient, a ghosted index numeral, a ringed icon and
+              a top hairline that fills in on hover - enough depth to belong in
+              the same grid, while still ranking below the payoff card. */}
+          {rest.map((s, i) => (
+            <RevealItem key={s.title}>
+              <article
+                className="group relative flex h-full flex-col overflow-hidden rounded-2xl
+                  border border-line bg-gradient-to-br from-surface to-surface-2 p-6
+                  shadow-e1 transition-all duration-[240ms] ease-brand
+                  hover:-translate-y-1 hover:border-gold-300 hover:shadow-e3"
+              >
+                {/* Gold hairline that draws in from the left on hover */}
+                <span
+                  aria-hidden
+                  className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-gradient-to-r
+                    from-brand-600 to-gold-500 transition-transform duration-[400ms]
+                    ease-brand group-hover:scale-x-100"
+                />
+
+                {/* The lucide icon that used to sit here read as generic
+                    stock decoration. A numeral is the anchor instead - it
+                    carries the same weight, adds sequence, and cannot look
+                    like clip-art. */}
+                <span
+                  className="relative font-display text-[34px] font-extrabold leading-none
+                    tracking-[-0.05em] text-gold-600 transition-colors duration-[240ms]
+                    group-hover:text-brand-600"
+                >
+                  {String(i + 3).padStart(2, "0")}
+                </span>
+
+                <h3 className="relative mt-4 font-display text-[16.5px] font-semibold tracking-[-0.02em] text-ink">
+                  {s.title}
+                </h3>
+                <p className="relative mt-2 text-[13.5px] leading-[1.6] text-muted-foreground">
+                  {s.body}
+                </p>
+
+                {/* mt-auto so every strip bottom-aligns regardless of how
+                    long the description above it runs */}
+                <div className="relative mt-auto pt-5">{MICRO[s.title]}</div>
+              </article>
+            </RevealItem>
+          ))}
+
         </RevealGroup>
       </div>
     </section>
