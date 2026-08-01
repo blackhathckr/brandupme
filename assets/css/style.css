@@ -145,7 +145,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   background: linear-gradient(90deg, var(--red-deep), var(--red) 45%, var(--gold-deep));
   color: #fff; font-size: .8rem; font-weight: 600; letter-spacing: .03em;
 }
-.topbar .wrap { display: flex; align-items: center; justify-content: center; gap: .6rem; padding-block: .55rem; text-align: center; }
+.topbar .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .2rem .6rem; padding-block: .55rem; text-align: center; }
 .topbar a { text-decoration: underline; text-underline-offset: 3px; }
 
 .hdr {
@@ -525,7 +525,9 @@ ul { margin: 0; padding: 0; list-style: none; }
   gap: .6rem; padding: .7rem .8rem calc(.7rem + env(safe-area-inset-bottom));
   background: rgba(8, 8, 10, .96); backdrop-filter: blur(12px); border-top: 1px solid var(--line);
 }
-.mobile-cta .btn { flex: 1; padding: .85rem 1rem; font-size: .88rem; }
+/* width:auto guards against the `.btn { width:100% }` rule at 680px, which
+   would otherwise fight flex:1 and overflow the bar. */
+.mobile-cta .btn { flex: 1; width: auto; padding: .85rem 1rem; font-size: .88rem; }
 
 /* ---------- 20. Scroll reveal ----------
    Content is VISIBLE by default. The hidden state is only applied when the
@@ -565,6 +567,8 @@ ul { margin: 0; padding: 0; list-style: none; }
   .burger { display: flex; margin-left: auto; }
   .hdr__cta { display: none; }
   .grid--3, .grid--4 { grid-template-columns: repeat(2, 1fr); }
+  /* Two columns of pain items get too cramped to read below this width */
+  .pain { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
   .mobile-cta { display: flex; }
   .wa-float { bottom: 84px; }
@@ -578,8 +582,8 @@ ul { margin: 0; padding: 0; list-style: none; }
   .step { grid-template-columns: 54px 1fr; gap: 1rem; padding: 1.3rem 1.2rem; }
   .step__n { font-size: 2rem; }
   .q__body { padding-left: 1.4rem; }
-  .btn { width: 100%; }
   .btn-row { flex-direction: column; }
+  .btn-row .btn { width: 100%; }
   .price-card__badge { display: none; }
 }
 
