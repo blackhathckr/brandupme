@@ -146,7 +146,8 @@ ul { margin: 0; padding: 0; list-style: none; }
   color: #fff; font-size: .8rem; font-weight: 600; letter-spacing: .03em;
 }
 .topbar .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .2rem .6rem; padding-block: .55rem; text-align: center; }
-.topbar a { text-decoration: underline; text-underline-offset: 3px; }
+.topbar a { text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+.topbar__short { display: none; }
 
 .hdr {
   position: sticky; top: 0; z-index: 60;
@@ -174,6 +175,12 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .nav a:hover, .nav a.is-active { color: #fff; }
 .nav a:hover::after, .nav a.is-active::after { width: 100%; }
+
+/* `.nav a` (0,1,1) outranks `.btn--gold` (0,1,0), which turned the drawer CTA
+   grey-on-gold and made the label unreadable. Restore the button's own colours. */
+.nav a.btn--gold { color: #12100A; }
+.nav a.btn--red { color: #fff; }
+.nav a.btn::after { display: none; }
 
 .hdr__cta { flex: none; }
 
@@ -291,10 +298,11 @@ ul { margin: 0; padding: 0; list-style: none; }
 .card p { font-size: .93rem; color: var(--fg-soft); margin: 0; }
 
 .card__ico {
-  width: 48px; height: 48px; border-radius: 13px; display: grid; place-items: center; margin-bottom: 1.15rem;
+  width: 48px; height: 48px; border-radius: 13px; margin-bottom: 1.15rem;
+  display: inline-flex; align-items: center; justify-content: center;
   background: rgba(233, 185, 73, .11); border: 1px solid rgba(233, 185, 73, .22); color: var(--gold);
 }
-.card__ico svg { width: 23px; height: 23px; }
+.card__ico svg { width: 23px; height: 23px; flex: none; display: block; }
 /* Numeric variant, used by the onboarding steps */
 .card__ico:not(:has(svg)) { font-family: var(--display); font-size: 1.4rem; line-height: 1; }
 
@@ -302,11 +310,11 @@ ul { margin: 0; padding: 0; list-style: none; }
 .pain { display: grid; grid-template-columns: repeat(2, 1fr); gap: .8rem; }
 .pain__item {
   display: flex; gap: 1rem; align-items: flex-start;
-  background: var(--ink-2); border: 1px solid var(--line); border-left: 3px solid var(--red);
+  background: var(--ink-2); border: 1px solid var(--line);
   border-radius: 12px; padding: 1.1rem 1.25rem;
-  transition: transform .28s var(--ease), background .28s;
+  transition: transform .28s var(--ease), background .28s, border-color .28s;
 }
-.pain__item:hover { transform: translateX(6px); background: var(--ink-3); }
+.pain__item:hover { transform: translateY(-3px); background: var(--ink-3); border-color: rgba(216, 30, 40, .4); }
 .pain__x {
   width: 26px; height: 26px; border-radius: 50%; flex: none; display: grid; place-items: center;
   background: rgba(216, 30, 40, .16); color: var(--red); font-size: .8rem; font-weight: 800;
@@ -466,10 +474,11 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .contact-card:hover { border-color: var(--gold); transform: translateY(-4px); }
 .contact-card__ico {
-  width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; flex: none;
+  width: 48px; height: 48px; border-radius: 12px; flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
   background: rgba(233, 185, 73, .12); color: var(--gold);
 }
-.contact-card__ico svg { width: 21px; height: 21px; }
+.contact-card__ico svg { width: 22px; height: 22px; flex: none; display: block; }
 .contact-card span { display: block; font-size: .74rem; text-transform: uppercase; letter-spacing: .13em; color: var(--fg-mute); }
 .contact-card b { font-size: 1rem; word-break: break-word; }
 
@@ -553,14 +562,19 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 
 @media (max-width: 900px) {
+  /* Drawer sits BELOW the header (z-index 60) but above page content.
+     `visibility` is part of the closed state so it can never peek over the
+     announcement bar mid-transition, regardless of transform rounding. */
   .nav {
-    position: fixed; inset: 0 0 auto; top: 0; padding: 6rem 1.5rem 2rem;
+    position: fixed; inset: 0 0 auto; top: 0; padding: 6.5rem 1.5rem 2rem;
     flex-direction: column; align-items: stretch; gap: .2rem;
     background: var(--ink-2); border-bottom: 1px solid var(--line);
-    transform: translateY(-102%); transition: transform .4s var(--ease); z-index: -1;
-    max-height: 100dvh; overflow-y: auto;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .6);
+    transform: translateY(-102%); visibility: hidden;
+    transition: transform .4s var(--ease), visibility 0s linear .4s;
+    z-index: 55; max-height: 100dvh; overflow-y: auto;
   }
-  .nav.is-open { transform: none; }
+  .nav.is-open { transform: none; visibility: visible; transition: transform .4s var(--ease), visibility 0s; }
   .nav a { padding: .95rem .4rem; border-bottom: 1px solid var(--line); font-size: 1.02rem; }
   .nav a::after { display: none; }
   .nav [data-mobile-only] { display: inline-flex; border-bottom: 0; }
@@ -571,8 +585,15 @@ ul { margin: 0; padding: 0; list-style: none; }
   .pain { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
   .mobile-cta { display: flex; }
-  .wa-float { bottom: 84px; }
+  /* Smaller float so it obscures less body copy above the sticky CTA bar */
+  .wa-float { bottom: 84px; right: 14px; width: 50px; height: 50px; }
+  .wa-float svg { width: 26px; height: 26px; }
   body { padding-bottom: 74px; }
+
+  /* The full announcement sentence is too long for a phone — swap in the short one */
+  .topbar { font-size: .74rem; }
+  .topbar__full { display: none; }
+  .topbar__short { display: inline; }
 }
 
 @media (max-width: 680px) {
