@@ -166,6 +166,11 @@ export function Services() {
               not in every card, or it stops being noticed. */}
           <RevealItem className="sm:col-span-2">
             <article className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-2xl border border-gold-300 bg-gradient-to-br from-gold-100/70 to-surface p-6 lg:p-7">
+              {/* Desktop: decorative, bleeding off the card corner.
+                  Mobile: inline beside the CTA instead, since an absolute
+                  mascot on a narrow card either collides with the button or
+                  has to be hidden - and hiding it means phone visitors never
+                  see the mascot at all. */}
               <Image
                 src="/mascot/headset.webp"
                 alt=""
@@ -192,8 +197,16 @@ export function Services() {
                 </p>
               </div>
 
-              <div className="relative flex justify-center sm:justify-start">
+              <div className="relative flex items-end justify-between gap-2">
                 <MorphButton href="#pricing">See what it costs</MorphButton>
+                <Image
+                  src="/mascot/headset.webp"
+                  alt=""
+                  width={594}
+                  height={700}
+                  aria-hidden
+                  className="pointer-events-none -mb-6 -mr-3 w-24 shrink-0 select-none object-contain sm:hidden"
+                />
               </div>
             </article>
           </RevealItem>
