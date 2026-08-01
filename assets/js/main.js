@@ -1,5 +1,5 @@
 /* ==========================================================================
-   BrandUpMe — homepage behaviour
+   BrandUpMe - homepage behaviour
    No dependencies. No build step. Loaded with `defer`.
    ========================================================================== */
 (function () {
@@ -65,7 +65,7 @@
     reveals.forEach(function (el) { el.classList.add('in'); });
   }, 2500);
 
-  /* ---------- 4. Accordion — one open at a time, per group ---------- */
+  /* ---------- 4. Accordion - one open at a time, per group ---------- */
   document.querySelectorAll('.q-list').forEach(function (group) {
     var items = group.querySelectorAll('details.q');
     items.forEach(function (d) {
@@ -101,7 +101,7 @@
   /* ==========================================================================
      7. REGISTRATION FORM
      --------------------------------------------------------------------------
-     BACKEND INTEGRATION POINT — currently unwired, pending client decision.
+     BACKEND INTEGRATION POINT - currently unwired, pending client decision.
 
      The form posts to whatever URL is in the <form action="..."> attribute.
      To go live, replace that action with one of:
@@ -174,7 +174,7 @@
       }
     });
 
-    // Optional WhatsApp number — validate only if filled
+    // Optional WhatsApp number - validate only if filled
     var wa = document.getElementById('whatsapp');
     if (wa && wa.value.trim() && !validPhone(wa.value)) {
       setInvalid(wa, true);
@@ -238,7 +238,7 @@
       })
       .catch(function () {
         showMsg(
-          'Sorry — we could not submit your registration. Please try again, ' +
+          'Sorry - we could not submit your registration. Please try again, ' +
           'or WhatsApp us on +971 50 123 4567 and we will register you manually.',
           false
         );

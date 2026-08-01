@@ -1,5 +1,5 @@
 /* ==========================================================================
-   BrandUpMe — Business Partnership Program
+   BrandUpMe - Business Partnership Program
    Design system + homepage styles
    --------------------------------------------------------------------------
    THEME SWAP NOTE:
@@ -39,7 +39,7 @@
   /* Layout */
   --wrap: 1200px;
   --gut: clamp(1.25rem, 4vw, 2.5rem);
-  --sec-y: clamp(4.5rem, 9vw, 8rem);
+  --sec-y: clamp(3rem, 6vw, 5.25rem);
   --r: 14px;
   --r-lg: 22px;
 
@@ -105,7 +105,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   content: ""; width: 26px; height: 2px; background: var(--gold); display: block;
 }
 
-.sec-head { max-width: 780px; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+.sec-head { max-width: 780px; margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem); }
 .sec-head.center { margin-inline: auto; }
 .sec-head.center .eyebrow::before { display: none; }
 
@@ -205,7 +205,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* ---------- 6. Hero ---------- */
 .hero {
   position: relative; overflow: hidden;
-  padding-block: clamp(3.5rem, 8vw, 7rem) clamp(4rem, 8vw, 7rem);
+  padding-block: clamp(2.5rem, 5vw, 4.5rem) clamp(3rem, 5.5vw, 5rem);
   background:
     radial-gradient(900px 520px at 85% 12%, rgba(216, 30, 40, .20), transparent 62%),
     radial-gradient(760px 480px at 8% 88%, rgba(233, 185, 73, .14), transparent 60%),
@@ -243,7 +243,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .chip svg { width: 15px; height: 15px; color: var(--gold); }
 
-/* Hero side card — the "two doors" idea from the poster */
+/* Hero side card - the "two doors" idea from the poster */
 .doors { display: grid; gap: 1rem; }
 .door {
   border-radius: var(--r-lg); padding: 1.6rem 1.5rem; border: 1px solid var(--line);
@@ -455,7 +455,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .err { font-size: .78rem; color: var(--red); display: none; }
 .field.is-invalid .err { display: block; }
 
-/* `.consent` also carries `.field`, which sets column direction — override it. */
+/* `.consent` also carries `.field`, which sets column direction - override it. */
 .consent { display: flex; flex-direction: row; gap: .8rem; align-items: flex-start; grid-column: 1 / -1; margin-top: .4rem; }
 .consent input { width: 20px; height: 20px; flex: none; margin-top: .18rem; accent-color: var(--gold); }
 .consent label { font-size: .87rem; color: var(--fg-soft); text-transform: none; letter-spacing: 0; font-weight: 500; line-height: 1.6; }
@@ -562,22 +562,28 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 
 @media (max-width: 900px) {
-  /* Drawer sits BELOW the header (z-index 60) but above page content.
-     `visibility` is part of the closed state so it can never peek over the
-     announcement bar mid-transition, regardless of transform rounding. */
+  /* Drawer is anchored to the header (absolute, top:100%), NOT to the viewport.
+     Fixed positioning meant it covered the header and its close button, and
+     left a dead gap under the announcement bar. Anchoring it here means it
+     always opens flush beneath the header, and the header - with the X to
+     close it - stays visible and tappable the whole time. */
   .nav {
-    position: fixed; inset: 0 0 auto; top: 0; padding: 6.5rem 1.5rem 2rem;
-    flex-direction: column; align-items: stretch; gap: .2rem;
+    position: absolute; top: 100%; left: 0; right: 0;
+    padding: .4rem 1.5rem 1.35rem;
+    flex-direction: column; align-items: stretch; gap: 0;
     background: var(--ink-2); border-bottom: 1px solid var(--line);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, .6);
-    transform: translateY(-102%); visibility: hidden;
-    transition: transform .4s var(--ease), visibility 0s linear .4s;
-    z-index: 55; max-height: 100dvh; overflow-y: auto;
+    box-shadow: 0 22px 50px rgba(0, 0, 0, .65);
+    opacity: 0; visibility: hidden; transform: translateY(-10px);
+    transition: opacity .26s var(--ease), transform .26s var(--ease), visibility 0s linear .26s;
+    z-index: 55; max-height: 80dvh; overflow-y: auto;
   }
-  .nav.is-open { transform: none; visibility: visible; transition: transform .4s var(--ease), visibility 0s; }
-  .nav a { padding: .95rem .4rem; border-bottom: 1px solid var(--line); font-size: 1.02rem; }
+  .nav.is-open {
+    opacity: 1; visibility: visible; transform: none;
+    transition: opacity .26s var(--ease), transform .26s var(--ease), visibility 0s;
+  }
+  .nav a { padding: .9rem .4rem; border-bottom: 1px solid var(--line); font-size: 1.02rem; }
   .nav a::after { display: none; }
-  .nav [data-mobile-only] { display: inline-flex; border-bottom: 0; }
+  .nav [data-mobile-only] { display: inline-flex; border-bottom: 0; margin-top: .9rem; }
   .burger { display: flex; margin-left: auto; }
   .hdr__cta { display: none; }
   .grid--3, .grid--4 { grid-template-columns: repeat(2, 1fr); }
@@ -590,7 +596,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   .wa-float svg { width: 26px; height: 26px; }
   body { padding-bottom: 74px; }
 
-  /* The full announcement sentence is too long for a phone — swap in the short one */
+  /* The full announcement sentence is too long for a phone - swap in the short one */
   .topbar { font-size: .74rem; }
   .topbar__full { display: none; }
   .topbar__short { display: inline; }
