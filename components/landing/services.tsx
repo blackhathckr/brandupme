@@ -5,6 +5,7 @@ import { SectionHead } from "@/components/ui/section-head";
 import { RevealGroup, RevealItem } from "@/components/ui/reveal";
 import { Icon } from "@/components/ui/icon";
 import { MorphButton } from "@/components/ui/brand-button";
+import { MASCOT } from "@/lib/mascot";
 
 /**
  * Bento layout rather than eight identical tiles. The two services that sell
@@ -172,10 +173,10 @@ export function Services() {
                   has to be hidden - and hiding it means phone visitors never
                   see the mascot at all. */}
               <Image
-                src="/mascot/headset.webp"
+                src={MASCOT.headset.src}
                 alt=""
-                width={594}
-                height={700}
+                width={MASCOT.headset.w}
+                height={MASCOT.headset.h}
                 aria-hidden
                 className="pointer-events-none absolute -bottom-4 -right-6 hidden w-44 select-none object-contain opacity-95 sm:block lg:w-52"
               />
@@ -200,10 +201,10 @@ export function Services() {
               <div className="relative flex items-end justify-between gap-2">
                 <MorphButton href="#pricing">See what it costs</MorphButton>
                 <Image
-                  src="/mascot/headset.webp"
+                  src={MASCOT.headset.src}
                   alt=""
-                  width={594}
-                  height={700}
+                  width={MASCOT.headset.w}
+                  height={MASCOT.headset.h}
                   aria-hidden
                   className="pointer-events-none -mb-6 -mr-3 w-24 shrink-0 select-none object-contain sm:hidden"
                 />

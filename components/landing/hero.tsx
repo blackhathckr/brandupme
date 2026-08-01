@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { PhoneCall, MessageCircle, Mail, Users, TrendingUp } from "lucide-react";
 import { HERO, TICKER, CONFIG, MARQUEE } from "@/lib/content";
 import { MorphButton, Button } from "@/components/ui/brand-button";
+import { MASCOT } from "@/lib/mascot";
 import { Counter } from "@/components/ui/counter";
 import { EASE } from "@/lib/motion";
 
@@ -42,6 +43,18 @@ export function Hero() {
         />
         <div className="absolute -right-32 -top-40 size-[620px] rounded-full bg-gold-300/25 blur-3xl" />
         <div className="absolute -left-40 top-40 size-[520px] rounded-full bg-brand-200/25 blur-3xl" />
+
+        {/* Emblem behind the hero. Sits under the live-activity card, so it
+            stays readable while the bull is clearly present. */}
+        <Image
+          src={MASCOT.watermark.src}
+          alt=""
+          width={MASCOT.watermark.w}
+          height={MASCOT.watermark.h}
+          aria-hidden
+          className="absolute -right-10 top-4 w-[320px] select-none object-contain opacity-[0.22] lg:w-[520px]"
+        />
+
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-canvas" />
       </div>
 

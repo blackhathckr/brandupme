@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Check, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import {
   CONFIG,
   INDUSTRY_OPTIONS,
@@ -14,6 +14,7 @@ import {
 } from "@/lib/content";
 import { SectionHead } from "@/components/ui/section-head";
 import { Reveal } from "@/components/ui/reveal";
+import { MASCOT } from "@/lib/mascot";
 import { FormSelect } from "@/components/ui/form-select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { EASE } from "@/lib/motion";
@@ -108,16 +109,13 @@ export function Register() {
             {/* Success is exactly where a mascot earns its place - a moment
                 worth marking, not decoration. */}
             <Image
-              src="/mascot/celebrate.webp"
+              src={MASCOT.emblem.src}
               alt=""
-              width={508}
-              height={700}
+              width={MASCOT.emblem.w}
+              height={MASCOT.emblem.h}
               aria-hidden
-              className="mx-auto mb-2 w-36 select-none object-contain"
+              className="mx-auto mb-6 w-32 select-none object-contain"
             />
-            <span className="mx-auto mb-6 flex size-16 items-center justify-center rounded-full bg-success/12">
-              <Check className="size-7 text-success-text" strokeWidth={2.5} />
-            </span>
             <h2 className="font-display text-3xl font-bold tracking-[-0.035em] text-ink">
               You&rsquo;re in.
             </h2>

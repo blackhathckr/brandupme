@@ -1,15 +1,16 @@
 import Link from "next/link";
 import Image from "next/image";
 import { CONFIG, WHATSAPP_LINK } from "@/lib/content";
+import { MASCOT } from "@/lib/mascot";
 
 export default function NotFound() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-canvas px-6 text-center">
       <Image
-        src="/mascot/wave.webp"
+        src={MASCOT.presence.src}
         alt=""
-        width={604}
-        height={700}
+        width={MASCOT.presence.w}
+        height={MASCOT.presence.h}
         priority
         aria-hidden
         className="w-40 select-none object-contain sm:w-48"

@@ -14,6 +14,7 @@ import {
 } from "@/lib/content";
 import { MorphButton } from "@/components/ui/brand-button";
 import { Reveal } from "@/components/ui/reveal";
+import { MASCOT } from "@/lib/mascot";
 
 const CONTACT = [
   {
@@ -76,33 +77,55 @@ export function CtaBand() {
         aria-hidden
         className="pointer-events-none absolute -left-32 -top-32 size-[480px] rounded-full bg-white/10 blur-3xl"
       />
-      <div className="container-page relative text-center">
-        <Reveal>
-          <h2 className="mx-auto max-w-3xl font-display text-[clamp(2rem,4.6vw,3.25rem)] font-bold leading-[1.08] tracking-[-0.04em] text-white">
-            Focus on your business.{" "}
-            <span className="font-serif font-normal italic tracking-normal text-gold-200">
-              We&rsquo;ll
-            </span>{" "}
-            bring you the business.
-          </h2>
-          <p className="mx-auto mt-5 max-w-xl text-[17px] leading-[1.7] text-white/85">
-            Your next customer may already need what you sell. The only question
-            is who reaches them first.
-          </p>
-          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <MorphButton href="#register" tone="white">
-              Partner with us today
-            </MorphButton>
-            <a
-              href={WHATSAPP_LINK}
-              target="_blank"
-              rel="noopener"
-              className="inline-flex h-14 items-center rounded-full border border-white/40 bg-white/10 px-7 font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/20"
-            >
-              Chat on WhatsApp
-            </a>
-          </div>
-        </Reveal>
+
+      {/* Full-strength character, not a watermark. A red bull on a red
+          gradient loses its edges, so it sits on a dark radial pool that
+          separates it and grounds the composition. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-10 right-0 hidden size-[520px] translate-x-16 rounded-full bg-[radial-gradient(circle,rgba(60,4,4,0.55),transparent_68%)] lg:block"
+      />
+
+      <div className="container-page relative">
+        <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
+          <Reveal className="text-center lg:text-left">
+            <h2 className="font-display text-[clamp(2rem,4.6vw,3.25rem)] font-bold leading-[1.08] tracking-[-0.04em] text-white">
+              Focus on your business.{" "}
+              <span className="font-serif font-normal italic tracking-normal text-gold-200">
+                We&rsquo;ll
+              </span>{" "}
+              bring you the business.
+            </h2>
+            <p className="mx-auto mt-5 max-w-xl text-[17px] leading-[1.7] text-white/85 lg:mx-0">
+              Your next customer may already need what you sell. The only
+              question is who reaches them first.
+            </p>
+            <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
+              <MorphButton href="#register" tone="white">
+                Partner with us today
+              </MorphButton>
+              <a
+                href={WHATSAPP_LINK}
+                target="_blank"
+                rel="noopener"
+                className="inline-flex h-14 items-center rounded-full border border-white/40 bg-white/10 px-7 font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+              >
+                Chat on WhatsApp
+              </a>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.12} className="relative flex justify-center">
+            <Image
+              src={MASCOT.presence.src}
+              alt=""
+              width={MASCOT.presence.w}
+              height={MASCOT.presence.h}
+              aria-hidden
+              className="w-[220px] select-none object-contain drop-shadow-[0_18px_38px_rgba(50,2,2,0.45)] sm:w-[260px] lg:w-[320px]"
+            />
+          </Reveal>
+        </div>
       </div>
     </section>
   );

@@ -1,7 +1,9 @@
 "use client";
 
 import { useId, useMemo, useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
+import { MASCOT } from "@/lib/mascot";
 import { CALC, CONFIG } from "@/lib/content";
 import { SectionHead } from "@/components/ui/section-head";
 import { MorphButton } from "@/components/ui/brand-button";
@@ -96,6 +98,18 @@ export function Calculator() {
       <div
         aria-hidden
         className="pointer-events-none absolute -bottom-48 left-[20%] size-[520px] rounded-full bg-gold-600/15 blur-3xl"
+      />
+
+      {/* Momentum. Bleeds off the right edge so it reads as motion entering
+          the frame rather than as a picture placed in it. Desktop only - on a
+          phone it would sit behind the sliders and fight them. */}
+      <Image
+        src={MASCOT.momentum.src}
+        alt=""
+        width={MASCOT.momentum.w}
+        height={MASCOT.momentum.h}
+        aria-hidden
+        className="pointer-events-none absolute -right-24 bottom-0 hidden w-[460px] select-none object-contain opacity-[0.30] xl:block"
       />
 
       <div className="container-page relative">
