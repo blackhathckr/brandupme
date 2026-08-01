@@ -39,6 +39,9 @@ const V2: Record<string, Asset> = {
   headset: { src: "/mascot-v2/head-headset.webp", w: 478, h: 700 },
   presence: { src: "/mascot-v2/standing.webp", w: 526, h: 700 },
   momentum: { src: "/mascot-v2/charging.webp", w: 700, h: 619 },
+  welcome: { src: "/mascot-v2/bust.webp", w: 519, h: 700 },
+  profile: { src: "/mascot-v2/head-profile.webp", w: 532, h: 700 },
+  steady: { src: "/mascot-v2/walking.webp", w: 671, h: 700 },
 };
 
 const V1: Record<string, Asset> = {
@@ -47,10 +50,21 @@ const V1: Record<string, Asset> = {
   headset: { src: "/mascot/headset.webp", w: 594, h: 700 },
   presence: { src: "/mascot/wave.webp", w: 604, h: 700 },
   momentum: { src: "/mascot/present.webp", w: 684, h: 700 },
+  // v1 has fewer poses, so these fall back rather than 404
+  welcome: { src: "/mascot/wave.webp", w: 604, h: 700 },
+  profile: { src: "/mascot/canonical.webp", w: 375, h: 700 },
+  steady: { src: "/mascot/present.webp", w: 684, h: 700 },
 };
 
 /** Keyed by role, never by pose - that is what makes the two sets swappable. */
 export const MASCOT = (FAMILY === "v2" ? V2 : V1) as Record<
-  "emblem" | "watermark" | "headset" | "presence" | "momentum",
+  | "emblem"
+  | "watermark"
+  | "headset"
+  | "presence"
+  | "momentum"
+  | "welcome"
+  | "profile"
+  | "steady",
   Asset
 >;

@@ -8,7 +8,7 @@ import { Compare } from "@/components/landing/compare";
 import { Industries, Pricing } from "@/components/landing/pricing";
 import { Faq } from "@/components/landing/faq";
 import { Register } from "@/components/landing/register";
-import { Contact, CtaBand, Footer } from "@/components/landing/footer";
+import { CtaBand, Footer } from "@/components/landing/footer";
 import { FAQ, CONFIG } from "@/lib/content";
 
 /**
@@ -78,7 +78,6 @@ export default function Home() {
         <Pricing />
         <Faq />
         <Register />
-        <Contact />
         <CtaBand />
       </main>
       <Footer />

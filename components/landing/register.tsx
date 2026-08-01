@@ -3,9 +3,17 @@
 import { useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Loader2,
+  Phone,
+  Mail,
+  MessageCircle,
+} from "lucide-react";
 import {
   CONFIG,
+  WHATSAPP_LINK,
   INDUSTRY_OPTIONS,
   CITY_OPTIONS,
   ORDER_VALUE_OPTIONS,
@@ -21,6 +29,27 @@ import { EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 type Data = Record<string, string>;
+
+const CONTACT_LINKS = [
+  {
+    icon: Phone,
+    label: "Call us",
+    value: CONFIG.phoneDisplay,
+    href: `tel:${CONFIG.phone}`,
+  },
+  {
+    icon: MessageCircle,
+    label: "WhatsApp",
+    value: CONFIG.phoneDisplay,
+    href: WHATSAPP_LINK,
+  },
+  {
+    icon: Mail,
+    label: "Email",
+    value: CONFIG.email,
+    href: `mailto:${CONFIG.email}`,
+  },
+];
 
 const STEPS = [
   { id: 0, label: "Your business" },
@@ -141,7 +170,11 @@ export function Register() {
           sub="Three short steps. We will contact you within one business day."
         />
 
-        <Reveal className="mx-auto mt-12 max-w-2xl rounded-2xl border border-line bg-surface p-6 shadow-e3 sm:p-9">
+      {/* Form and contact sit side by side on desktop. Someone who does not
+          want to fill a form should be able to see the phone number without
+          scrolling past it. */}
+      <div className="mt-12 grid items-start gap-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]">
+        <Reveal className="rounded-2xl border border-line bg-surface p-6 shadow-e3 sm:p-9">
           {/* Progress */}
           <ol className="mb-8 flex gap-3">
             {STEPS.map((s) => (
@@ -509,6 +542,53 @@ export function Register() {
             </div>
           </form>
         </Reveal>
+
+        {/* Contact rail. The mascot anchors the top so the column does not
+            read as three loose cards floating beside the form. */}
+        <Reveal delay={0.12} className="flex flex-col gap-3">
+          <div className="relative overflow-hidden rounded-2xl border border-gold-300 bg-gradient-to-br from-gold-100/70 to-surface p-6">
+            <Image
+              src={MASCOT.welcome.src}
+              alt=""
+              width={MASCOT.welcome.w}
+              height={MASCOT.welcome.h}
+              aria-hidden
+              className="pointer-events-none absolute -bottom-8 -right-6 w-28 select-none object-contain opacity-90 sm:w-32"
+            />
+            <div className="relative max-w-[70%]">
+              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-bronze">
+                Rather just talk?
+              </p>
+              <p className="mt-2 text-[14.5px] leading-[1.6] text-ink-2">
+                Skip the form. Call or message us and we will take your details
+                over the phone.
+              </p>
+            </div>
+          </div>
+
+          {CONTACT_LINKS.map((c) => (
+            <a
+              key={c.label}
+              href={c.href}
+              className="flex items-center gap-4 rounded-2xl border border-line bg-surface p-5
+                transition-all duration-[240ms] ease-brand hover:-translate-y-0.5
+                hover:border-gold-300 hover:shadow-e2"
+            >
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+                <c.icon className="size-5" strokeWidth={1.75} aria-hidden />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                  {c.label}
+                </span>
+                <span className="block truncate font-display text-[15.5px] font-semibold text-ink">
+                  {c.value}
+                </span>
+              </span>
+            </a>
+          ))}
+        </Reveal>
+        </div>
       </div>
     </section>
   );

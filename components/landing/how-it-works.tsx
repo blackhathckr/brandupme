@@ -111,10 +111,10 @@ export function HowItWorks() {
                 under the shorter stages. The bull fills it. Sits outside
                 AnimatePresence so it stays put while stages change. */}
             <Image
-              src={MASCOT.momentum.src}
+              src={MASCOT.steady.src}
               alt=""
-              width={MASCOT.momentum.w}
-              height={MASCOT.momentum.h}
+              width={MASCOT.steady.w}
+              height={MASCOT.steady.h}
               aria-hidden
               className="pointer-events-none absolute -bottom-6 -right-8 hidden w-[300px] select-none object-contain opacity-[0.16] lg:block"
             />

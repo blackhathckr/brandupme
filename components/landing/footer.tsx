@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, Mail, MessageCircle } from "lucide-react";
 import {
   LinkedInIcon,
   InstagramIcon,
@@ -16,59 +15,11 @@ import { MorphButton } from "@/components/ui/brand-button";
 import { Reveal } from "@/components/ui/reveal";
 import { MASCOT } from "@/lib/mascot";
 
-const CONTACT = [
-  {
-    icon: Phone,
-    label: "Call us",
-    value: CONFIG.phoneDisplay,
-    href: `tel:${CONFIG.phone}`,
-  },
-  {
-    icon: MessageCircle,
-    label: "WhatsApp",
-    value: CONFIG.phoneDisplay,
-    href: WHATSAPP_LINK,
-  },
-  { icon: Mail, label: "Email", value: CONFIG.email, href: `mailto:${CONFIG.email}` },
-];
-
 const SOCIALS = [
   { Icon: LinkedInIcon, href: CONFIG.social.linkedin, label: "LinkedIn" },
   { Icon: InstagramIcon, href: CONFIG.social.instagram, label: "Instagram" },
   { Icon: FacebookIcon, href: CONFIG.social.facebook, label: "Facebook" },
 ];
-
-export function Contact() {
-  return (
-    <section id="contact" className="py-14 lg:py-20">
-      <div className="container-page">
-        <div className="grid gap-3 sm:grid-cols-3">
-          {CONTACT.map((c) => (
-            <Reveal key={c.label}>
-              <a
-                href={c.href}
-                className="flex h-full items-center gap-4 rounded-2xl border border-line bg-surface p-6
-                  transition-all duration-[240ms] ease-brand hover:-translate-y-1 hover:border-gold-300 hover:shadow-e3"
-              >
-                <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
-                  <c.icon className="size-5" strokeWidth={1.75} aria-hidden />
-                </span>
-                <span className="min-w-0">
-                  <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                    {c.label}
-                  </span>
-                  <span className="block truncate font-display text-[16px] font-semibold text-ink">
-                    {c.value}
-                  </span>
-                </span>
-              </a>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 export function CtaBand() {
   return (
