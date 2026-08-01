@@ -17,12 +17,6 @@ const CHIPS = [
   { icon: TrendingUp, label: "More meetings" },
 ];
 
-const TONE = {
-  red: { dot: "bg-brand-600", tile: "bg-brand-50", text: "text-brand-600" },
-  gold: { dot: "bg-gold-500", tile: "bg-gold-50", text: "text-bronze" },
-  green: { dot: "bg-success", tile: "bg-[#EAF7F1]", text: "text-success-text" },
-} as const;
-
 /** Entrance timings, matching the reference cadence. */
 const D = { badge: 0.15, head: 0.3, sub: 0.45, cta: 0.6, card: 0.5, chips: 0.75 };
 
@@ -33,14 +27,20 @@ export function Hero() {
           CSS halos layered over it so the effect still reads if the image is
           slow or blocked. Purely decorative, hence aria-hidden. */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        {/* On desktop the red corner sits clear of the copy. On mobile the
+            image scales up and that red lands directly under the headline,
+            where the brand-red "remote" becomes unreadable. Mobile therefore
+            anchors to the gold bottom-left instead, and takes an ivory wash
+            on top - readability wins over the art. */}
         <Image
           src="/brand/hero-bg.webp"
           alt=""
           fill
           priority
           sizes="100vw"
-          className="object-cover object-right-top opacity-90"
+          className="object-cover object-bottom opacity-60 sm:object-right-top sm:opacity-90"
         />
+        <div className="absolute inset-0 bg-canvas/60 sm:hidden" />
         <div className="absolute -right-32 -top-40 size-[620px] rounded-full bg-gold-300/25 blur-3xl" />
         <div className="absolute -left-40 top-40 size-[520px] rounded-full bg-brand-200/25 blur-3xl" />
 
@@ -52,7 +52,7 @@ export function Hero() {
           width={MASCOT.watermark.w}
           height={MASCOT.watermark.h}
           aria-hidden
-          className="absolute -right-10 top-4 w-[320px] select-none object-contain opacity-[0.22] lg:w-[520px]"
+          className="absolute -right-10 top-4 w-[320px] select-none object-contain opacity-[0.08] sm:opacity-[0.22] lg:w-[520px]"
         />
 
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-canvas" />
@@ -148,21 +148,29 @@ export function Hero() {
           transition={{ delay: D.card, duration: 0.9, ease: EASE }}
           className="relative"
         >
-          <div className="rounded-2xl border border-line bg-surface p-6 shadow-e4">
-            <div className="flex items-center justify-between border-b border-hairline pb-4">
-              <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+          {/* Same treatment as the services payoff card - gold gradient, gold
+              border, mascot bleeding off the corner. The two strongest cards
+              on the page now rhyme instead of looking unrelated. */}
+          <div className="relative overflow-hidden rounded-2xl border border-gold-300 bg-gradient-to-br from-gold-100/70 via-surface to-surface p-6 shadow-e4">
+            <Image
+              src={MASCOT.profile.src}
+              alt=""
+              width={MASCOT.profile.w}
+              height={MASCOT.profile.h}
+              aria-hidden
+              className="pointer-events-none absolute -bottom-8 -right-8 w-36 select-none object-contain opacity-[0.14]"
+            />
+
+            {/* No divider rules and no coloured dots - the payoff card has
+                neither, and they were what made this look like a different
+                design language. Spacing and type weight carry the structure. */}
+            <div className="relative">
+              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-bronze">
                 Today&rsquo;s outreach
               </p>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#EAF7F1] px-2.5 py-1 text-[11px] font-semibold text-success-text">
-                <span className="size-1.5 rounded-full bg-success" />
-                Live
-              </span>
-            </div>
 
-            <ul className="divide-y divide-hairline">
-              {TICKER.map((row, i) => {
-                const t = TONE[row.tone];
-                return (
+              <ul className="mt-5 flex flex-col gap-4">
+                {TICKER.map((row, i) => (
                   <motion.li
                     key={row.label}
                     initial={{ opacity: 0, x: 16 }}
@@ -172,34 +180,29 @@ export function Hero() {
                       duration: 0.6,
                       ease: EASE,
                     }}
-                    className="flex items-center gap-3.5 py-4"
+                    className="flex items-baseline gap-4"
                   >
-                    <span
-                      className={`flex size-9 shrink-0 items-center justify-center rounded-xl ${t.tile}`}
-                    >
-                      <span className={`size-2 rounded-full ${t.dot}`} />
-                    </span>
+                    <Counter
+                      to={row.value}
+                      className="w-14 shrink-0 font-display text-[30px] font-extrabold leading-none tracking-[-0.04em] text-brand-600"
+                    />
                     <span className="min-w-0 flex-1">
-                      <span className="block text-[14.5px] font-semibold text-ink">
+                      <span className="block font-display text-[15px] font-semibold tracking-[-0.02em] text-ink">
                         {row.label}
                       </span>
                       <span className="block text-[12.5px] text-muted-foreground">
                         {row.meta}
                       </span>
                     </span>
-                    <Counter
-                      to={row.value}
-                      className={`font-display text-xl font-extrabold tracking-[-0.03em] ${t.text}`}
-                    />
                   </motion.li>
-                );
-              })}
-            </ul>
+                ))}
+              </ul>
 
-            <p className="border-t border-hairline pt-4 text-[11.5px] leading-relaxed text-muted-foreground">
-              Illustrative figures shown while onboarding. Replaced with your
-              own reporting once your partnership is live.
-            </p>
+              <p className="mt-6 text-[11.5px] leading-relaxed text-muted-foreground">
+                Illustrative figures shown while onboarding. Replaced with your
+                own reporting once your partnership is live.
+              </p>
+            </div>
           </div>
         </motion.div>
       </div>
