@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/legal/legal-page";
-import { CONFIG } from "@/lib/content";
+import { getRegion } from "@/lib/content";
+
+const r = getRegion("IN");
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -67,7 +69,7 @@ export default function Page() {
         {
           heading: "Changes to this policy",
           body: [
-            `We may update this policy from time to time. The date at the top of this page shows when it was last revised. Material changes will be communicated to active partners. Questions may be sent to ${CONFIG.email}.`,
+            `We may update this policy from time to time. The date at the top of this page shows when it was last revised. Material changes will be communicated to active partners. Questions may be sent to ${r.email}.`,
           ],
         },
       ]}

@@ -1,7 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
-import { CONFIG } from "@/lib/content";
+import { getRegion } from "@/lib/content";
+
+const r = getRegion("IN");
 
 export type LegalSection = { heading: string; body: string[] };
 
@@ -98,12 +100,12 @@ export function LegalPage({
             <p className="mt-2 text-[14.5px] leading-relaxed text-ink-2">
               Contact us at{" "}
               <a
-                href={`mailto:${CONFIG.email}`}
+                href={`mailto:${r.email}`}
                 className="font-medium text-brand-600 underline"
               >
-                {CONFIG.email}
+                {r.email}
               </a>{" "}
-              or {CONFIG.phoneDisplay}, {CONFIG.city}, {CONFIG.country}.
+              or {r.phoneDisplay}, {r.address}.
             </p>
           </div>
         </div>

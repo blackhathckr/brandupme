@@ -1,17 +1,19 @@
 import {
-  BookOpen,
-  CalendarCheck,
-  Ear,
-  Filter,
-  Handshake,
-  Lightbulb,
-  Mail,
+  BadgeCheck,
+  BarChart3,
+  ClipboardList,
+  Headset,
+  Megaphone,
   MessageCircle,
-  PhoneCall,
-  Repeat,
-  Search,
+  MessageSquare,
+  MessagesSquare,
+  Package,
+  Palette,
+  Send,
   Target,
   TrendingUp,
+  Users,
+  UserSearch,
   type LucideIcon,
 } from "lucide-react";
 
@@ -20,19 +22,21 @@ import {
  * the icons actually used and TypeScript catches a bad name at build time.
  */
 const ICONS = {
-  BookOpen,
-  CalendarCheck,
-  Ear,
-  Filter,
-  Handshake,
-  Lightbulb,
-  Mail,
+  BadgeCheck,
+  BarChart3,
+  ClipboardList,
+  Headset,
+  Megaphone,
   MessageCircle,
-  PhoneCall,
-  Repeat,
-  Search,
+  MessageSquare,
+  MessagesSquare,
+  Package,
+  Palette,
+  Send,
   Target,
   TrendingUp,
+  Users,
+  UserSearch,
 } satisfies Record<string, LucideIcon>;
 
 export type IconName = keyof typeof ICONS;
@@ -40,10 +44,12 @@ export type IconName = keyof typeof ICONS;
 export function Icon({
   name,
   className,
+  strokeWidth = 1.75,
 }: {
   name: IconName | string;
   className?: string;
+  strokeWidth?: number;
 }) {
   const Cmp = ICONS[name as IconName] ?? Target;
-  return <Cmp className={className} strokeWidth={1.75} aria-hidden />;
+  return <Cmp className={className} strokeWidth={strokeWidth} aria-hidden />;
 }

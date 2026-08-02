@@ -34,25 +34,25 @@ const instrument = Instrument_Serif({
   display: "swap",
 });
 
-const SITE = "https://www.brandupme.ae";
+const SITE = "https://www.brandupme.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: {
-    default:
-      "Hire Your Own Remote Sales Representative in Dubai | AED 500/Month - BrandUpMe",
+    default: "BrandUpMe | Digital Marketing & Business Development",
     template: "%s | BrandUpMe",
   },
   description:
-    "BrandUpMe gives UAE businesses a dedicated remote sales representative for AED 500/month plus success-based commission. Cold calling, WhatsApp outreach, email marketing, lead qualification and follow-up. No salary, no visa, no office.",
+    "BrandUpMe is your digital marketing and business development partner. We help businesses grow online, get more visibility and generate quality leads.",
   keywords: [
-    "remote sales representative Dubai",
-    "outsourced sales UAE",
-    "cold calling services Dubai",
-    "lead generation UAE",
-    "business development partner Dubai",
-    "B2B lead generation Dubai",
-    "sales outsourcing UAE",
+    "digital marketing agency",
+    "social media management",
+    "lead generation",
+    "creative design and video ads",
+    "organic marketing",
+    "business development partner",
+    "digital marketing India",
+    "digital marketing Dubai",
   ],
   authors: [{ name: "BrandUpMe" }],
   alternates: { canonical: "/" },
@@ -61,36 +61,31 @@ export const metadata: Metadata = {
     siteName: "BrandUpMe",
     locale: "en_AE",
     url: SITE,
-    title:
-      "Hire Your Own Remote Sales Representative - AED 500/Month | BrandUpMe",
+    title: "BrandUpMe | We Build Brands That Build Business",
     description:
-      "We prospect, we call, we follow up. You close. A dedicated remote sales representative for AED 500/month plus success-based commission.",
+      "Digital marketing and business development. Social media management, creative design, organic marketing and qualified leads delivered to your business.",
     images: [
       {
         url: "/brand/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "BrandUpMe - hire your own remote sales representative for AED 500 a month",
+        alt: "BrandUpMe - digital marketing and business development",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title:
-      "Hire Your Own Remote Sales Representative - AED 500/Month | BrandUpMe",
+    title: "BrandUpMe | We Build Brands That Build Business",
     description:
-      "We prospect, we call, we follow up. You close. AED 500/month plus success-based commission.",
+      "Digital marketing and business development. We help businesses grow online and generate quality leads.",
     images: ["/brand/og-image.jpg"],
   },
   robots: { index: true, follow: true },
-  other: {
-    "geo.region": "AE-DU",
-    "geo.placename": "Dubai, United Arab Emirates",
-  },
+
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FDFBF7",
+  themeColor: "#04170A",
   width: "device-width",
   initialScale: 1,
 };

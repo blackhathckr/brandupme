@@ -28,6 +28,22 @@ export function FacebookIcon({ className }: Props) {
   );
 }
 
+export function XIcon({ className }: Props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+      <path d="M18.9 2.3h3.3l-7.2 8.2L23.4 22h-6.6l-5.2-6.8L5.7 22H2.4l7.7-8.8L2 2.3h6.8l4.7 6.2ZM17.7 20h1.8L8.4 4.2H6.4L17.7 20Z" />
+    </svg>
+  );
+}
+
+export function YouTubeIcon({ className }: Props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+      <path d="M23.5 6.9a3 3 0 0 0-2.1-2.13C19.5 4.25 12 4.25 12 4.25s-7.5 0-9.4.52A3 3 0 0 0 .5 6.9 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.1 3 3 0 0 0 2.1 2.13c1.9.52 9.4.52 9.4.52s7.5 0 9.4-.52a3 3 0 0 0 2.1-2.13A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.1ZM9.6 15.6V8.4l6.25 3.6-6.25 3.6Z" />
+    </svg>
+  );
+}
+
 export function WhatsAppIcon({ className }: Props) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>

@@ -1,116 +1,111 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Phone, Mail, MapPin, MessageCircle, Target } from "lucide-react";
+import {
+  NAV,
+  SOCIAL,
+  FOOTER_BLURB,
+  whatsappLink,
+  LEGAL_PAGES_PUBLISHED,
+  type RegionContent,
+} from "@/lib/content";
+import { Button } from "@/components/ui/brand-button";
+import { Reveal } from "@/components/ui/reveal";
 import {
   LinkedInIcon,
   InstagramIcon,
   FacebookIcon,
+  XIcon,
+  YouTubeIcon,
 } from "@/components/ui/social-icons";
-import {
-  CONFIG,
-  WHATSAPP_LINK,
-  NAV,
-  LEGAL_PAGES_PUBLISHED,
-} from "@/lib/content";
-import { MorphButton } from "@/components/ui/brand-button";
-import { Reveal } from "@/components/ui/reveal";
-import { MASCOT } from "@/lib/mascot";
 
 const SOCIALS = [
-  { Icon: LinkedInIcon, href: CONFIG.social.linkedin, label: "LinkedIn" },
-  { Icon: InstagramIcon, href: CONFIG.social.instagram, label: "Instagram" },
-  { Icon: FacebookIcon, href: CONFIG.social.facebook, label: "Facebook" },
+  { Icon: FacebookIcon, href: SOCIAL.facebook, label: "Facebook" },
+  { Icon: InstagramIcon, href: SOCIAL.instagram, label: "Instagram" },
+  { Icon: XIcon, href: SOCIAL.x, label: "X" },
+  { Icon: YouTubeIcon, href: SOCIAL.youtube, label: "YouTube" },
+  { Icon: LinkedInIcon, href: SOCIAL.linkedin, label: "LinkedIn" },
 ];
 
-export function CtaBand() {
+/** Rounded dark card floating on the light section, per the mockup. */
+export function CtaBand({ r }: { r: RegionContent }) {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-brand-700 via-brand-600 to-gold-600 py-14 lg:py-20">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -left-32 -top-32 size-[480px] rounded-full bg-white/10 blur-3xl"
-      />
+    <section id="contact" className="bg-surface-2 pb-16 lg:pb-24">
+      <div className="container-page">
+        <Reveal className="relative overflow-hidden rounded-3xl bg-deep px-6 py-10 lg:px-12 lg:py-12">
+          <div aria-hidden className="pointer-events-none absolute inset-0">
+            <div className="deep-grid absolute inset-0 opacity-50" />
+            <div className="absolute -right-24 -top-24 size-72 rounded-full bg-brand-500/20 blur-[90px]" />
+          </div>
 
-      {/* Full-strength character, not a watermark. A red bull on a red
-          gradient loses its edges, so it sits on a dark radial pool that
-          separates it and grounds the composition. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-10 right-0 hidden size-[520px] translate-x-16 rounded-full bg-[radial-gradient(circle,rgba(60,4,4,0.55),transparent_68%)] lg:block"
-      />
-
-      <div className="container-page relative">
-        <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
-          <Reveal className="text-center lg:text-left">
-            <h2 className="font-display text-[clamp(2rem,4.6vw,3.25rem)] font-bold leading-[1.08] tracking-[-0.04em] text-white">
-              Focus on your business.{" "}
-              <span className="font-serif font-normal italic tracking-normal text-gold-200">
-                We&rsquo;ll
-              </span>{" "}
-              bring you the business.
-            </h2>
-            <p className="mx-auto mt-5 max-w-xl text-[17px] leading-[1.7] text-white/85 lg:mx-0">
-              Your next customer may already need what you sell. The only
-              question is who reaches them first.
-            </p>
-            <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
-              <MorphButton href="#register" tone="white">
-                Partner with us today
-              </MorphButton>
-              <a
-                href={WHATSAPP_LINK}
-                target="_blank"
-                rel="noopener"
-                className="inline-flex h-14 items-center rounded-full border border-white/40 bg-white/10 px-7 font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+          <div className="relative flex flex-col items-center gap-8 lg:flex-row lg:justify-between">
+            <div className="flex items-center gap-5">
+              <span
+                aria-hidden
+                className="hidden size-16 shrink-0 items-center justify-center rounded-2xl border border-brand-500/30 bg-brand-500/12 text-brand-400 sm:flex"
               >
-                Chat on WhatsApp
-              </a>
+                <Target className="size-8" strokeWidth={1.6} />
+              </span>
+              <div className="text-center sm:text-left">
+                <h2 className="font-display text-[clamp(1.5rem,3vw,2.1rem)] font-bold leading-tight tracking-[-0.03em] text-white">
+                  {r.cta.headline}
+                </h2>
+                <p className="mt-2 text-[14.5px] leading-relaxed text-deep-muted">
+                  {r.cta.sub}
+                </p>
+              </div>
             </div>
-          </Reveal>
 
-          <Reveal delay={0.12} className="relative flex justify-center">
-            <Image
-              src={MASCOT.presence.src}
-              alt=""
-              width={MASCOT.presence.w}
-              height={MASCOT.presence.h}
-              aria-hidden
-              className="w-[220px] select-none object-contain drop-shadow-[0_18px_38px_rgba(50,2,2,0.45)] sm:w-[260px] lg:w-[320px]"
-            />
-          </Reveal>
-        </div>
+            <div className="flex flex-col items-center gap-4 lg:items-end">
+              <Button href={whatsappLink(r)} variant="primary" size="lg" icon>
+                {r.cta.button}
+              </Button>
+              <p className="flex items-center gap-2 text-[12.5px] text-deep-muted">
+                <span className="font-display font-extrabold text-brand-400">
+                  {r.stats[0].value}
+                </span>
+                {r.stats[0].label}
+              </p>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
 }
 
-export function Footer() {
+export function Footer({ r }: { r: RegionContent }) {
   return (
-    <footer className="bg-night pt-16 text-night-muted">
+    <footer className="bg-deep pt-14 text-deep-muted">
       <div className="container-page">
-        <div className="grid gap-10 pb-12 md:grid-cols-[1.6fr_1fr_1fr]">
+        <div className="grid gap-10 pb-12 md:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1.2fr_1.2fr]">
           <div>
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2">
               <Image
                 src="/brand/mark-192.png"
                 alt=""
-                width={40}
-                height={40}
-                className="size-10 object-contain"
+                width={38}
+                height={38}
+                className="size-9 object-contain"
               />
-              <span className="font-display text-[21px] font-bold tracking-[-0.03em] text-night-fg">
-                Brand<span className="text-brand-400">Up</span>Me
+              <span className="font-display text-[19px] font-bold leading-none tracking-[-0.03em] text-white">
+                BrandUpMe
+                <span className="ml-1 align-top text-[9px] font-semibold tracking-[0.1em] text-brand-300">
+                  LLP
+                </span>
               </span>
             </div>
-            <p className="mt-4 max-w-sm text-[14.5px] leading-[1.7]">
-              Your remote sales partner in the UAE. We prospect, we follow up,
-              you close.
+            <p className="mt-4 max-w-xs text-[13.5px] leading-[1.7]">
+              {FOOTER_BLURB}
             </p>
-            <div className="mt-6 flex gap-2.5">
+            <div className="mt-5 flex gap-2">
               {SOCIALS.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
                   aria-label={s.label}
-                  className="flex size-10 items-center justify-center rounded-xl border border-night-line text-night-muted transition-colors hover:border-gold-500 hover:text-gold-400"
+                  className="flex size-9 items-center justify-center rounded-full border border-deep-line
+                    text-deep-muted transition-colors hover:border-brand-500 hover:bg-brand-500/10 hover:text-brand-300"
                 >
                   <s.Icon className="size-4" />
                 </a>
@@ -118,70 +113,99 @@ export function Footer() {
             </div>
           </div>
 
-          <nav aria-label="Footer">
-            <h2 className="text-[11px] font-bold uppercase tracking-[0.16em] text-gold-400">
-              Explore
+          <nav aria-label="Quick links">
+            <h2 className="font-display text-[14px] font-bold tracking-[-0.01em] text-white">
+              Quick Links
             </h2>
             <ul className="mt-4 flex flex-col gap-2.5">
-              {NAV.map((n) => (
-                <li key={n.href}>
+              {NAV.map((l) => (
+                <li key={l.href}>
                   <Link
-                    href={n.href}
-                    className="text-[14.5px] transition-colors hover:text-gold-400"
+                    href={l.href}
+                    className="text-[13.5px] transition-colors hover:text-brand-300"
                   >
-                    {n.label}
+                    {l.label}
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link
-                  href="#register"
-                  className="text-[14.5px] transition-colors hover:text-gold-400"
-                >
-                  Register
-                </Link>
-              </li>
             </ul>
           </nav>
 
           <div>
-            <h2 className="text-[11px] font-bold uppercase tracking-[0.16em] text-gold-400">
-              Get in touch
+            <h2 className="font-display text-[14px] font-bold tracking-[-0.01em] text-white">
+              Our Services
             </h2>
-            <ul className="mt-4 flex flex-col gap-2.5 text-[14.5px]">
+            <ul className="mt-4 flex flex-col gap-2.5">
+              {r.footerServices.map((l) => (
+                <li key={l}>
+                  <Link
+                    href="#services"
+                    className="text-[13.5px] transition-colors hover:text-brand-300"
+                  >
+                    {l}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="font-display text-[14px] font-bold tracking-[-0.01em] text-white">
+              Contact Us
+            </h2>
+            <ul className="mt-4 flex flex-col gap-3 text-[13.5px]">
               <li>
-                <a href={`tel:${CONFIG.phone}`} className="hover:text-gold-400">
-                  {CONFIG.phoneDisplay}
+                <a
+                  href={`tel:${r.phone}`}
+                  className="flex items-center gap-2.5 transition-colors hover:text-brand-300"
+                >
+                  <Phone className="size-4 shrink-0 text-brand-400" strokeWidth={2} aria-hidden />
+                  {r.phoneDisplay}
                 </a>
               </li>
               <li>
-                <a href={`mailto:${CONFIG.email}`} className="hover:text-gold-400">
-                  {CONFIG.email}
+                <a
+                  href={`mailto:${r.email}`}
+                  className="flex items-center gap-2.5 transition-colors hover:text-brand-300"
+                >
+                  <Mail className="size-4 shrink-0 text-brand-400" strokeWidth={2} aria-hidden />
+                  {r.email}
                 </a>
               </li>
-              <li className="pt-1">
-                {CONFIG.city}, {CONFIG.country}
+              <li className="flex items-start gap-2.5">
+                <MapPin className="mt-0.5 size-4 shrink-0 text-brand-400" strokeWidth={2} aria-hidden />
+                {r.address}
               </li>
             </ul>
+
+            <a
+              href={whatsappLink(r)}
+              target="_blank"
+              rel="noopener"
+              className="mt-5 inline-flex h-10 items-center gap-2 rounded-full border border-brand-500/60
+                bg-brand-500/10 px-4 text-[13px] font-semibold text-brand-300 transition-colors
+                hover:bg-brand-500/20"
+            >
+              <MessageCircle className="size-4" strokeWidth={2} aria-hidden />
+              Let&rsquo;s Talk
+            </a>
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-night-line py-6 text-[13px] sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-3 border-t border-deep-line py-6 text-[12.5px] sm:flex-row sm:items-center sm:justify-between">
           <p>
-            &copy; {new Date().getFullYear()} BrandUpMe. All rights reserved.
+            &copy; {new Date().getFullYear()} {r.entity}. All rights reserved.
           </p>
-          {/* Hidden until the client signs off the drafts. See
-              LEGAL_PAGES_PUBLISHED in lib/content.ts */}
           {LEGAL_PAGES_PUBLISHED && (
             <p className="flex gap-5">
-              <Link href="/privacy/" className="hover:text-gold-400">
+              <Link href="/privacy/" className="hover:text-brand-300">
                 Privacy
               </Link>
-              <Link href="/terms/" className="hover:text-gold-400">
+              <Link href="/terms/" className="hover:text-brand-300">
                 Terms
               </Link>
-              <Link href="/refund/" className="hover:text-gold-400">
-                Refund policy
+              <Link href="/refund/" className="hover:text-brand-300">
+                Refund Policy
               </Link>
             </p>
           )}

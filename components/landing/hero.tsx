@@ -2,219 +2,180 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { Sparkles } from "lucide-react";
 import {
-  PhoneCall,
-  MessageCircle,
-  Mail,
-  Users,
-  TrendingUp,
-  Check,
-} from "lucide-react";
-import { HERO, HERO_CARD, CONFIG, MARQUEE } from "@/lib/content";
-import { MorphButton, Button } from "@/components/ui/brand-button";
-import { MASCOT } from "@/lib/mascot";
+  FacebookIcon,
+  InstagramIcon,
+  YouTubeIcon,
+  XIcon,
+} from "@/components/ui/social-icons";
+import type { RegionContent } from "@/lib/content";
+import { Button } from "@/components/ui/brand-button";
+import { Icon } from "@/components/ui/icon";
 import { EASE } from "@/lib/motion";
 
-const CHIPS = [
-  { icon: PhoneCall, label: "Cold calling" },
-  { icon: MessageCircle, label: "WhatsApp" },
-  { icon: Mail, label: "Email outreach" },
-  { icon: Users, label: "Lead generation" },
-  { icon: TrendingUp, label: "More meetings" },
+/** Entrance cadence, staggered top to bottom. */
+const D = { badge: 0.15, head: 0.28, sub: 0.46, cta: 0.6, stats: 0.75, mark: 0.4 };
+
+/**
+ * Orbiting social chips around the brand mark. Lucide dropped brand glyphs in
+ * v1, so Facebook/Instagram/Youtube here are the generic lucide shapes; the X
+ * mark is inlined. Positions are percentages of the mark's square container.
+ */
+const ORBIT = [
+  { Icon: FacebookIcon, cls: "left-[6%] top-[18%]", delay: 0 },
+  { Icon: InstagramIcon, cls: "right-[8%] top-[8%]", delay: 0.6 },
+  { Icon: YouTubeIcon, cls: "left-[-2%] top-[52%]", delay: 1.2 },
 ];
 
-/** Entrance timings, matching the reference cadence. */
-const D = { badge: 0.15, head: 0.3, sub: 0.45, cta: 0.6, card: 0.5, chips: 0.75 };
-
-export function Hero() {
+export function Hero({ r }: { r: RegionContent }) {
   return (
-    <section className="relative overflow-hidden">
-      {/* Ambient warmth. Generated silk-flow art in the brand palette, with
-          CSS halos layered over it so the effect still reads if the image is
-          slow or blocked. Purely decorative, hence aria-hidden. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        {/* On desktop the red corner sits clear of the copy. On mobile the
-            image scales up and that red lands directly under the headline,
-            where the brand-red "remote" becomes unreadable. Mobile therefore
-            anchors to the gold bottom-left instead, and takes an ivory wash
-            on top - readability wins over the art. */}
-        <Image
-          src="/brand/hero-bg.webp"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-bottom opacity-60 sm:object-right-top sm:opacity-90"
-        />
-        <div className="absolute inset-0 bg-canvas/60 sm:hidden" />
-        <div className="absolute -right-32 -top-40 size-[620px] rounded-full bg-gold-300/25 blur-3xl" />
-        <div className="absolute -left-40 top-40 size-[520px] rounded-full bg-brand-200/25 blur-3xl" />
-
-        {/* Emblem behind the hero. Sits under the live-activity card, so it
-            stays readable while the bull is clearly present. */}
-        <Image
-          src={MASCOT.watermark.src}
-          alt=""
-          width={MASCOT.watermark.w}
-          height={MASCOT.watermark.h}
-          aria-hidden
-          className="absolute -right-10 top-4 w-[320px] select-none object-contain opacity-[0.08] sm:opacity-[0.22] lg:w-[520px]"
-        />
-
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-canvas" />
+    <section
+      id="top"
+      className="relative overflow-hidden bg-deep pb-16 pt-[72px] lg:pb-20"
+    >
+      {/* Depth: faint grid, then two soft green blooms. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="deep-grid absolute inset-0 opacity-70" />
+        <div className="absolute -right-40 -top-32 size-[560px] rounded-full bg-brand-600/25 blur-[120px]" />
+        <div className="absolute -bottom-48 -left-32 size-[520px] rounded-full bg-brand-500/12 blur-[120px]" />
       </div>
 
-      <div className="container-page grid gap-12 pb-20 pt-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16 lg:pb-28 lg:pt-16">
+      <div className="container-page relative grid items-center gap-12 pt-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:pt-16">
+        {/* ── Copy ──────────────────────────────────────────────────────── */}
         <div>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
+          <motion.span
+            initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: D.badge, duration: 0.6, ease: EASE }}
-            className="inline-flex items-center gap-2.5 rounded-full border border-line bg-surface/70 px-4 py-2 backdrop-blur-sm"
+            className="inline-flex items-center gap-2 rounded-full border border-brand-500/35 bg-brand-500/10 px-4 py-1.5 text-[12.5px] font-medium text-brand-200 backdrop-blur-sm"
           >
-            <span className="relative flex size-2">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-success opacity-60" />
-              <span className="relative inline-flex size-2 rounded-full bg-success" />
-            </span>
-            <span className="text-[13px] font-medium text-ink-2">
-              {HERO.badge}
-            </span>
-          </motion.div>
+            <Sparkles className="size-3.5 text-brand-400" strokeWidth={2} aria-hidden />
+            {r.hero.badge}
+          </motion.span>
 
           <motion.h1
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: D.head, duration: 0.8, ease: EASE }}
-            className="mt-6 font-display text-[clamp(2.5rem,6.2vw,4.25rem)] font-bold leading-[1.02] tracking-[-0.042em] text-ink"
+            className="mt-5 font-display text-[clamp(2.25rem,5.4vw,3.6rem)] font-extrabold uppercase leading-[1.06] tracking-[-0.03em] text-white"
           >
-            {HERO.headlineBefore}{" "}
-            <span className="font-serif font-normal italic tracking-normal text-brand-600">
-              {HERO.headlineItalic}
-            </span>{" "}
-            {HERO.headlineAfter}
+            {r.hero.line1}
+            <br />
+            {r.hero.line2}{" "}
+            <span className="text-brand-400">{r.hero.accent}</span>
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: D.sub, duration: 0.8, ease: EASE }}
-            className="mt-6 max-w-xl text-[17px] leading-[1.75] text-ink-2 lg:text-lg"
+            className="mt-5 max-w-lg text-[15.5px] leading-[1.75] text-deep-muted"
           >
-            {HERO.sub}
+            {r.hero.sub}
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: D.cta, duration: 0.8, ease: EASE }}
-            className="mt-9 flex flex-col items-start gap-3 sm:flex-row sm:items-center"
+            className="mt-8 flex flex-wrap gap-3"
           >
-            <MorphButton href="#register">{HERO.primaryCta}</MorphButton>
-            <Button href="#how" variant="outline" size="lg">
-              {HERO.secondaryCta}
+            <Button href="#services" variant="primary" size="lg" icon>
+              Our Services
+            </Button>
+            <Button href="#pricing" variant="white" size="lg" icon>
+              View Pricing
             </Button>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: D.cta + 0.15, duration: 0.8 }}
-            className="mt-6 flex items-baseline gap-2 text-[15px]"
-          >
-            <span className="font-display text-2xl font-bold tracking-[-0.03em] text-ink">
-              {CONFIG.currency} {CONFIG.price}
-            </span>
-            <span className="text-muted-foreground">
-              per month + success-based commission
-            </span>
-          </motion.div>
-
-          <motion.ul
-            initial={{ opacity: 0, y: 16 }}
+          {/* ── Stats ───────────────────────────────────────────────────── */}
+          <motion.dl
+            initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: D.chips, duration: 0.8, ease: EASE }}
-            className="mt-10 flex flex-wrap gap-2"
+            transition={{ delay: D.stats, duration: 0.8, ease: EASE }}
+            className="mt-10 grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4"
           >
-            {CHIPS.map(({ icon: I, label }) => (
-              <li
-                key={label}
-                className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/70 px-3.5 py-2 text-[13px] font-medium text-ink-2 backdrop-blur-sm"
-              >
-                <I className="size-3.5 text-brand-600" strokeWidth={1.9} />
-                {label}
-              </li>
+            {r.stats.map((s) => (
+              <div key={s.label} className="flex items-center gap-2.5">
+                <Icon name={s.icon} className="size-[18px] shrink-0 text-brand-400" />
+                <div className="min-w-0">
+                  <dd className="font-display text-[19px] font-extrabold leading-none tracking-[-0.03em] text-white">
+                    {s.value}
+                  </dd>
+                  <dt className="mt-1 truncate text-[11.5px] text-deep-muted">
+                    {s.label}
+                  </dt>
+                </div>
+              </div>
             ))}
-          </motion.ul>
+          </motion.dl>
         </div>
 
-        {/* ── What your representative does, card ───────────────────────── */}
+        {/* ── Brand mark ────────────────────────────────────────────────── */}
         <motion.div
-          initial={{ opacity: 0, y: 30, scale: 0.97 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ delay: D.card, duration: 0.9, ease: EASE }}
-          className="relative"
+          initial={{ opacity: 0, scale: 0.94 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: D.mark, duration: 1, ease: EASE }}
+          className="relative mx-auto aspect-square w-full max-w-[420px]"
         >
-          {/* Same treatment as the services payoff card - gold gradient, gold
-              border, mascot bleeding off the corner. The two strongest cards
-              on the page now rhyme instead of looking unrelated. */}
-          <div className="relative overflow-hidden rounded-2xl border border-gold-300 bg-gradient-to-br from-gold-100/70 via-surface to-surface p-6 shadow-e4">
-            <Image
-              src={MASCOT.headset.src}
-              alt=""
-              width={MASCOT.headset.w}
-              height={MASCOT.headset.h}
-              aria-hidden
-              className="pointer-events-none absolute -bottom-6 -right-8 w-40 select-none object-contain lg:w-48"
+          {/* Concentric rings + podium glow, built in CSS rather than shipped
+              as a render - stays crisp at any size and re-themes with tokens. */}
+          <div aria-hidden className="absolute inset-0">
+            <div className="absolute inset-[8%] rounded-full border border-brand-500/20" />
+            <div className="absolute inset-[20%] rounded-full border border-brand-500/15" />
+            <motion.div
+              className="absolute inset-[14%] rounded-full bg-brand-500/10 blur-2xl"
+              animate={{ scale: [1, 1.08, 1], opacity: [0.5, 0.8, 0.5] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             />
-
-            {/* Same text structure as the services payoff card: bronze
-                eyebrow, display heading, one supporting line with a tick.
-                Text only - the invented daily metrics that used to sit here
-                needed a disclaimer admitting they were illustrative, and that
-                disclaimer undercut the card the moment anyone read it. */}
-            <div className="relative max-w-[70%]">
-              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-bronze">
-                {HERO_CARD.eyebrow}
-              </p>
-
-              <h2 className="mt-3 font-display text-[clamp(1.35rem,2.4vw,1.75rem)] font-bold leading-tight tracking-[-0.03em] text-ink">
-                {HERO_CARD.heading}
-              </h2>
-
-              <p className="mt-3 flex items-start gap-2 text-[14px] text-ink-2">
-                <Check
-                  className="mt-0.5 size-4 shrink-0 text-success-text"
-                  strokeWidth={2.5}
-                  aria-hidden
-                />
-                {HERO_CARD.line}
-              </p>
-            </div>
           </div>
-        </motion.div>
-      </div>
 
-      {/* ── Capability marquee ──────────────────────────────────────────── */}
-      <div className="border-y border-line bg-surface/50 py-5">
-        <div className="mask-edges overflow-hidden">
           <motion.div
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{ duration: 34, ease: "linear", repeat: Infinity }}
-            className="flex w-max items-center gap-12"
+            animate={{ y: [0, -12, 0] }}
+            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute inset-0 flex items-center justify-center"
           >
-            {[0, 1].map((dup) =>
-              MARQUEE.map((m) => (
-                <span
-                  key={`${dup}-${m}`}
-                  className="flex shrink-0 items-center gap-3 whitespace-nowrap font-display text-lg font-semibold tracking-[-0.02em] text-muted-foreground"
-                >
-                  <span className="size-1.5 rounded-full bg-gold-500" />
-                  {m}
-                </span>
-              )),
-            )}
+            <Image
+              src="/brand/logo-mark.png"
+              alt="BrandUpMe"
+              width={224}
+              height={224}
+              priority
+              className="w-[54%] max-w-[230px] object-contain drop-shadow-[0_24px_48px_rgba(0,0,0,0.55)]"
+            />
           </motion.div>
-        </div>
+
+          {/* Podium */}
+          <div aria-hidden className="absolute inset-x-[18%] bottom-[10%]">
+            <div className="h-2.5 rounded-[50%] bg-brand-500/70 blur-[2px]" />
+            <div className="mx-auto -mt-1 h-14 w-[86%] rounded-[50%] bg-brand-500/25 blur-2xl" />
+          </div>
+
+          {/* Orbiting social chips */}
+          {ORBIT.map(({ Icon: I, cls, delay }) => (
+            <motion.span
+              key={cls}
+              animate={{ y: [0, -10, 0] }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay,
+              }}
+              className={`absolute ${cls} flex size-11 items-center justify-center rounded-full border border-brand-500/25 bg-deep-3/90 text-white shadow-e3 backdrop-blur-sm lg:size-12`}
+            >
+              <I className="size-[18px]" />
+            </motion.span>
+          ))}
+          <motion.span
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1.8 }}
+            className="absolute right-[2%] top-[46%] flex size-11 items-center justify-center rounded-full border border-brand-500/25 bg-deep-3/90 text-white shadow-e3 backdrop-blur-sm lg:size-12"
+          >
+            <XIcon className="size-4" />
+          </motion.span>
+        </motion.div>
       </div>
     </section>
   );

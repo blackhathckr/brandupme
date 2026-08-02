@@ -1,117 +1,158 @@
-import { Check } from "lucide-react";
-import { PRICING, CONFIG, INDUSTRIES } from "@/lib/content";
+import { Check, ShieldCheck } from "lucide-react";
+import type { RegionContent } from "@/lib/content";
 import { SectionHead } from "@/components/ui/section-head";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/reveal";
-import { MorphButton } from "@/components/ui/brand-button";
+import { Button } from "@/components/ui/brand-button";
+import { cn } from "@/lib/utils";
 
-export function Industries() {
+/**
+ * Plan cards.
+ *
+ * India has four (one monthly plus three annual payment terms), the UAE has
+ * one (a monthly fee plus success commission). The grid adapts to the count
+ * rather than inventing tiers to fill four columns - a fabricated price is
+ * worse than an asymmetric layout.
+ *
+ * NOT a monthly/yearly toggle for India: three of its four plans are the same
+ * annual plan on different payment terms, so that split would hide the thing
+ * that actually sells - paying upfront is cheaper.
+ */
+export function Pricing({ r }: { r: RegionContent }) {
+  const plans = r.pricing.plans;
+  const single = plans.length === 1;
+
   return (
-    <section className="bg-surface py-14 lg:py-20">
+    <section id="pricing" className="bg-surface-2 py-16 lg:py-24">
       <div className="container-page">
         <SectionHead
-          align="center"
-          eyebrow="Who we work with"
-          before="Built for growing"
-          italic="UAE"
-          after="businesses"
-          sub="If winning customers depends on conversations, the partnership fits."
+          flourish
+          eyebrow={r.pricing.eyebrow}
+          before={r.pricing.headline}
+          accent={r.pricing.accent}
         />
 
-        <RevealGroup className="mt-12 flex flex-wrap justify-center gap-2.5">
-          {INDUSTRIES.map((i) => (
-            <RevealItem key={i}>
-              <span
-                className="inline-flex rounded-full border border-line bg-canvas px-5 py-2.5
-                  text-[14px] font-medium text-ink-2 transition-all duration-[240ms] ease-brand
-                  hover:-translate-y-0.5 hover:border-gold-400 hover:bg-gold-50 hover:text-ink"
+        <RevealGroup
+          className={cn(
+            "mt-12 grid gap-4",
+            single
+              ? "mx-auto max-w-md"
+              : "sm:grid-cols-2 lg:grid-cols-4",
+          )}
+        >
+          {plans.map((p) => (
+            <RevealItem key={p.name}>
+              <article
+                className={cn(
+                  "relative flex h-full flex-col overflow-hidden rounded-2xl border p-6 transition-all duration-[280ms] ease-brand",
+                  p.featured
+                    ? "border-brand-600 bg-deep shadow-e4"
+                    : "border-line bg-white shadow-e1 hover:-translate-y-1 hover:border-brand-300 hover:shadow-e3",
+                  p.featured && !single && "lg:-translate-y-2",
+                )}
               >
-                {i}
-              </span>
-            </RevealItem>
-          ))}
-        </RevealGroup>
-      </div>
-    </section>
-  );
-}
-
-export function Pricing() {
-  return (
-    <section id="pricing" className="py-14 lg:py-20">
-      <div className="container-page">
-        <SectionHead
-          align="center"
-          eyebrow="Partnership programme"
-          before="One fee. One dedicated"
-          italic="representative"
-          sub="No setup fee. No long-term lock-in. No hidden charges."
-        />
-
-        <div className="mt-12 grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
-          <Reveal className="relative overflow-hidden rounded-2xl border border-gold-300 bg-gradient-to-br from-gold-100/70 via-surface to-surface p-8 shadow-e4 lg:p-10">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -right-20 -top-20 size-72 rounded-full bg-gold-300/40 blur-3xl"
-            />
-            <div className="relative">
-              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-bronze">
-                Business Partnership Program
-              </p>
-
-              <p className="mt-5 flex items-baseline gap-2">
-                <span className="font-display text-[1.4rem] font-semibold tracking-[-0.02em] text-ink-2">
-                  {CONFIG.currency}
-                </span>
-                <span className="font-display text-[clamp(3rem,7vw,4.25rem)] font-extrabold leading-none tracking-[-0.05em] text-ink">
-                  {CONFIG.price}
-                </span>
-                <span className="text-[15px] text-muted-foreground">/ month</span>
-              </p>
-              <p className="mt-2 text-[14.5px] text-ink-2">
-                plus success-based commission on completed business, as agreed
-              </p>
-
-              <ul className="mt-8 flex flex-col gap-3.5">
-                {PRICING.includes.map((f) => (
-                  <li
-                    key={f}
-                    className="flex items-start gap-3 text-[15px] text-ink-2"
+                {p.badge && (
+                  <span
+                    className={cn(
+                      "absolute left-1/2 top-0 -translate-x-1/2 whitespace-nowrap rounded-b-lg px-3.5 py-1 text-[10.5px] font-extrabold uppercase tracking-[0.12em]",
+                      p.featured
+                        ? "bg-gold-500 text-deep"
+                        : "bg-brand-100 text-green-text",
+                    )}
                   >
-                    <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-success/12">
+                    {p.badge}
+                  </span>
+                )}
+
+                <div className={cn(p.badge ? "pt-6" : "pt-0")}>
+                  <h3
+                    className={cn(
+                      "font-display text-[16.5px] font-bold leading-snug tracking-[-0.02em]",
+                      p.featured ? "text-white" : "text-ink",
+                    )}
+                  >
+                    {p.name}
+                  </h3>
+                  <p
+                    className={cn(
+                      "mt-1 text-[12.5px]",
+                      p.featured ? "text-deep-muted" : "text-ink-3",
+                    )}
+                  >
+                    {p.note}
+                  </p>
+
+                  <p className="mt-5 flex items-baseline gap-1">
+                    <span
+                      className={cn(
+                        "font-display font-extrabold leading-none tracking-[-0.04em]",
+                        single
+                          ? "text-[clamp(2.25rem,5vw,3rem)]"
+                          : "text-[clamp(1.6rem,2.8vw,2rem)]",
+                        p.featured ? "text-brand-400" : "text-ink",
+                      )}
+                    >
+                      {r.currency}
+                      {p.price}
+                    </span>
+                    <span
+                      className={cn(
+                        "text-[12.5px]",
+                        p.featured ? "text-deep-muted" : "text-ink-3",
+                      )}
+                    >
+                      {p.period}
+                    </span>
+                  </p>
+                </div>
+
+                <ul className="mt-6 flex flex-1 flex-col gap-2.5">
+                  {r.pricing.features.map((f) => (
+                    <li
+                      key={f}
+                      className={cn(
+                        "flex items-start gap-2.5 text-[12.5px] leading-[1.5]",
+                        p.featured ? "text-deep-soft/85" : "text-ink-2",
+                      )}
+                    >
                       <Check
-                        className="size-3 text-success-text"
+                        className={cn(
+                          "mt-0.5 size-3.5 shrink-0",
+                          p.featured ? "text-brand-400" : "text-green-text",
+                        )}
                         strokeWidth={3}
                         aria-hidden
                       />
-                    </span>
-                    {f}
-                  </li>
-                ))}
-              </ul>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
 
-              <div className="mt-9">
-                <MorphButton href="#register" className="w-full justify-between">
-                  Become a business partner
-                </MorphButton>
-              </div>
-            </div>
-          </Reveal>
-
-          <RevealGroup className="grid content-start gap-4">
-            {PRICING.notes.map((n) => (
-              <RevealItem key={n.title}>
-                <div className="rounded-2xl border border-line bg-surface p-6">
-                  <h3 className="font-display text-[16px] font-semibold tracking-[-0.02em] text-brand-600">
-                    {n.title}
-                  </h3>
-                  <p className="mt-2 text-[14px] leading-[1.7] text-ink-2">
-                    {n.body}
-                  </p>
+                <div className="mt-7">
+                  <Button
+                    href="#contact"
+                    variant={p.featured ? "primary" : "outline"}
+                    size="md"
+                    icon
+                    className="w-full"
+                  >
+                    Get Started
+                  </Button>
                 </div>
-              </RevealItem>
-            ))}
-          </RevealGroup>
-        </div>
+              </article>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+
+        <Reveal className="mt-8 flex justify-center">
+          <p className="inline-flex max-w-xl items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-center text-[12.5px] text-ink-3">
+            <ShieldCheck
+              className="size-4 shrink-0 text-green-text"
+              strokeWidth={2}
+              aria-hidden
+            />
+            {r.pricing.note}
+          </p>
+        </Reveal>
       </div>
     </section>
   );
