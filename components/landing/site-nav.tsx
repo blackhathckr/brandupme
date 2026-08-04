@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, MessageCircle } from "lucide-react";
-import { NAV, whatsappLink, type RegionContent, type Region } from "@/lib/content";
+import {
+  NAV_BY_REGION,
+  whatsappLink,
+  type RegionContent,
+  type Region,
+} from "@/lib/content";
 import { RegionToggle } from "./region-toggle";
 import {
   Sheet,
@@ -21,6 +26,7 @@ import { cn } from "@/lib/utils";
  * mobile drawer - focus trap, inert background and focus restore included.
  */
 export function SiteNav({ r, region }: { r: RegionContent; region: Region }) {
+  const nav = NAV_BY_REGION[region];
   const [stuck, setStuck] = useState(false);
   const [active, setActive] = useState("#top");
 
@@ -32,7 +38,10 @@ export function SiteNav({ r, region }: { r: RegionContent; region: Region }) {
   }, []);
 
   useEffect(() => {
-    const els = NAV.map((n) => document.querySelector(n.href)).filter(
+    const els = NAV_BY_REGION[region]
+      .filter((n) => n.href.includes("#"))
+      .map((n) => document.querySelector("#" + n.href.split("#")[1]))
+      .filter(
       Boolean,
     ) as Element[];
     if (!els.length) return;
@@ -45,7 +54,7 @@ export function SiteNav({ r, region }: { r: RegionContent; region: Region }) {
     );
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
-  }, []);
+  }, [region]);
 
   return (
     <header
@@ -81,7 +90,7 @@ export function SiteNav({ r, region }: { r: RegionContent; region: Region }) {
         </Link>
 
         <nav className="ml-auto hidden items-center gap-7 xl:flex">
-          {NAV.map((item) => {
+          {nav.map((item) => {
             const on = active === item.href;
             return (
               <Link
@@ -166,7 +175,7 @@ export function SiteNav({ r, region }: { r: RegionContent; region: Region }) {
               <RegionToggle current={region} onDark className="self-start" />
 
               <nav className="flex flex-col">
-                {NAV.map((item) => (
+                {nav.map((item) => (
                   <SheetClose
                     key={item.href}
                     render={

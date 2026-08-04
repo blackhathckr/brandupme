@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Phone, Mail, MapPin, MessageCircle, Target } from "lucide-react";
 import {
-  NAV,
+  NAV_BY_REGION,
   SOCIAL,
   FOOTER_BLURB,
   whatsappLink,
@@ -118,7 +118,7 @@ export function Footer({ r }: { r: RegionContent }) {
               Quick Links
             </h2>
             <ul className="mt-4 flex flex-col gap-2.5">
-              {NAV.map((l) => (
+              {NAV_BY_REGION[r.key].map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}

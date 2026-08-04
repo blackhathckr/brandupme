@@ -17,13 +17,27 @@ export type Region = "IN" | "AE";
 export const DEFAULT_REGION: Region = "IN";
 
 /* ── Shared across both markets ─────────────────────────────────────────── */
-export const NAV = [
-  { label: "Home", href: "#top" },
-  { label: "About Us", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "Contact Us", href: "#contact" },
-] as const;
+/**
+ * Navigation is per-region. About Us and Why Choose Us are INDIA ONLY - the
+ * client was explicit that those two pages do not apply to Dubai, so the UAE
+ * nav must not link to them.
+ */
+export const NAV_BY_REGION = {
+  IN: [
+    { label: "Home", href: "/" },
+    { label: "About Us", href: "/about/" },
+    { label: "Why Choose Us", href: "/why-choose-us/" },
+    { label: "Services", href: "/#services" },
+    { label: "Pricing", href: "/#pricing" },
+    { label: "Contact Us", href: "/#contact" },
+  ],
+  AE: [
+    { label: "Home", href: "/uae/" },
+    { label: "Services", href: "/uae/#services" },
+    { label: "Pricing", href: "/uae/#pricing" },
+    { label: "Contact Us", href: "/uae/#contact" },
+  ],
+} as const;
 
 export const LEGAL_PAGES_PUBLISHED = false;
 

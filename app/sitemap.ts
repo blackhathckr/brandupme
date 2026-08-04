@@ -12,6 +12,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const pages: MetadataRoute.Sitemap = [
     { url: `${SITE}/`, lastModified, changeFrequency: "weekly", priority: 1 },
     { url: `${SITE}/uae/`, lastModified, changeFrequency: "weekly", priority: 1 },
+    // India-only pages - deliberately absent from any UAE nav
+    { url: `${SITE}/about/`, lastModified, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${SITE}/why-choose-us/`, lastModified, changeFrequency: "monthly", priority: 0.8 },
   ];
 
   if (LEGAL_PAGES_PUBLISHED) {
