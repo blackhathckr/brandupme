@@ -12,6 +12,10 @@ import { ArrowRight } from "lucide-react";
  * and unreachable by keyboard. The panels are cropped above the baked-in
  * buttons and fade out at the cut - see the note in the split script.
  *
+ * The two panels stay side by side at every width, matching the client's
+ * artwork. Cropping them to fit a phone hid the faces and flags, which is the
+ * whole point of the image, so they are never cropped - they scale instead.
+ *
  * Each panel is a single link. The pill inside is styled as a button but is
  * not a button element, because an interactive control nested inside a link
  * is invalid and breaks keyboard navigation.
@@ -47,35 +51,42 @@ export function CountryGateway() {
       {/* Ambient depth, matching the artwork's own glow. */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="deep-grid absolute inset-0 opacity-40" />
-        <div className="absolute left-1/2 top-1/3 size-[720px] -translate-x-1/2 rounded-full bg-brand-600/16 blur-[140px]" />
+        <div className="absolute left-1/2 top-1/3 size-[820px] -translate-x-1/2 rounded-full bg-brand-600/16 blur-[150px]" />
       </div>
 
-      <div className="container-page relative flex min-h-dvh flex-col items-center justify-center py-12 lg:py-16">
+      <div className="container-page relative flex min-h-dvh flex-col items-center justify-center py-7 lg:py-14">
         <header className="text-center">
-          <Image
-            src="/brand/logo-full.png"
-            alt="BrandUpMe"
-            width={200}
-            height={48}
-            priority
-            className="mx-auto h-9 w-auto lg:h-10"
-          />
+          {/* Mark plus wordmark, same construction as the site nav so the two
+              read as one brand. Larger here because this is the front door. */}
+          <div className="flex items-center justify-center gap-3">
+            <Image
+              src="/brand/mark-192.png"
+              alt=""
+              width={192}
+              height={192}
+              priority
+              className="size-11 object-contain lg:size-14"
+            />
+            <span className="font-display text-[30px] font-bold leading-none tracking-[-0.03em] text-white lg:text-[40px]">
+              BrandUpMe
+            </span>
+          </div>
 
-          <h1 className="mt-7 font-display text-[clamp(1.75rem,5vw,3rem)] font-extrabold leading-[1.08] tracking-[-0.035em] text-white">
+          <h1 className="mt-6 font-display text-[clamp(1.6rem,5.4vw,3.6rem)] font-extrabold leading-[1.06] tracking-[-0.035em] text-white lg:mt-10">
             Smart choices.{" "}
             <span className="text-brand-400">Global impact.</span>
           </h1>
-          <p className="mx-auto mt-3.5 max-w-md text-[13px] uppercase tracking-[0.22em] text-deep-muted">
+          <p className="mx-auto mt-4 max-w-lg text-[11px] uppercase tracking-[0.2em] text-deep-muted sm:text-[13px] sm:tracking-[0.24em]">
             AI driven solutions for a connected future
           </p>
 
           <span
             aria-hidden
-            className="mx-auto mt-6 block h-px w-28 bg-gradient-to-r from-transparent via-gold-500/70 to-transparent"
+            className="mx-auto mt-5 block h-px w-32 bg-gradient-to-r from-transparent via-gold-500/70 to-transparent lg:mt-7"
           />
         </header>
 
-        <div className="mt-10 grid w-full max-w-4xl gap-5 sm:grid-cols-2 lg:mt-12 lg:gap-6">
+        <div className="mt-6 grid w-full max-w-[1180px] grid-cols-2 gap-3 sm:gap-5 lg:mt-11 lg:gap-8">
           {COUNTRIES.map((c) => (
             <Link
               key={c.name}
@@ -83,11 +94,11 @@ export function CountryGateway() {
               aria-label={`Continue to BrandUpMe ${c.name}`}
               /* Panel matches the artwork's own background so the fade at the
                  image edge is seamless. */
-              className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/10
+              className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10
                 bg-[#011C03] transition-all duration-[320ms] ease-brand
                 hover:-translate-y-1.5 hover:border-brand-500/45
                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2
-                focus-visible:ring-offset-[#01200A]"
+                focus-visible:ring-offset-[#01200A] sm:rounded-3xl"
             >
               <span
                 aria-hidden
@@ -95,51 +106,45 @@ export function CountryGateway() {
                   blur-3xl opacity-0 transition-opacity duration-[320ms] group-hover:opacity-100 ${c.glow}`}
               />
 
-              {/* Capped on phones so both countries are reachable without a
-                  long scroll; the overlay keeps the crop edge soft wherever it
-                  lands. */}
-              <div className="relative max-h-[38vh] overflow-hidden sm:max-h-none">
-                <Image
-                  src={c.art}
-                  alt={c.alt}
-                  width={627}
-                  height={985}
-                  priority
-                  sizes="(min-width: 640px) 420px, 92vw"
-                  className="w-full object-cover object-top transition-transform duration-[520ms]
-                    ease-brand group-hover:scale-[1.03]"
-                />
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b
-                    from-transparent to-[#011C03]"
-                />
-              </div>
+              <Image
+                src={c.art}
+                alt={c.alt}
+                width={627}
+                height={985}
+                priority
+                sizes="(min-width: 1180px) 560px, 47vw"
+                className="relative w-full transition-transform duration-[520ms] ease-brand group-hover:scale-[1.03]"
+              />
 
               {/* Pulled up over the artwork's faded edge so the two meet. */}
-              <div className="relative -mt-10 px-6 pb-7 text-center sm:-mt-14 lg:px-7">
-                <p className="font-display text-[26px] font-extrabold tracking-[-0.03em] text-white lg:text-[28px]">
-                  <span className="mr-2 align-middle text-[22px]">{c.flag}</span>
+              <div className="relative -mt-8 px-3 pb-5 text-center sm:-mt-14 sm:px-6 sm:pb-7 lg:px-7 lg:pb-8">
+                <p className="font-display text-[19px] font-extrabold tracking-[-0.03em] text-white sm:text-[26px] lg:text-[32px]">
+                  <span className="mr-1.5 align-middle text-[16px] sm:mr-2 sm:text-[22px] lg:text-[27px]">
+                    {c.flag}
+                  </span>
                   {c.name}
                 </p>
-                <p className="mx-auto mt-2 max-w-[15rem] text-[12.5px] leading-[1.6] text-deep-muted">
+                <p className="mx-auto mt-2.5 hidden max-w-[17rem] text-[13px] leading-[1.6] text-deep-muted sm:block">
                   {c.blurb}
                 </p>
 
                 <span
-                  className={`mt-5 inline-flex h-11 items-center gap-2 rounded-full bg-gradient-to-r px-6
-                    text-[13.5px] font-bold text-deep shadow-e2 transition-transform duration-[240ms]
-                    ease-brand group-hover:scale-[1.04] ${c.accent}`}
+                  className={`mt-3.5 inline-flex h-10 items-center gap-1.5 rounded-full bg-gradient-to-r px-4
+                    text-[12.5px] font-bold text-deep shadow-e2 transition-transform duration-[240ms]
+                    ease-brand group-hover:scale-[1.04] sm:mt-5 sm:h-12 sm:gap-2 sm:px-7 sm:text-[14.5px]
+                    ${c.accent}`}
                 >
-                  Continue to {c.name}
+                  {/* Full label needs room the phone layout does not have. */}
+                  <span className="sm:hidden">Continue</span>
+                  <span className="hidden sm:inline">Continue to {c.name}</span>
                   <ArrowRight
-                    className="size-4 transition-transform duration-[240ms] ease-brand group-hover:translate-x-1"
+                    className="size-3.5 transition-transform duration-[240ms] ease-brand group-hover:translate-x-1 sm:size-4"
                     strokeWidth={2.75}
                     aria-hidden
                   />
                 </span>
 
-                <p className="mt-3.5 text-[10.5px] uppercase tracking-[0.2em] text-deep-soft/70">
+                <p className="mt-3.5 hidden text-[10.5px] uppercase tracking-[0.2em] text-deep-soft/70 sm:block">
                   Discover · Connect · Grow
                 </p>
               </div>
@@ -147,11 +152,11 @@ export function CountryGateway() {
           ))}
         </div>
 
-        <footer className="mt-10 text-center lg:mt-12">
-          <p className="text-[12px] uppercase tracking-[0.26em] text-deep-muted">
+        <footer className="mt-6 text-center lg:mt-12">
+          <p className="text-[10.5px] uppercase tracking-[0.24em] text-deep-muted sm:text-[12px] sm:tracking-[0.26em]">
             One vision. Two destinations.
           </p>
-          <p className="mt-1.5 font-serif text-[24px] italic text-brand-400">
+          <p className="mt-1.5 font-serif text-[22px] italic text-brand-400 sm:text-[26px]">
             Limitless possibilities.
           </p>
         </footer>
