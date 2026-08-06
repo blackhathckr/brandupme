@@ -9,12 +9,16 @@
  *   BrandUpMe_About_Us_Profile.pdf
  *   Why_Choose_BrandUpMe_LLP.pdf
  *
- * ⚠ CONFLICT TO RESOLVE WITH THE CLIENT
- * The About PDF states "established in 2015" and "100+ companies", while the
- * homepage stat band says "3+ Years Experience" and "250+ Happy Clients".
- * 2015 to 2026 is eleven years. Both cannot be true. The homepage figures are
- * left as supplied; this page uses the PDF's. Whichever is wrong needs fixing
- * before launch - right now the site contradicts itself.
+ * YEARS - RESOLVED 2026-08-06
+ * The About PDF says "established in 2015" while the homepage stat band said
+ * "3+ Years Experience". The client confirmed ten years for India, so the
+ * homepage now reads "10+ Years Experience", which is consistent with a 2015
+ * founding.
+ *
+ * CLIENT COUNT - RESOLVED 2026-08-06
+ * The client confirmed "since 2015" and "100+ clients" are both correct, and
+ * asked for the homepage's "250+ Happy Clients" to be changed to 100+. Done,
+ * so every page now states the same figures.
  */
 
 export const ABOUT = {

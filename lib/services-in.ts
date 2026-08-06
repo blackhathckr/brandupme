@@ -11,10 +11,10 @@
  * artwork - its written copy arrived truncated mid-sentence, but the
  * infographic contains the full deliverables list and six-step process.
  *
- * MISSING - one of the six homepage services still has no page:
- *   social-media-management  no copy and no artwork received
- * It is omitted from SERVICE_PAGES, so its homepage card stays non-clickable
- * rather than linking to a 404.
+ * PENDING ARTWORK - social-media-management has copy but no circular image
+ * yet. `art` is optional so the page ships now and the image drops in later;
+ * until then both the detail page and the homepage card render an icon in a
+ * circle of the same size, so nothing looks broken or collapses.
  */
 
 export type ServicePage = {
@@ -28,8 +28,10 @@ export type ServicePage = {
   headline: string;
   accent: string;
   sub: string;
-  /** Circular service artwork supplied by the client. */
-  art: string;
+  /** Circular service artwork supplied by the client. Absent until it lands. */
+  art?: string;
+  /** Icon shown in place of the artwork while `art` is missing. */
+  icon: string;
   intro: { heading: string; body: string[] };
   highlights: { icon: string; value: string; label: string }[];
   offer: { heading: string; sub?: string; groups: { title: string; items: string[] }[] };
@@ -59,10 +61,151 @@ const INDUSTRIES_BROAD = [
 ];
 
 export const SERVICE_PAGES: ServicePage[] = [
+  /* ── Social Media Management ──────────────────────────────────────────── */
+  {
+    slug: "social-media-management",
+    // art pending from the client - icon fallback renders until it arrives.
+    icon: "MessageSquare",
+    cardTitle: "Social Media Management",
+    nav: "Social Media Management",
+    metaTitle: "Social Media Management Services",
+    metaDescription:
+      "End-to-end social media management across Facebook, Instagram, X (Twitter) and YouTube. Account setup, creative content, publishing, engagement and monthly performance reporting.",
+    eyebrow: "Social Media Management",
+    headline: "Build a powerful online presence and grow your",
+    accent: "business",
+    sub: "We create, manage, optimise and promote your brand across leading social media platforms to increase visibility, customer engagement and business growth.",
+
+    intro: {
+      heading: "Every platform handled, end to end",
+      body: [
+        "We manage your Facebook Business Page, Instagram Business Profile, X (Twitter) account and YouTube channel - created, branded, optimised and kept active by a dedicated account team.",
+        "Account creation, profile optimisation, creative design, content writing, publishing, audience engagement, organic promotion and monthly performance reporting are all included, so your business stays professional and visible without an in-house social media team.",
+      ],
+    },
+
+    highlights: [
+      { icon: "Smartphone", value: "4", label: "Platforms managed" },
+      { icon: "MessageCircle", value: "Daily", label: "Audience engagement" },
+      { icon: "BarChart3", value: "Monthly", label: "Performance reports" },
+      { icon: "TrendingUp", value: "2015", label: "Managing since" },
+    ],
+
+    offer: {
+      heading: "What your account team delivers",
+      sub: "Facebook Business Page, Instagram Business Profile, X (Twitter) and YouTube Channel.",
+      groups: [
+        {
+          title: "Account Creation & Optimisation",
+          items: [
+            "Professional business accounts on all major platforms",
+            "Business logo and cover banner",
+            "Business description and contact information",
+            "Website and social links",
+            "Call-to-action buttons",
+            "Keywords and SEO optimisation",
+          ],
+        },
+        {
+          title: "Creative Content Design",
+          items: [
+            "Creative poster designs",
+            "Product promotions",
+            "Service promotions",
+            "Festival greetings",
+            "Brand awareness posts",
+            "Informative business posts",
+          ],
+        },
+        {
+          title: "Content Writing & Publishing",
+          items: [
+            "Professional, engaging captions",
+            "Relevant hashtags for reach and engagement",
+            "Consistent post publishing",
+            "Post scheduling",
+            "Regular account management",
+          ],
+        },
+        {
+          title: "Audience Engagement",
+          items: [
+            "Responding to comments",
+            "Managing customer interactions",
+            "Increasing engagement",
+            "Encouraging community participation",
+            "Consistent brand identity across every platform",
+          ],
+        },
+        {
+          title: "Organic Marketing & Leads",
+          items: [
+            "Organic content promotion",
+            "Local community sharing",
+            "Relevant group sharing",
+            "Hashtag strategy",
+            "Audience targeting",
+            "Quality business enquiries through strategic campaigns",
+          ],
+        },
+        {
+          title: "Campaigns & Reporting",
+          items: [
+            "New product launches and business promotions",
+            "Seasonal offers and festival campaigns",
+            "Brand awareness and customer engagement activities",
+            "Audience growth, reach and impressions",
+            "Engagement and post performance analysis",
+            "Content effectiveness reporting",
+          ],
+        },
+      ],
+    },
+
+    // The client supplied deliverables rather than a numbered process. These
+    // steps restate his own list in delivery order - nothing added.
+    process: {
+      heading: "How we manage your social media",
+      steps: [
+        { n: "01", title: "Account Creation", body: "We create professional business accounts across all major platforms with complete branding and business information." },
+        { n: "02", title: "Profile Optimisation", body: "Logo, cover banner, description, contact details, links, call-to-action buttons and keywords." },
+        { n: "03", title: "Content Planning & Design", body: "Monthly creative plan, poster designs, captions and hashtag research." },
+        { n: "04", title: "Publishing & Scheduling", body: "Posts published and scheduled consistently to keep your presence active." },
+        { n: "05", title: "Engagement & Promotion", body: "Comment replies, community and group sharing, hashtag strategy and campaign execution." },
+        { n: "06", title: "Performance Reporting", body: "Regular reports on audience growth, reach, engagement and content effectiveness." },
+      ],
+    },
+
+    why: {
+      heading: "Why choose BrandUpMe",
+      items: [
+        "Professional social media management",
+        "Creative and high-quality content",
+        "Consistent brand identity",
+        "Increased online visibility",
+        "Better customer engagement",
+        "Organic business growth strategies",
+        "Lead generation focused marketing",
+        "Dedicated account management",
+        "Multi-platform social media management",
+        "Affordable monthly partnership plans",
+      ],
+    },
+
+    industries: INDUSTRIES_BROAD,
+
+    closing: {
+      heading: "Our goal for your business",
+      body: "To build a strong digital presence, increase brand awareness, engage the right audience, generate quality business enquiries and help your business achieve sustainable growth through strategic social media management.",
+      tagline: "Building brands. Creating connections. Growing businesses.",
+    },
+  },
+
   /* ── Creative Design & Video Ads ──────────────────────────────────────── */
   {
     slug: "creative-design-video-ads",
     art: "/services/creative-design-video-ads.webp",
+    icon: "Palette",
     cardTitle: "Creative Design & Video Ads",
     nav: "Creative Design & Video Ads",
     metaTitle: "Creative Design & Video Advertisement Services",
@@ -162,6 +305,7 @@ export const SERVICE_PAGES: ServicePage[] = [
   {
     slug: "organic-marketing",
     art: "/services/organic-marketing.webp",
+    icon: "Megaphone",
     cardTitle: "Organic Marketing",
     nav: "Organic Marketing",
     metaTitle: "Organic Marketing Services",
@@ -272,6 +416,7 @@ export const SERVICE_PAGES: ServicePage[] = [
   {
     slug: "lead-generation-business-development",
     art: "/services/lead-generation-business-development.webp",
+    icon: "UserSearch",
     cardTitle: "Lead Generation & Business Development",
     nav: "Lead Generation",
     metaTitle: "Lead Generation & Business Development Services",
@@ -384,6 +529,7 @@ export const SERVICE_PAGES: ServicePage[] = [
   {
     slug: "customer-inquiry-handling",
     art: "/services/customer-inquiry-handling.webp",
+    icon: "MessagesSquare",
     cardTitle: "Customer Inquiry Handling",
     nav: "Customer Inquiry Handling",
     metaTitle: "Customer Inquiry Handling Services",
@@ -494,6 +640,7 @@ export const SERVICE_PAGES: ServicePage[] = [
   {
     slug: "qualified-leads-delivered",
     art: "/services/qualified-leads-delivered.webp",
+    icon: "BadgeCheck",
     cardTitle: "Qualified Leads Delivered",
     nav: "Qualified Leads",
     metaTitle: "Qualified Leads Delivered",
@@ -613,5 +760,5 @@ export const SERVICE_LINKS: Record<string, string> = Object.fromEntries(
  * homepage cards come from lib/content.ts and have no slug.
  */
 export const SERVICE_ART: Record<string, string> = Object.fromEntries(
-  SERVICE_PAGES.map((s) => [s.cardTitle, s.art]),
+  SERVICE_PAGES.flatMap((s) => (s.art ? [[s.cardTitle, s.art] as const] : [])),
 );

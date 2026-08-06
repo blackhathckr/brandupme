@@ -31,7 +31,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: s.metaTitle,
       description: s.metaDescription,
-      images: [{ url: s.art, width: 1000, height: 1000, alt: s.metaTitle }],
+      // Omit rather than point at a missing file - a broken OG image is worse
+      // than none, since the site-wide default is then used instead.
+      ...(s.art && {
+        images: [{ url: s.art, width: 1000, height: 1000, alt: s.metaTitle }],
+      }),
     },
   };
 }
@@ -58,14 +62,22 @@ export default async function Page({ params }: Props) {
               aria-hidden
               className="absolute inset-0 -m-3 rounded-full bg-gradient-to-br from-brand-100 to-surface-2"
             />
-            <Image
-              src={s.art}
-              alt={s.metaTitle}
-              width={1000}
-              height={1000}
-              priority
-              className="relative w-full rounded-full object-cover shadow-e3"
-            />
+            {s.art ? (
+              <Image
+                src={s.art}
+                alt={s.metaTitle}
+                width={1000}
+                height={1000}
+                priority
+                className="relative w-full rounded-full object-cover shadow-e3"
+              />
+            ) : (
+              /* Artwork not supplied yet. A circle of the same size holding the
+                 service icon keeps the layout intact instead of collapsing. */
+              <div className="relative flex aspect-square w-full items-center justify-center rounded-full border border-brand-200 bg-white text-green-text shadow-e2">
+                <Icon name={s.icon} className="size-24" strokeWidth={1.25} />
+              </div>
+            )}
           </Reveal>
 
           <Reveal delay={0.1}>

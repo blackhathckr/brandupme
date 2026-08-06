@@ -41,8 +41,12 @@ export const NAV_BY_REGION = {
 
 export const LEGAL_PAGES_PUBLISHED = false;
 
-/** Where the contact form POSTs. PENDING client decision. */
-export const FORM_ENDPOINT = "";
+/**
+ * No contact form. The client decided enquiries come through the WhatsApp
+ * icon, which redirects to the India number, so there is nothing to POST to.
+ * The Dubai listing pages will need a real enquiry form later - that is a
+ * separate build, since it also has to send the customer a welcome email.
+ */
 
 /* ── India ──────────────────────────────────────────────────────────────── */
 const IN = {
@@ -54,6 +58,12 @@ const IN = {
   entity: "BrandUpMe LLP",
   phone: "+916351717141",
   phoneDisplay: "+91 6351 7171 41",
+  /**
+   * The client specified a separate number for WhatsApp enquiries, different
+   * from the phone number above. Kept as its own field rather than replacing
+   * `phone`, since he only said the WhatsApp icon should redirect here.
+   */
+  whatsapp: "+919104812121",
   email: "hello@brandupme.com",
   address: "Surat, Gujarat, India",
   path: "/",
@@ -68,9 +78,9 @@ const IN = {
 
   /** Client-confirmed as real figures. */
   stats: [
-    { icon: "Users", value: "250+", label: "Happy Clients" },
+    { icon: "Users", value: "100+", label: "Happy Clients" },
     { icon: "Package", value: "500+", label: "Projects Completed" },
-    { icon: "TrendingUp", value: "3+", label: "Years Experience" },
+    { icon: "TrendingUp", value: "10+", label: "Years Experience" },
     { icon: "Target", value: "98%", label: "Client Satisfaction" },
   ],
 
@@ -189,6 +199,8 @@ const AE = {
   // PENDING - UAE contact details still to be confirmed by the client.
   phone: "+971501234567",
   phoneDisplay: "+971 50 123 4567",
+  /** PENDING - no separate UAE WhatsApp number supplied yet. */
+  whatsapp: "+971501234567",
   email: "hello@brandupme.ae",
   address: "Dubai, United Arab Emirates",
   path: "/uae/",
@@ -317,7 +329,7 @@ export function getRegion(region: Region): RegionContent {
 }
 
 export function whatsappLink(r: RegionContent) {
-  return `https://wa.me/${r.phone.replace("+", "")}?text=${encodeURIComponent(r.whatsappText)}`;
+  return `https://wa.me/${r.whatsapp.replace("+", "")}?text=${encodeURIComponent(r.whatsappText)}`;
 }
 
 export const FOOTER_BLURB =
