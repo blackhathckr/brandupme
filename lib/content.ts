@@ -276,33 +276,17 @@ const AE = {
   },
 
   /**
-   * The UAE offer is a SINGLE plan - a monthly fee plus success-based
-   * commission - not a tiered menu. Rather than invent tiers to fill the
-   * four-card layout, this renders one plan card beside the commission
-   * explanation. Inventing prices would be worse than adapting the layout.
+   * SUPERSEDED - the UAE now sells the six tiered plans in lib/plans-ae.ts,
+   * rendered by <PlansAE />. This stub only exists so the region objects keep
+   * the same shape; nothing reads it. Delete once the type union is split.
    */
   pricing: {
-    eyebrow: "Partnership Program",
-    headline: "One Fee. One Dedicated",
-    accent: "Representative",
-    note: "No setup fee. No long-term lock-in. Commission applies only on completed business.",
-    features: [
-      "A dedicated remote sales representative",
-      "Cold calling and business outreach",
-      "WhatsApp and email communication",
-      "Prospect research and lead qualification",
-      "Appointment booking and follow-up",
-    ],
-    plans: [
-      {
-        badge: "Business Partnership",
-        name: "Monthly Partnership",
-        note: "Plus success-based commission, as agreed",
-        price: "500",
-        period: "/ Month",
-        featured: true,
-      },
-    ],
+    eyebrow: "Partnership Plans",
+    headline: "See",
+    accent: "plans",
+    note: "",
+    features: [],
+    plans: [],
   },
 
   cta: {

@@ -1,4 +1,5 @@
 import { getRegion, type Region } from "@/lib/content";
+import { AE_PLANS } from "@/lib/plans-ae";
 import { SiteNav } from "./site-nav";
 import { Hero } from "./hero";
 import { Trust } from "./trust";
@@ -38,7 +39,9 @@ export function Landing({ region }: { region: Region }) {
         name: r.services.headline,
         serviceType: r.services.items.map((s) => s.title),
         provider: { "@id": "#org" },
-        offers: r.pricing.plans.map((p) => ({
+        // AE sells the six tiered plans; the region object still carries the
+        // superseded single-fee entry, so schema must not read from it.
+        offers: (region === "AE" ? AE_PLANS : r.pricing.plans).map((p) => ({
           "@type": "Offer",
           name: p.name,
           price: p.price.replace(/,/g, ""),
