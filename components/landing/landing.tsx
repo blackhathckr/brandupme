@@ -5,6 +5,7 @@ import { Trust } from "./trust";
 import { Services } from "./services";
 import { Process } from "./process";
 import { Pricing } from "./pricing";
+import { PlansAE } from "./plans-ae";
 import { CtaBand, Footer } from "./footer";
 
 /**
@@ -59,7 +60,9 @@ export function Landing({ region }: { region: Region }) {
         <Trust r={r} />
         <Services r={r} />
         <Process r={r} />
-        <Pricing r={r} />
+        {/* UAE now sells six tiered partnership plans, not a single fee.
+            India keeps the four-plan retainer layout. */}
+        {region === "AE" ? <PlansAE /> : <Pricing r={r} />}
         <CtaBand r={r} />
       </main>
       <Footer r={r} />
