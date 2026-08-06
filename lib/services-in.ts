@@ -606,3 +606,12 @@ export function getServicePage(slug: string) {
 export const SERVICE_LINKS: Record<string, string> = Object.fromEntries(
   SERVICE_PAGES.map((s) => [s.cardTitle, `/services/${s.slug}/`]),
 );
+
+/**
+ * Card title -> circular artwork, so the homepage grid can show the same
+ * images the detail pages do. Keyed by title rather than slug because the
+ * homepage cards come from lib/content.ts and have no slug.
+ */
+export const SERVICE_ART: Record<string, string> = Object.fromEntries(
+  SERVICE_PAGES.map((s) => [s.cardTitle, s.art]),
+);

@@ -153,8 +153,7 @@ export const AE_PLANS: Plan[] = [
     price: "500",
     purpose: "Get business opportunities",
     inherits: "Verified Brand Partner",
-    featured: true,
-    badge: "Most Popular",
+    badge: null,
     adds: [
       {
         label: "Lead Generation System",
@@ -174,7 +173,9 @@ export const AE_PLANS: Plan[] = [
     price: "1000",
     purpose: "Outsourced marketing and sales support",
     inherits: "Growth Partner",
-    badge: "Full Service",
+    // Client asked for the 1000 tier to carry the highlight, not the 500.
+    featured: true,
+    badge: "Most Popular",
     adds: [
       {
         label: "Content Marketing",
