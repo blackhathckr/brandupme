@@ -11,6 +11,8 @@ import {
   type Region,
 } from "@/lib/content";
 import { RegionToggle } from "./region-toggle";
+import { ServicesMenu } from "./services-menu";
+import { SERVICE_PAGES } from "@/lib/services-in";
 import {
   Sheet,
   SheetContent,
@@ -92,6 +94,15 @@ export function SiteNav({ r, region }: { r: RegionContent; region: Region }) {
         <nav className="ml-auto hidden items-center gap-7 xl:flex">
           {nav.map((item) => {
             const on = active === item.href;
+
+            // India has service detail pages, so Services becomes a dropdown.
+            // The UAE has none, so it stays a plain jump link.
+            if (item.label === "Services" && region === "IN") {
+              return (
+                <ServicesMenu key={item.href} stuck={stuck} active={on} />
+              );
+            }
+
             return (
               <Link
                 key={item.href}
@@ -176,17 +187,39 @@ export function SiteNav({ r, region }: { r: RegionContent; region: Region }) {
 
               <nav className="flex flex-col">
                 {nav.map((item) => (
-                  <SheetClose
-                    key={item.href}
-                    render={
-                      <Link
-                        href={item.href}
-                        className="block border-b border-deep-line py-3.5 font-display text-lg font-semibold tracking-[-0.02em] text-white"
-                      >
-                        {item.label}
-                      </Link>
-                    }
-                  />
+                  <div key={item.href}>
+                    <SheetClose
+                      render={
+                        <Link
+                          href={item.href}
+                          className="block border-b border-deep-line py-3.5 font-display text-lg font-semibold tracking-[-0.02em] text-white"
+                        >
+                          {item.label}
+                        </Link>
+                      }
+                    />
+
+                    {/* Service pages nested under Services, so the drawer is
+                        not a dead end on the one section that has children. */}
+                    {item.label === "Services" && region === "IN" && (
+                      <ul className="border-b border-deep-line py-1">
+                        {SERVICE_PAGES.map((sp) => (
+                          <li key={sp.slug}>
+                            <SheetClose
+                              render={
+                                <Link
+                                  href={`/services/${sp.slug}/`}
+                                  className="block py-2 pl-4 text-[14px] text-deep-muted"
+                                >
+                                  {sp.nav}
+                                </Link>
+                              }
+                            />
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
                 ))}
               </nav>
 

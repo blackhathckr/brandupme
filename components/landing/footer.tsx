@@ -9,6 +9,7 @@ import {
   LEGAL_PAGES_PUBLISHED,
   type RegionContent,
 } from "@/lib/content";
+import { SERVICE_LINKS } from "@/lib/services-in";
 import { Button } from "@/components/ui/brand-button";
 import { Reveal } from "@/components/ui/reveal";
 import {
@@ -136,10 +137,15 @@ export function Footer({ r }: { r: RegionContent }) {
               Our Services
             </h2>
             <ul className="mt-4 flex flex-col gap-2.5">
+              {/* Link to the detail page where one exists, otherwise fall
+                  back to the homepage section rather than a dead link. */}
               {r.footerServices.map((l) => (
                 <li key={l}>
                   <Link
-                    href="#services"
+                    href={
+                      (r.key === "IN" && SERVICE_LINKS[l]) ||
+                      `${r.path}#services`
+                    }
                     className="text-[13.5px] transition-colors hover:text-brand-300"
                   >
                     {l}

@@ -165,13 +165,14 @@ const IN = {
     button: "Get Started Today",
   },
 
+  /** Labels must match SERVICE_PAGES cardTitle so footer links resolve. */
   footerServices: [
     "Social Media Management",
     "Creative Design & Video Ads",
     "Organic Marketing",
-    "Lead Generation",
-    "Business Development",
-    "Website Designing",
+    "Lead Generation & Business Development",
+    "Customer Inquiry Handling",
+    "Qualified Leads Delivered",
   ],
 
   whatsappText: "Hi BrandUpMe, I'd like to know more about your digital marketing services.",
