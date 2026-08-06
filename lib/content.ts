@@ -24,12 +24,12 @@ export const DEFAULT_REGION: Region = "IN";
  */
 export const NAV_BY_REGION = {
   IN: [
-    { label: "Home", href: "/" },
+    { label: "Home", href: "/india/" },
     { label: "About Us", href: "/about/" },
     { label: "Why Choose Us", href: "/why-choose-us/" },
-    { label: "Services", href: "/#services" },
-    { label: "Pricing", href: "/#pricing" },
-    { label: "Contact Us", href: "/#contact" },
+    { label: "Services", href: "/india/#services" },
+    { label: "Pricing", href: "/india/#pricing" },
+    { label: "Contact Us", href: "/india/#contact" },
   ],
   AE: [
     { label: "Home", href: "/uae/" },
@@ -56,17 +56,17 @@ const IN = {
   flag: "🇮🇳",
   currency: "₹",
   entity: "BrandUpMe LLP",
-  phone: "+916351717141",
-  phoneDisplay: "+91 6351 7171 41",
-  /**
-   * The client specified a separate number for WhatsApp enquiries, different
-   * from the phone number above. Kept as its own field rather than replacing
-   * `phone`, since he only said the WhatsApp icon should redirect here.
-   */
-  whatsapp: "+919104812121",
+  phone: "+919104812121",
+  phoneDisplay: "+91 91048 12121",
   email: "hello@brandupme.com",
-  address: "Surat, Gujarat, India",
-  path: "/",
+  address: "J 402, Shalin Heights 3, Opp Ayogen Nagar, Lalgebi Circle, Ahmedabad, Gujarat",
+  postal: {
+    street: "J 402, Shalin Heights 3, Opp Ayogen Nagar, Lalgebi Circle",
+    locality: "Ahmedabad",
+    region: "Gujarat",
+    country: "IN",
+  },
+  path: "/india/",
 
   hero: {
     badge: "Your Growth, Our Mission",
@@ -199,10 +199,10 @@ const AE = {
   // PENDING - UAE contact details still to be confirmed by the client.
   phone: "+971501234567",
   phoneDisplay: "+971 50 123 4567",
-  /** PENDING - no separate UAE WhatsApp number supplied yet. */
-  whatsapp: "+971501234567",
   email: "hello@brandupme.ae",
   address: "Dubai, United Arab Emirates",
+  /** PENDING - no UAE street address supplied yet. */
+  postal: { street: "", locality: "Dubai", region: "", country: "AE" },
   path: "/uae/",
 
   hero: {
@@ -329,7 +329,7 @@ export function getRegion(region: Region): RegionContent {
 }
 
 export function whatsappLink(r: RegionContent) {
-  return `https://wa.me/${r.whatsapp.replace("+", "")}?text=${encodeURIComponent(r.whatsappText)}`;
+  return `https://wa.me/${r.phone.replace("+", "")}?text=${encodeURIComponent(r.whatsappText)}`;
 }
 
 export const FOOTER_BLURB =

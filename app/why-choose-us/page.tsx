@@ -110,7 +110,7 @@ export default function Page() {
               {WHY_CHOOSE.commitment.body}
             </p>
             <div className="mt-8">
-              <Button href="/#pricing" variant="primary" size="lg" icon>
+              <Button href="/india/#pricing" variant="primary" size="lg" icon>
                 See our plans
               </Button>
             </div>

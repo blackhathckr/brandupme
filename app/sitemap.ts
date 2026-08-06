@@ -11,7 +11,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date("2026-08-02");
 
   const pages: MetadataRoute.Sitemap = [
-    { url: `${SITE}/`, lastModified, changeFrequency: "weekly", priority: 1 },
+    // The root is the country gateway; each market's homepage is its own URL.
+    { url: `${SITE}/`, lastModified, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${SITE}/india/`, lastModified, changeFrequency: "weekly", priority: 1 },
     { url: `${SITE}/uae/`, lastModified, changeFrequency: "weekly", priority: 1 },
     // India-only pages - deliberately absent from any UAE nav
     { url: `${SITE}/about/`, lastModified, changeFrequency: "monthly", priority: 0.8 },

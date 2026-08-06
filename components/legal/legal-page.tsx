@@ -30,7 +30,7 @@ export function LegalPage({
     <div className="min-h-screen bg-canvas">
       <header className="border-b border-line bg-surface">
         <div className="container-page flex h-20 items-center justify-between gap-4">
-          <Link href="/" className="flex items-center gap-2.5">
+          <Link href="/india/" className="flex items-center gap-2.5">
             <Image
               src="/brand/mark-192.png"
               alt=""
@@ -43,7 +43,7 @@ export function LegalPage({
             </span>
           </Link>
           <Link
-            href="/"
+            href="/india/"
             className="inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-[13.5px] font-semibold text-ink-2 transition-colors hover:bg-surface-2"
           >
             <ArrowLeft className="size-4" aria-hidden />

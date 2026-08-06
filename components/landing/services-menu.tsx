@@ -111,7 +111,7 @@ export function ServicesMenu({
             ))}
 
             <Link
-              href="/#services"
+              href="/india/#services"
               role="menuitem"
               onClick={() => setOpen(false)}
               className="mt-1 block rounded-xl border-t border-line px-3 pb-1 pt-3 text-[12.5px]

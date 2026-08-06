@@ -32,7 +32,15 @@ export function Landing({ region }: { region: Region }) {
         logo: "/brand/mark-512.png",
         email: r.email,
         telephone: r.phone,
-        address: { "@type": "PostalAddress", addressLocality: r.address },
+        address: {
+          "@type": "PostalAddress",
+          // Empty parts are dropped rather than emitted blank - the UAE street
+          // address has not been supplied yet.
+          ...(r.postal.street && { streetAddress: r.postal.street }),
+          addressLocality: r.postal.locality,
+          ...(r.postal.region && { addressRegion: r.postal.region }),
+          addressCountry: r.postal.country,
+        },
       },
       {
         "@type": "Service",

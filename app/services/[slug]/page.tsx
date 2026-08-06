@@ -222,7 +222,7 @@ export default async function Page({ params }: Props) {
             {s.closing.tagline}
           </p>
           <div className="mt-8 flex justify-center">
-            <Button href="/#pricing" variant="primary" size="lg" icon>
+            <Button href="/india/#pricing" variant="primary" size="lg" icon>
               See our plans
             </Button>
           </div>

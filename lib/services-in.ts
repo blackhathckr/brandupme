@@ -11,10 +11,10 @@
  * artwork - its written copy arrived truncated mid-sentence, but the
  * infographic contains the full deliverables list and six-step process.
  *
- * PENDING ARTWORK - social-media-management has copy but no circular image
- * yet. `art` is optional so the page ships now and the image drops in later;
- * until then both the detail page and the homepage card render an icon in a
- * circle of the same size, so nothing looks broken or collapses.
+ * `art` stays optional. Every service has its circular image today, but a new
+ * service can ship its copy first - the detail page and homepage card then
+ * render the service icon in a circle of the same size rather than collapsing
+ * to a different height.
  */
 
 export type ServicePage = {
@@ -64,7 +64,7 @@ export const SERVICE_PAGES: ServicePage[] = [
   /* ── Social Media Management ──────────────────────────────────────────── */
   {
     slug: "social-media-management",
-    // art pending from the client - icon fallback renders until it arrives.
+    art: "/services/social-media-management.webp",
     icon: "MessageSquare",
     cardTitle: "Social Media Management",
     nav: "Social Media Management",
