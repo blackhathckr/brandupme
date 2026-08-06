@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { LEGAL_PAGES_PUBLISHED } from "@/lib/content";
+import { SERVICE_PAGES } from "@/lib/services-in";
 
 /** Required with `output: "export"` - see the note in robots.ts. */
 export const dynamic = "force-static";
@@ -15,6 +16,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // India-only pages - deliberately absent from any UAE nav
     { url: `${SITE}/about/`, lastModified, changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE}/why-choose-us/`, lastModified, changeFrequency: "monthly", priority: 0.8 },
+    ...SERVICE_PAGES.map((s) => ({
+      url: `${SITE}/services/${s.slug}/`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.9,
+    })),
   ];
 
   if (LEGAL_PAGES_PUBLISHED) {

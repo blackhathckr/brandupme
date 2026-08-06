@@ -1,4 +1,7 @@
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import type { RegionContent } from "@/lib/content";
+import { SERVICE_LINKS } from "@/lib/services-in";
 import { SectionHead } from "@/components/ui/section-head";
 import { RevealGroup, RevealItem } from "@/components/ui/reveal";
 import { Icon } from "@/components/ui/icon";
@@ -6,9 +9,12 @@ import { Icon } from "@/components/ui/icon";
 /**
  * Six dark-green cards on a white section, per the mockup.
  *
- * The cards carry the dark surface here rather than the section doing it,
- * which is what gives this band its contrast against the white ground - and
- * lets the green accents inside each card stay legible.
+ * Cards link to their detail page where one exists. Services without a page
+ * yet render as a plain card rather than a link - a card that looks clickable
+ * and 404s is worse than one that clearly is not. Currently that affects
+ * Social Media Management only, whose copy has not been supplied.
+ *
+ * India only: SERVICE_LINKS is empty for the UAE, so those cards stay static.
  */
 export function Services({ r }: { r: RegionContent }) {
   return (
@@ -23,13 +29,14 @@ export function Services({ r }: { r: RegionContent }) {
         />
 
         <RevealGroup className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {r.services.items.map((s) => (
-            <RevealItem key={s.title}>
+          {r.services.items.map((s) => {
+            const href = r.key === "IN" ? SERVICE_LINKS[s.title] : undefined;
+
+            const card = (
               <article
-                className="group relative h-full overflow-hidden rounded-2xl bg-deep p-6 lg:p-7
+                className="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-deep p-6 lg:p-7
                   transition-all duration-[280ms] ease-brand hover:-translate-y-1.5 hover:shadow-e4"
               >
-                {/* Green wash that lifts on hover */}
                 <span
                   aria-hidden
                   className="pointer-events-none absolute -right-16 -top-16 size-40 rounded-full
@@ -54,7 +61,7 @@ export function Services({ r }: { r: RegionContent }) {
                 <h3 className="relative font-display text-[17px] font-bold leading-snug tracking-[-0.02em] text-white">
                   {s.title}
                 </h3>
-                <p className="relative mt-2.5 text-[13.5px] leading-[1.65] text-deep-muted">
+                <p className="relative mt-2.5 flex-1 text-[13.5px] leading-[1.65] text-deep-muted">
                   {s.body}
                 </p>
 
@@ -69,9 +76,36 @@ export function Services({ r }: { r: RegionContent }) {
                     </li>
                   ))}
                 </ul>
+
+                {href && (
+                  <span className="relative mt-5 inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand-400">
+                    Learn more
+                    <ArrowRight
+                      className="size-3.5 transition-transform duration-[240ms] ease-brand group-hover:translate-x-1"
+                      strokeWidth={2.5}
+                      aria-hidden
+                    />
+                  </span>
+                )}
               </article>
-            </RevealItem>
-          ))}
+            );
+
+            return (
+              <RevealItem key={s.title}>
+                {href ? (
+                  <Link
+                    href={href}
+                    className="block h-full"
+                    aria-label={`${s.title} - learn more`}
+                  >
+                    {card}
+                  </Link>
+                ) : (
+                  card
+                )}
+              </RevealItem>
+            );
+          })}
         </RevealGroup>
       </div>
     </section>
