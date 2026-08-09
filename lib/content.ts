@@ -31,11 +31,14 @@ export const NAV_BY_REGION = {
     { label: "Pricing", href: "/india/#pricing" },
     { label: "Contact Us", href: "/india/#contact" },
   ],
+  // /uae/ is now the business directory. The original UAE offering lives
+  // under the Business Partner Programme, per the client.
   AE: [
-    { label: "Home", href: "/uae/" },
-    { label: "Services", href: "/uae/#services" },
-    { label: "Pricing", href: "/uae/#pricing" },
-    { label: "Contact Us", href: "/uae/#contact" },
+    { label: "Directory", href: "/uae/" },
+    { label: "Home", href: "/uae/partner-programme/" },
+    { label: "Services", href: "/uae/partner-programme/#services" },
+    { label: "Pricing", href: "/uae/partner-programme/#pricing" },
+    { label: "Contact Us", href: "/uae/partner-programme/#contact" },
   ],
 } as const;
 
@@ -203,7 +206,7 @@ const AE = {
   address: "Dubai, United Arab Emirates",
   /** PENDING - no UAE street address supplied yet. */
   postal: { street: "", locality: "Dubai", region: "", country: "AE" },
-  path: "/uae/",
+  path: "/uae/partner-programme/",
 
   hero: {
     badge: "Business Partnership Program",

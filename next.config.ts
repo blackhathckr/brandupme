@@ -2,41 +2,31 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /**
-   * Static export.
+   * NO static export on this branch.
    *
-   * `next build` emits plain HTML/CSS/JS into `out/`, which means the site can
-   * be dropped straight into cPanel `public_html` with no Node runtime, while
-   * still deploying to Vercel unchanged. It also lets the registration form
-   * POST to a PHP endpoint sitting alongside it on the same host.
+   * The marketing site was `output: "export"` - plain HTML, no server, which
+   * suited a brochure and deployed anywhere. The UAE business portal cannot be
+   * built that way: plan-based field masking has to happen on the server, so
+   * that a locked phone number is never in the payload at all. Static export
+   * forbids exactly the things the portal needs - server rendering, route
+   * handlers that read the request, and per-request auth.
    *
-   * Trade-off accepted: no SSR, no Route Handlers that read the request, no
-   * middleware, no next/image optimisation - none of which a marketing landing
-   * page needs. Ref: node_modules/next/dist/docs/01-app/02-guides/static-exports.md
+   * Target is now Cloudflare Workers through @opennextjs/cloudflare, which
+   * gives SSR, ISR and Server Actions alongside the D1 and R2 bindings.
+   * Build:  pnpm build && pnpm opennext:build
+   * Deploy: pnpm deploy
+   *
+   * The marketing pages are unaffected in behaviour - they simply prerender
+   * instead of exporting.
    */
-  /**
-   * DEPLOYMENT NOTE - why vercel.json sets `"framework": null`
-   *
-   * Static export emits plain HTML into out/. There is no server, no
-   * routes-manifest.json and no functions, so Vercel's Next.js builder cannot
-   * deploy it. Pointing that builder at out/ fails the build outright, and
-   * letting Vercel auto-detect Next deploys but then serves 404 at the root.
-   * `framework: null` makes Vercel treat this as a plain static site.
-   *
-   * Do not "fix" vercel.json back to "framework": "nextjs".
-   * (The note lives here because vercel.json rejects unknown keys, including
-   * comment keys - its schema is strict.)
-   */
-  output: "export",
 
-  /**
-   * Emits `/privacy/index.html` rather than `/privacy.html`, which Apache and
-   * every shared host serve correctly without rewrite rules.
-   */
+  /** Kept from the static build so existing URLs do not move. */
   trailingSlash: true,
 
   /**
-   * Required with `output: "export"` - the default loader needs a server.
-   * Images are sized and compressed at build time instead.
+   * Cloudflare serves images through its own pipeline rather than the Next
+   * optimiser. Left unoptimised so the two do not fight; R2-hosted uploads are
+   * resized on write instead.
    */
   images: { unoptimized: true },
 
