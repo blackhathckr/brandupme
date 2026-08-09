@@ -272,7 +272,14 @@ function hashPassword(plain: string): string {
 }
 
 const adminEmail = process.env.SEED_ADMIN_EMAIL ?? "admin@brandupme.ae";
-const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? Buffer.from(randomBytes(9)).toString("base64url");
+
+/**
+ * Generated unless supplied. The resulting seed.sql carries this account's
+ * password hash, which is why that file is gitignored - the repository is
+ * public. Set SEED_ADMIN_PASSWORD to choose your own before running.
+ */
+const adminPassword =
+  process.env.SEED_ADMIN_PASSWORD ?? Buffer.from(randomBytes(9)).toString("base64url");
 
 out.push("-- First admin account");
 out.push(
