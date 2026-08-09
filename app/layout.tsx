@@ -97,7 +97,6 @@ export default function RootLayout({
     <html
       lang="en"
       dir="ltr"
-      suppressHydrationWarning
       className={cn(
         "antialiased font-sans",
         onest.variable,
@@ -105,25 +104,6 @@ export default function RootLayout({
         instrument.variable,
       )}
     >
-      <head>
-        {/*
-          Applies the visitor's saved language before first paint.
-
-          Done inline rather than by reading the cookie in this layout, because
-          reading cookies here would make every page in the app dynamic -
-          including the marketing pages, which should stay prerendered. This
-          runs synchronously ahead of React, so there is no flash of the wrong
-          direction, and it only touches attributes on <html>.
-        */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "(function(){try{var m=document.cookie.match(/(?:^|; )bum_locale=([^;]*)/);" +
-              "var l=m&&decodeURIComponent(m[1]);if(l==='ar'){document.documentElement.lang='ar';" +
-              "document.documentElement.dir='rtl';}}catch(e){}})();",
-          }}
-        />
-      </head>
       <body>{children}</body>
     </html>
   );
