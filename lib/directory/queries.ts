@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, inArray, isNull, like, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, inArray, isNull, like, or, sql } from "drizzle-orm";
 import { getDb, type Db } from "@/lib/db";
 import {
   businessCategories,
@@ -186,6 +186,8 @@ export type ListingQuery = {
   locationId?: number;
   childLocationIds?: number[];
   search?: string;
+  /** Whole stars, 1-5. Compared against the tenths stored on the row. */
+  minRating?: number;
   sort?: "featured" | "rating" | "newest" | "name";
   page?: number;
   perPage?: number;
@@ -224,6 +226,10 @@ export async function listBusinesses(q: ListingQuery): Promise<{
         like(sql`lower(${businesses.tagline})`, term),
       )!,
     );
+  }
+
+  if (q.minRating && q.minRating > 0) {
+    where.push(gte(businesses.ratingAvg, Math.round(q.minRating * 10)));
   }
 
   const locationIds = q.locationId

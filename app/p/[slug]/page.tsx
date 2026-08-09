@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { getProfileByPassport } from "@/lib/directory/profile";
 import { EnquiryForm } from "@/components/portal/enquiry-form";
+import { ReviewForm } from "@/components/portal/review-form";
 import { PortalNav } from "@/components/portal/portal-nav";
 import type { Masked } from "@/lib/permissions/visibility";
 
@@ -232,6 +233,10 @@ export default async function Page({ params }: Props) {
                     an enquiry below and the business will get back to you.
                   </p>
                 )}
+              </Card>
+
+              <Card title="Write a review">
+                <ReviewForm passportSlug={p.passportSlug} />
               </Card>
 
               <Card title="Request a free consultation">

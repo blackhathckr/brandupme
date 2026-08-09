@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
-import { BadgeCheck, ChevronRight, Lock, MapPin, Phone, Star } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { PortalNav } from "@/components/portal/portal-nav";
 import {
   getCategoryBySlug,
@@ -11,8 +10,10 @@ import {
   getLocationBySlug,
   getRelatedCategories,
   listBusinesses,
-  type ListingCard,
 } from "@/lib/directory/queries";
+import { BusinessCard } from "@/components/portal/business-card";
+import { AdSlot } from "@/components/portal/ad-slot";
+import { ListingFilters } from "@/components/portal/listing-filters";
 
 /**
  * Category listing for one emirate - the SEO pages the client is counting on.
@@ -28,7 +29,7 @@ import {
 
 type Props = {
   params: Promise<{ emirate: string; category: string }>;
-  searchParams: Promise<{ page?: string; sort?: string }>;
+  searchParams: Promise<{ page?: string; sort?: string; minRating?: string }>;
 };
 
 /**
@@ -59,7 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params, searchParams }: Props) {
   const { emirate, category } = await params;
-  const { page: pageParam, sort } = await searchParams;
+  const { page: pageParam, sort, minRating } = await searchParams;
 
   const country = await getCountry("ae");
   if (!country) notFound();
@@ -79,6 +80,7 @@ export default async function Page({ params, searchParams }: Props) {
     locationId: loc.id,
     childLocationIds: children.map((c) => c.id),
     sort: (sort as "featured" | "rating" | "newest" | "name") ?? "featured",
+    minRating: minRating ? Number.parseInt(minRating, 10) : undefined,
     page: Number.parseInt(pageParam ?? "1", 10) || 1,
   });
 
@@ -121,13 +123,22 @@ export default async function Page({ params, searchParams }: Props) {
         <section className="bg-surface-2 py-10 lg:py-14">
           <div className="container-page grid gap-8 lg:grid-cols-[1fr_300px]">
             <div>
+              <ListingFilters
+                basePath={`/uae/${loc.slug}/${cat.slug}/`}
+                current={{ sort, minRating }}
+                areas={children}
+                hasRatings={items.some((b) => b.ratingCount > 0)}
+              />
+
+              <div className="mt-5" />
+
               {items.length === 0 ? (
                 <EmptyState categoryName={cat.name} locationName={loc.name} />
               ) : (
                 <ul className="flex flex-col gap-3.5">
                   {items.map((b) => (
                     <li key={b.id}>
-                      <BusinessRow business={b} />
+                      <BusinessCard business={b} />
                     </li>
                   ))}
                 </ul>
@@ -160,6 +171,15 @@ export default async function Page({ params, searchParams }: Props) {
 
             {/* ── Related categories, the client's cross-sell ──────────── */}
             <aside className="lg:sticky lg:top-24 lg:self-start">
+              <AdSlot
+                countryId={country.id}
+                placement="sidebar"
+                categoryId={cat.id}
+                locationId={loc.id}
+                seed={`${loc.slug}/${cat.slug}`}
+                className="mb-4"
+              />
+
               {related.length > 0 && (
                 <div className="rounded-2xl border border-line bg-white p-5 shadow-e1">
                   <h2 className="font-display text-[15px] font-bold tracking-[-0.02em] text-ink">
@@ -211,85 +231,6 @@ export default async function Page({ params, searchParams }: Props) {
 }
 
 /* ── Pieces ─────────────────────────────────────────────────────────────── */
-
-function BusinessRow({ business: b }: { business: ListingCard }) {
-  const href = b.passportSlug ? `/p/${b.passportSlug}` : "#";
-
-  return (
-    <article className="group rounded-2xl border border-line bg-white p-4 shadow-e1 transition-all duration-[240ms] ease-brand hover:border-brand-300 hover:shadow-e2 sm:p-5">
-      <div className="flex gap-4">
-        <div className="flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-line bg-surface-2 sm:size-20">
-          {b.logo ? (
-            <Image src={b.logo} alt="" width={80} height={80} className="size-full object-contain p-1.5" />
-          ) : (
-            <span className="font-display text-[20px] font-extrabold text-ink-3">
-              {b.name.slice(0, 1)}
-            </span>
-          )}
-        </div>
-
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-            <h3 className="font-display text-[15.5px] font-bold tracking-[-0.02em] text-ink">
-              <Link href={href} className="hover:text-green-text">{b.name}</Link>
-            </h3>
-            {b.verified && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-brand-50 px-2 py-0.5 text-[10.5px] font-semibold text-green-text">
-                <BadgeCheck className="size-3" strokeWidth={2.5} aria-hidden />
-                Verified
-              </span>
-            )}
-          </div>
-
-          {b.ratingCount > 0 && (
-            <p className="mt-1 flex items-center gap-1 text-[12.5px] text-ink-2">
-              <Star className="size-3.5 fill-gold-500 text-gold-500" aria-hidden />
-              <strong className="font-semibold text-ink">{(b.ratingAvg / 10).toFixed(1)}</strong>
-              <span className="text-ink-3">({b.ratingCount})</span>
-            </p>
-          )}
-
-          {b.areaLabel && (
-            <p className="mt-1 flex items-center gap-1.5 text-[12.5px] text-ink-3">
-              <MapPin className="size-3.5" strokeWidth={2} aria-hidden />
-              {b.areaLabel}
-            </p>
-          )}
-
-          {b.tagline && (
-            <p className="mt-2 line-clamp-2 text-[13px] leading-[1.6] text-ink-2">{b.tagline}</p>
-          )}
-
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            {/* The masked value is generated server-side from the real number's
-                shape. The digits are not in this payload at all. */}
-            {b.contact.phone.visible ? (
-              <a
-                href={`tel:${b.contact.phone.value}`}
-                className="inline-flex h-9 items-center gap-1.5 rounded-full bg-brand-50 px-3.5 text-[12.5px] font-semibold text-green-text hover:bg-brand-100"
-              >
-                <Phone className="size-3.5" strokeWidth={2.5} aria-hidden />
-                {b.contact.phone.value}
-              </a>
-            ) : b.contact.phone.masked ? (
-              <span className="inline-flex h-9 items-center gap-1.5 rounded-full border border-line bg-surface-2 px-3.5 text-[12.5px] font-medium text-ink-3">
-                <Lock className="size-3.5" strokeWidth={2.5} aria-hidden />
-                {b.contact.phone.masked}
-              </span>
-            ) : null}
-
-            <Link
-              href={href}
-              className="inline-flex h-9 items-center rounded-full border border-line px-3.5 text-[12.5px] font-semibold text-ink-2 transition-colors hover:border-brand-300 hover:text-green-text"
-            >
-              View profile
-            </Link>
-          </div>
-        </div>
-      </div>
-    </article>
-  );
-}
 
 function EmptyState({
   categoryName,

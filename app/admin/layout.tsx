@@ -1,5 +1,13 @@
 import Link from "next/link";
-import { Building2, LayoutGrid, LogOut, Users } from "lucide-react";
+import {
+  Building2,
+  LayoutGrid,
+  LogOut,
+  Megaphone,
+  Tags,
+  Users,
+  Wallet,
+} from "lucide-react";
 import { requireStaff } from "@/lib/auth/guard";
 import { logout } from "@/lib/auth/actions";
 
@@ -18,6 +26,9 @@ const NAV = [
   { href: "/admin/", label: "Overview", icon: LayoutGrid, permission: null },
   { href: "/admin/businesses/", label: "Businesses", icon: Building2, permission: "business.view" },
   { href: "/admin/leads/", label: "Leads", icon: Users, permission: "lead.view" },
+  { href: "/admin/categories/", label: "Categories", icon: Tags, permission: "category.manage" },
+  { href: "/admin/plans/", label: "Plans", icon: Wallet, permission: "plan.manage" },
+  { href: "/admin/ads/", label: "Ads", icon: Megaphone, permission: "ad.manage" },
 ];
 
 export default async function AdminLayout({
@@ -32,7 +43,10 @@ export default async function AdminLayout({
     <div className="min-h-dvh bg-surface-2">
       <header className="border-b border-line bg-deep">
         <div className="container-page flex h-16 items-center gap-4">
-          <Link href="/admin/" className="font-display text-[16px] font-bold tracking-[-0.03em] text-white">
+          <Link
+            href="/admin/"
+            className="shrink-0 font-display text-[16px] font-bold tracking-[-0.03em] text-white"
+          >
             BrandUpMe
             <span className="ml-2 rounded-full bg-brand-500/20 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-brand-300">
               Admin
@@ -53,7 +67,7 @@ export default async function AdminLayout({
             ))}
           </nav>
 
-          <div className="ml-auto flex items-center gap-3">
+          <div className="ml-auto flex shrink-0 items-center gap-3">
             <span className="hidden text-[12.5px] text-deep-muted sm:inline">{user.name}</span>
             <form action={logout}>
               <button
