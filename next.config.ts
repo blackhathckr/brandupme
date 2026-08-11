@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
 const nextConfig: NextConfig = {
   /**
@@ -42,3 +43,19 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+/**
+ * Makes D1 and R2 available to `next dev`.
+ *
+ * Without this the dev server has no Cloudflare bindings, so every page that
+ * touches the database throws - which looks like a broken app rather than a
+ * missing binding. The deployed Worker gets its bindings from wrangler.jsonc
+ * instead, so this is a development-only concern.
+ *
+ * Not awaited: Next loads this config through require() in some code paths,
+ * and a top-level await makes that fail outright.
+ */
+if (process.env.NODE_ENV === "development") {
+  void initOpenNextCloudflareForDev();
+}
+

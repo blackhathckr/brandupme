@@ -12,7 +12,7 @@ import type { ListingCard } from "@/lib/directory/queries";
  * pull out of the page source.
  */
 export function BusinessCard({ business: b }: { business: ListingCard }) {
-  const href = b.passportSlug ? `/p/${b.passportSlug}` : `/uae/`;
+  const href = b.passportSlug ? `/p/${b.passportSlug}/` : `/uae/`;
 
   return (
     <article

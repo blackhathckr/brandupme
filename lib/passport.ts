@@ -17,8 +17,15 @@ export function passportNumber(countryCode: string, businessId: number): string 
   return `BUM-${countryCode.toUpperCase()}-${String(businessId).padStart(6, "0")}`;
 }
 
+/**
+ * Canonical share URL.
+ *
+ * Trailing slash matters: the site sets `trailingSlash: true`, so /p/<slug>
+ * permanently redirects to /p/<slug>/. A QR code printed on a brochure should
+ * resolve in one hop, not two.
+ */
 export function passportUrl(slug: string): string {
-  return `${SITE}/p/${slug}`;
+  return `${SITE}/p/${slug}/`;
 }
 
 /**

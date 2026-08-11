@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       p.tagline ??
       p.description?.slice(0, 155) ??
       `${p.name} on the BrandUpMe UAE business directory.`,
-    alternates: { canonical: `/p/${p.passportSlug}` },
+    alternates: { canonical: `/p/${p.passportSlug}/` },
     openGraph: {
       title: p.name,
       description: p.tagline ?? undefined,

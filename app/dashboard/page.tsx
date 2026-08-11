@@ -85,7 +85,7 @@ export default async function Page() {
   ]);
 
   const status = STATUS_COPY[business.status] ?? STATUS_COPY.draft;
-  const cardUrl = passport[0] ? `/p/${passport[0].slug}` : null;
+  const cardUrl = passport[0] ? `/p/${passport[0].slug}/` : null;
   const showAnalytics = can(ent.features, FEATURE.ANALYTICS);
 
   return (

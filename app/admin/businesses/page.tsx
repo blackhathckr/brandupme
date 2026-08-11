@@ -154,7 +154,7 @@ export default async function Page() {
 
                   {b.passportSlug && (
                     <Link
-                      href={`/p/${b.passportSlug}`}
+                      href={`/p/${b.passportSlug}/`}
                       className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full border border-line px-3.5 text-[12.5px] font-semibold text-ink-2 hover:border-brand-300 hover:text-green-text"
                     >
                       Preview

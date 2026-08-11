@@ -80,7 +80,7 @@ export function ProfileEditor({
         {passport && (
           <div className="flex flex-wrap items-center gap-2">
             <Link
-              href={`/p/${passport.slug}`}
+              href={`/p/${passport.slug}/`}
               className="inline-flex h-9 items-center rounded-full border border-line bg-white px-3.5 text-[12.5px] font-semibold text-ink-2 hover:border-brand-300 hover:text-green-text"
             >
               View card

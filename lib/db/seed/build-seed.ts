@@ -5,7 +5,11 @@ import { AE_CATEGORY_GROUPS, AE_CATEGORY_RELATIONSHIPS } from "./categories-ae";
 import { AE_EMIRATES, AE_PLAN_SEED } from "./locations-ae";
 
 /**
- * Generates drizzle/seed.sql - reference data the portal cannot run without.
+ * Generates db/seed.sql - reference data the portal cannot run without.
+ *
+ * Deliberately NOT inside drizzle/: wrangler treats every .sql file in the
+ * migrations directory as a migration, so a regenerated seed would change the
+ * checksum of something already applied.
  *
  * Written as SQL rather than executed directly because D1 has no TCP endpoint:
  * wrangler ships a file. It also means the same seed applies identically to
@@ -293,13 +297,13 @@ out.push(
 );
 out.push("");
 
-mkdirSync("drizzle", { recursive: true });
-writeFileSync("drizzle/seed.sql", out.join("\n"), "utf-8");
+mkdirSync("db", { recursive: true });
+writeFileSync("db/seed.sql", out.join("\n"), "utf-8");
 
 const subCount = AE_CATEGORY_GROUPS.reduce((n, g) => n + g.children.length, 0);
 const cityCount = AE_EMIRATES.reduce((n, e) => n + e.cities.length, 0);
 
-console.log("drizzle/seed.sql written");
+console.log("db/seed.sql written");
 console.log(`  countries      2`);
 console.log(`  emirates       ${AE_EMIRATES.length}`);
 console.log(`  cities         ${cityCount}`);

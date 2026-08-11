@@ -17,8 +17,7 @@
     {
       "binding": "DB",
       "database_name": "brandupme",
-      // Replace with the id printed by `wrangler d1 create brandupme`.
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "database_id": "da60337d-24c5-4861-8d51-edbc3bdaef63",
       "migrations_dir": "drizzle"
     }
   ],
