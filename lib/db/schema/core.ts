@@ -1,12 +1,15 @@
-import { sql } from "drizzle-orm";
 import {
+  boolean,
   index,
   integer,
+  jsonb,
+  pgTable,
   primaryKey,
-  sqliteTable,
+  serial,
   text,
+  timestamp,
   uniqueIndex,
-} from "drizzle-orm/sqlite-core";
+} from "drizzle-orm/pg-core";
 
 /**
  * Countries, locations and categories.
@@ -26,25 +29,25 @@ import {
  */
 
 const timestamps = {
-  createdAt: integer("created_at", { mode: "timestamp" })
+  createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
-    .default(sql`(unixepoch())`),
-  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
     .notNull()
-    .default(sql`(unixepoch())`),
+    .defaultNow(),
 };
 
 /* ── Countries ──────────────────────────────────────────────────────────── */
 
-export const countries = sqliteTable("countries", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const countries = pgTable("countries", {
+  id: serial("id").primaryKey(),
   /** ISO 3166-1 alpha-2, lowercased: "ae", "in". Used in URLs. */
   code: text("code").notNull().unique(),
   name: text("name").notNull(),
   currency: text("currency").notNull(),
   dialCode: text("dial_code").notNull(),
   /** Locales this country's portal is published in, JSON array of tags. */
-  locales: text("locales", { mode: "json" }).$type<string[]>().notNull(),
+  locales: jsonb("locales").$type<string[]>().notNull(),
   defaultLocale: text("default_locale").notNull().default("en"),
   status: text("status", { enum: ["active", "hidden"] })
     .notNull()
@@ -54,10 +57,10 @@ export const countries = sqliteTable("countries", {
 
 /* ── Locations ──────────────────────────────────────────────────────────── */
 
-export const locations = sqliteTable(
+export const locations = pgTable(
   "locations",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     countryId: integer("country_id")
       .notNull()
       .references(() => countries.id, { onDelete: "cascade" }),
@@ -82,7 +85,7 @@ export const locations = sqliteTable(
   ],
 );
 
-export const locationTranslations = sqliteTable(
+export const locationTranslations = pgTable(
   "location_translations",
   {
     locationId: integer("location_id")
@@ -96,10 +99,10 @@ export const locationTranslations = sqliteTable(
 
 /* ── Categories ─────────────────────────────────────────────────────────── */
 
-export const categories = sqliteTable(
+export const categories = pgTable(
   "categories",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     countryId: integer("country_id")
       .notNull()
       .references(() => countries.id, { onDelete: "cascade" }),
@@ -127,7 +130,7 @@ export const categories = sqliteTable(
   ],
 );
 
-export const categoryTranslations = sqliteTable(
+export const categoryTranslations = pgTable(
   "category_translations",
   {
     categoryId: integer("category_id")
@@ -147,7 +150,7 @@ export const categoryTranslations = sqliteTable(
  * cleaning is weak. Strength drives ordering and lets weak links be dropped
  * from the UI without deleting the row. Client maintains these in admin.
  */
-export const categoryRelationships = sqliteTable(
+export const categoryRelationships = pgTable(
   "category_relationships",
   {
     categoryId: integer("category_id")
@@ -173,10 +176,10 @@ export const categoryRelationships = sqliteTable(
  * from the admin panel without a code change or a migration. The PDF is
  * explicit about this and it is the right call.
  */
-export const plans = sqliteTable(
+export const plans = pgTable(
   "plans",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     countryId: integer("country_id")
       .notNull()
       .references(() => countries.id, { onDelete: "cascade" }),
@@ -189,7 +192,7 @@ export const plans = sqliteTable(
     billingCycle: text("billing_cycle").notNull().default("monthly"),
     purpose: text("purpose"),
     badge: text("badge"),
-    featured: integer("featured", { mode: "boolean" }).notNull().default(false),
+    featured: boolean("featured").notNull().default(false),
     sortOrder: integer("sort_order").notNull().default(0),
     status: text("status", { enum: ["active", "hidden"] })
       .notNull()
@@ -199,7 +202,7 @@ export const plans = sqliteTable(
   (t) => [uniqueIndex("plans_country_slug_idx").on(t.countryId, t.slug)],
 );
 
-export const planFeatures = sqliteTable(
+export const planFeatures = pgTable(
   "plan_features",
   {
     planId: integer("plan_id")
@@ -220,10 +223,10 @@ export const planFeatures = sqliteTable(
  * Sold and scheduled by BrandUpMe staff, per the client. Targeting is optional
  * on both axes: null category or null location means "all".
  */
-export const ads = sqliteTable(
+export const ads = pgTable(
   "ads",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     countryId: integer("country_id")
       .notNull()
       .references(() => countries.id, { onDelete: "cascade" }),
@@ -240,8 +243,8 @@ export const ads = sqliteTable(
     locationId: integer("location_id").references(() => locations.id, {
       onDelete: "set null",
     }),
-    startsAt: integer("starts_at", { mode: "timestamp" }),
-    endsAt: integer("ends_at", { mode: "timestamp" }),
+    startsAt: timestamp("starts_at", { withTimezone: true }),
+    endsAt: timestamp("ends_at", { withTimezone: true }),
     weight: integer("weight").notNull().default(1),
     impressions: integer("impressions").notNull().default(0),
     clicks: integer("clicks").notNull().default(0),

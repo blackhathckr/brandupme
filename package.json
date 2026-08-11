@@ -4,22 +4,19 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build --webpack",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "wrangler d1 migrations apply brandupme --local",
-    "db:migrate:remote": "wrangler d1 migrations apply brandupme --remote",
-    "db:seed": "wrangler d1 execute brandupme --local --file=./db/seed.sql",
-    "db:seed:remote": "wrangler d1 execute brandupme --remote --file=./db/seed.sql",
+    "db:migrate": "drizzle-kit migrate",
+    "db:seed": "tsx scripts/run-sql.ts db/seed.sql",
     "seed:build": "tsx lib/db/seed/build-seed.ts",
-    "opennext:build": "next build --webpack && node scripts/normalise-next-paths.mjs && opennextjs-cloudflare build --skipNextBuild",
-    "preview": "pnpm opennext:build && wrangler dev",
-    "deploy": "pnpm opennext:build && wrangler deploy",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+    "db:fixtures": "tsx scripts/run-sql.ts db/fixtures.sql"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
+    "@neondatabase/serverless": "^1.1.0",
+    "@vercel/blob": "^2.8.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.45.2",
@@ -35,8 +32,6 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^5.20260809.1",
-    "@opennextjs/cloudflare": "^1.20.2",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/qrcode": "^1.5.6",

@@ -1,46 +1,27 @@
 import type { NextConfig } from "next";
-import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
 const nextConfig: NextConfig = {
   /**
-   * NO static export on this branch.
+   * No static export.
    *
    * The marketing site was `output: "export"` - plain HTML, no server, which
-   * suited a brochure and deployed anywhere. The UAE business portal cannot be
-   * built that way: plan-based field masking has to happen on the server, so
-   * that a locked phone number is never in the payload at all. Static export
-   * forbids exactly the things the portal needs - server rendering, route
-   * handlers that read the request, and per-request auth.
+   * suited a brochure. The UAE business portal cannot be built that way:
+   * plan-based field masking has to happen on the server, so that a locked
+   * phone number is never in the payload at all. Static export forbids exactly
+   * what the portal needs - server rendering, route handlers that read the
+   * request, and per-request auth.
    *
-   * Target is now Cloudflare Workers through @opennextjs/cloudflare, which
-   * gives SSR, ISR and Server Actions alongside the D1 and R2 bindings.
-   * Build:  pnpm build && pnpm opennext:build
-   * Deploy: pnpm deploy
-   *
-   * The marketing pages are unaffected in behaviour - they simply prerender
-   * instead of exporting.
+   * Deploys to Vercel, which runs Next natively. The marketing pages are
+   * unaffected in behaviour - they simply prerender instead of exporting.
    */
-
-  /**
-   * Required by the Cloudflare adapter, which bundles from .next/standalone.
-   *
-   * Set here rather than left to the adapter because the build is run
-   * separately - `next build --webpack` then `opennextjs-cloudflare build
-   * --skipNextBuild`. That split exists because the adapter's own invocation
-   * would use Turbopack, which does not emit the middleware manifest the
-   * runtime needs. See AGENTS.md.
-   */
-  output: "standalone",
 
   /** Kept from the static build so existing URLs do not move. */
   trailingSlash: true,
 
-  /**
-   * Cloudflare serves images through its own pipeline rather than the Next
-   * optimiser. Left unoptimised so the two do not fight; R2-hosted uploads are
-   * resized on write instead.
-   */
-  images: { unoptimized: true },
+  /** Uploaded images live on Vercel Blob, which serves them over its own CDN. */
+  images: {
+    remotePatterns: [{ protocol: "https", hostname: "*.public.blob.vercel-storage.com" }],
+  },
 
   /**
    * Fail the build on type errors rather than shipping them. Next already
@@ -55,18 +36,4 @@ const nextConfig: NextConfig = {
 
 export default nextConfig;
 
-/**
- * Makes D1 and R2 available to `next dev`.
- *
- * Without this the dev server has no Cloudflare bindings, so every page that
- * touches the database throws - which looks like a broken app rather than a
- * missing binding. The deployed Worker gets its bindings from wrangler.jsonc
- * instead, so this is a development-only concern.
- *
- * Not awaited: Next loads this config through require() in some code paths,
- * and a top-level await makes that fail outright.
- */
-if (process.env.NODE_ENV === "development") {
-  void initOpenNextCloudflareForDev();
-}
 

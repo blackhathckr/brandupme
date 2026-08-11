@@ -1,11 +1,15 @@
 import {
+  boolean,
   index,
   integer,
+  jsonb,
+  pgTable,
   primaryKey,
-  sqliteTable,
+  serial,
   text,
+  timestamp,
   uniqueIndex,
-} from "drizzle-orm/sqlite-core";
+} from "drizzle-orm/pg-core";
 import { categories, countries, locations, plans, timestamps } from "./core";
 import { users } from "./auth";
 
@@ -27,10 +31,10 @@ import { users } from "./auth";
  * business can appear in several of each.
  */
 
-export const businesses = sqliteTable(
+export const businesses = pgTable(
   "businesses",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     countryId: integer("country_id")
       .notNull()
       .references(() => countries.id, { onDelete: "cascade" }),
@@ -47,7 +51,7 @@ export const businesses = sqliteTable(
     coverImage: text("cover_image"),
     establishedYear: integer("established_year"),
     teamSize: text("team_size"),
-    languages: text("languages", { mode: "json" }).$type<string[]>(),
+    languages: jsonb("languages").$type<string[]>(),
     workingHours: text("working_hours"),
     businessType: text("business_type"),
     licenseNo: text("license_no"),
@@ -63,20 +67,20 @@ export const businesses = sqliteTable(
       .default("draft"),
     /** Manual, by an admin. Drives the Verified badge, which is also gated on
         the plan - both must pass. */
-    verified: integer("verified", { mode: "boolean" }).notNull().default(false),
-    verifiedAt: integer("verified_at", { mode: "timestamp" }),
+    verified: boolean("verified").notNull().default(false),
+    verifiedAt: timestamp("verified_at", { withTimezone: true }),
     verifiedBy: integer("verified_by").references(() => users.id, {
       onDelete: "set null",
     }),
     /** Claim flow for admin-uploaded listings. */
     claimToken: text("claim_token"),
-    claimedAt: integer("claimed_at", { mode: "timestamp" }),
+    claimedAt: timestamp("claimed_at", { withTimezone: true }),
 
     /** Denormalised review aggregates so listing pages need no join. */
     ratingAvg: integer("rating_avg").notNull().default(0),
     ratingCount: integer("rating_count").notNull().default(0),
     /** Editorial pin, independent of any paid placement. */
-    featured: integer("featured", { mode: "boolean" }).notNull().default(false),
+    featured: boolean("featured").notNull().default(false),
     ...timestamps,
   },
   (t) => [
@@ -93,7 +97,7 @@ export const businesses = sqliteTable(
  * lib/permissions/visibility.ts, which returns only the fields the viewer's
  * plan permits. The PDF calls this out twice and it is the whole product.
  */
-export const businessContacts = sqliteTable("business_contacts", {
+export const businessContacts = pgTable("business_contacts", {
   businessId: integer("business_id")
     .primaryKey()
     .references(() => businesses.id, { onDelete: "cascade" }),
@@ -114,7 +118,7 @@ export const businessContacts = sqliteTable("business_contacts", {
   ...timestamps,
 });
 
-export const businessCategories = sqliteTable(
+export const businessCategories = pgTable(
   "business_categories",
   {
     businessId: integer("business_id")
@@ -124,7 +128,7 @@ export const businessCategories = sqliteTable(
       .notNull()
       .references(() => categories.id, { onDelete: "cascade" }),
     /** Exactly one primary per business; drives breadcrumbs and canonical URL. */
-    isPrimary: integer("is_primary", { mode: "boolean" })
+    isPrimary: boolean("is_primary")
       .notNull()
       .default(false),
   },
@@ -134,7 +138,7 @@ export const businessCategories = sqliteTable(
   ],
 );
 
-export const businessLocations = sqliteTable(
+export const businessLocations = pgTable(
   "business_locations",
   {
     businessId: integer("business_id")
@@ -143,7 +147,7 @@ export const businessLocations = sqliteTable(
     locationId: integer("location_id")
       .notNull()
       .references(() => locations.id, { onDelete: "cascade" }),
-    isPrimary: integer("is_primary", { mode: "boolean" })
+    isPrimary: boolean("is_primary")
       .notNull()
       .default(false),
   },
@@ -157,7 +161,7 @@ export const businessLocations = sqliteTable(
  * Permanent public identity. Issued once, never reissued, never renumbered.
  * The share URL and QR code both resolve here.
  */
-export const businessPassports = sqliteTable(
+export const businessPassports = pgTable(
   "business_passports",
   {
     businessId: integer("business_id")
@@ -168,7 +172,7 @@ export const businessPassports = sqliteTable(
     /** The /p/<slug> segment. Independent of the business slug so renaming a
         business never breaks a printed QR code. */
     slug: text("slug").notNull().unique(),
-    issuedAt: integer("issued_at", { mode: "timestamp" }).notNull(),
+    issuedAt: timestamp("issued_at", { withTimezone: true }).notNull(),
     status: text("status", { enum: ["active", "revoked"] })
       .notNull()
       .default("active"),
@@ -177,10 +181,10 @@ export const businessPassports = sqliteTable(
   (t) => [index("passports_slug_idx").on(t.slug)],
 );
 
-export const businessImages = sqliteTable(
+export const businessImages = pgTable(
   "business_images",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     businessId: integer("business_id")
       .notNull()
       .references(() => businesses.id, { onDelete: "cascade" }),
@@ -194,10 +198,10 @@ export const businessImages = sqliteTable(
   (t) => [index("business_images_business_idx").on(t.businessId, t.sortOrder)],
 );
 
-export const businessServices = sqliteTable(
+export const businessServices = pgTable(
   "business_services",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     businessId: integer("business_id")
       .notNull()
       .references(() => businesses.id, { onDelete: "cascade" }),
@@ -215,10 +219,10 @@ export const businessServices = sqliteTable(
   (t) => [index("business_services_business_idx").on(t.businessId)],
 );
 
-export const businessHighlights = sqliteTable(
+export const businessHighlights = pgTable(
   "business_highlights",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     businessId: integer("business_id")
       .notNull()
       .references(() => businesses.id, { onDelete: "cascade" }),
@@ -231,10 +235,10 @@ export const businessHighlights = sqliteTable(
   (t) => [index("business_highlights_business_idx").on(t.businessId)],
 );
 
-export const businessOffers = sqliteTable(
+export const businessOffers = pgTable(
   "business_offers",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     businessId: integer("business_id")
       .notNull()
       .references(() => businesses.id, { onDelete: "cascade" }),
@@ -242,8 +246,8 @@ export const businessOffers = sqliteTable(
     description: text("description"),
     discount: text("discount"),
     image: text("image"),
-    startsAt: integer("starts_at", { mode: "timestamp" }),
-    endsAt: integer("ends_at", { mode: "timestamp" }),
+    startsAt: timestamp("starts_at", { withTimezone: true }),
+    endsAt: timestamp("ends_at", { withTimezone: true }),
     status: text("status", { enum: ["active", "expired", "hidden"] })
       .notNull()
       .default("active"),
@@ -252,34 +256,34 @@ export const businessOffers = sqliteTable(
   (t) => [index("business_offers_business_idx").on(t.businessId)],
 );
 
-export const businessAchievements = sqliteTable(
+export const businessAchievements = pgTable(
   "business_achievements",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     businessId: integer("business_id")
       .notNull()
       .references(() => businesses.id, { onDelete: "cascade" }),
     title: text("title").notNull(),
     description: text("description"),
     image: text("image"),
-    achievedOn: integer("achieved_on", { mode: "timestamp" }),
+    achievedOn: timestamp("achieved_on", { withTimezone: true }),
     sortOrder: integer("sort_order").notNull().default(0),
     ...timestamps,
   },
   (t) => [index("business_achievements_business_idx").on(t.businessId)],
 );
 
-export const businessTimeline = sqliteTable(
+export const businessTimeline = pgTable(
   "business_timeline",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     businessId: integer("business_id")
       .notNull()
       .references(() => businesses.id, { onDelete: "cascade" }),
     title: text("title").notNull(),
     description: text("description"),
     image: text("image"),
-    eventOn: integer("event_on", { mode: "timestamp" }),
+    eventOn: timestamp("event_on", { withTimezone: true }),
     sortOrder: integer("sort_order").notNull().default(0),
     ...timestamps,
   },
@@ -293,25 +297,25 @@ export const businessTimeline = sqliteTable(
  * whichever is status=active and not past its expiry. Keeping the history is
  * what lets a previously locked lead unlock on upgrade without copying data.
  */
-export const businessSubscriptions = sqliteTable(
+export const businessSubscriptions = pgTable(
   "business_subscriptions",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     businessId: integer("business_id")
       .notNull()
       .references(() => businesses.id, { onDelete: "cascade" }),
     planId: integer("plan_id")
       .notNull()
       .references(() => plans.id, { onDelete: "restrict" }),
-    startsAt: integer("starts_at", { mode: "timestamp" }).notNull(),
+    startsAt: timestamp("starts_at", { withTimezone: true }).notNull(),
     /** Null means open-ended, used by the free tier. */
-    expiresAt: integer("expires_at", { mode: "timestamp" }),
+    expiresAt: timestamp("expires_at", { withTimezone: true }),
     status: text("status", {
       enum: ["active", "expired", "cancelled", "pending_payment"],
     })
       .notNull()
       .default("pending_payment"),
-    autoRenew: integer("auto_renew", { mode: "boolean" })
+    autoRenew: boolean("auto_renew")
       .notNull()
       .default(false),
     /** Free text until a real processor is connected. */

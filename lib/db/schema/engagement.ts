@@ -1,9 +1,12 @@
 import {
   index,
   integer,
-  sqliteTable,
+  jsonb,
+  pgTable,
+  serial,
   text,
-} from "drizzle-orm/sqlite-core";
+  timestamp,
+} from "drizzle-orm/pg-core";
 import { categories, locations, timestamps } from "./core";
 import { businesses, businessServices } from "./business";
 import { users } from "./auth";
@@ -27,10 +30,10 @@ import { users } from "./auth";
  * routing lives in its own table rather than a column on the lead.
  */
 
-export const leads = sqliteTable(
+export const leads = pgTable(
   "leads",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     /** Reference shown to the customer, e.g. LEAD-AE-0001A2. */
     reference: text("reference").notNull().unique(),
     /** The business the enquiry was submitted against. Null for enquiries
@@ -84,10 +87,10 @@ export const leads = sqliteTable(
  * granted so a later downgrade does not silently revoke something the business
  * has already paid to see.
  */
-export const leadRecipients = sqliteTable(
+export const leadRecipients = pgTable(
   "lead_recipients",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     leadId: integer("lead_id")
       .notNull()
       .references(() => leads.id, { onDelete: "cascade" }),
@@ -99,8 +102,8 @@ export const leadRecipients = sqliteTable(
     routing: text("routing", { enum: ["primary", "matched"] })
       .notNull()
       .default("primary"),
-    viewedAt: integer("viewed_at", { mode: "timestamp" }),
-    unlockedAt: integer("unlocked_at", { mode: "timestamp" }),
+    viewedAt: timestamp("viewed_at", { withTimezone: true }),
+    unlockedAt: timestamp("unlocked_at", { withTimezone: true }),
     /** Counts against a plan's monthly unlock allowance. */
     unlockSource: text("unlock_source", {
       enum: ["plan_allowance", "plan_unlimited", "admin_grant"],
@@ -120,10 +123,10 @@ export const leadRecipients = sqliteTable(
  * the IP and passes through a status field - the moderation queue exists even
  * though nothing is auto-rejected yet.
  */
-export const reviews = sqliteTable(
+export const reviews = pgTable(
   "reviews",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     businessId: integer("business_id")
       .notNull()
       .references(() => businesses.id, { onDelete: "cascade" }),
@@ -141,7 +144,7 @@ export const reviews = sqliteTable(
       .default("published"),
     /** The business owner's public response. */
     reply: text("reply"),
-    repliedAt: integer("replied_at", { mode: "timestamp" }),
+    repliedAt: timestamp("replied_at", { withTimezone: true }),
     ip: text("ip"),
     ...timestamps,
   },
@@ -155,10 +158,10 @@ export const reviews = sqliteTable(
  * asked for. Writing them to a table rather than sending directly means adding
  * email is one background reader, not a rewrite of every call site.
  */
-export const notifications = sqliteTable(
+export const notifications = pgTable(
   "notifications",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     userId: integer("user_id").references(() => users.id, {
       onDelete: "cascade",
     }),
@@ -169,10 +172,10 @@ export const notifications = sqliteTable(
     title: text("title").notNull(),
     body: text("body"),
     href: text("href"),
-    readAt: integer("read_at", { mode: "timestamp" }),
+    readAt: timestamp("read_at", { withTimezone: true }),
     /** Set once an email has gone out, so re-runs cannot double-send. */
-    emailedAt: integer("emailed_at", { mode: "timestamp" }),
-    createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+    emailedAt: timestamp("emailed_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
   },
   (t) => [
     index("notifications_user_idx").on(t.userId, t.readAt),
@@ -188,10 +191,10 @@ export const notifications = sqliteTable(
  * rolling up early throws away the ability to answer questions nobody has
  * asked yet.
  */
-export const analyticsEvents = sqliteTable(
+export const analyticsEvents = pgTable(
   "analytics_events",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     businessId: integer("business_id").references(() => businesses.id, {
       onDelete: "cascade",
     }),
@@ -207,8 +210,8 @@ export const analyticsEvents = sqliteTable(
     visitorId: text("visitor_id"),
     source: text("source"),
     device: text("device"),
-    meta: text("meta", { mode: "json" }).$type<Record<string, unknown>>(),
-    createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+    meta: jsonb("meta").$type<Record<string, unknown>>(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
   },
   (t) => [
     index("analytics_business_idx").on(t.businessId, t.eventType, t.createdAt),

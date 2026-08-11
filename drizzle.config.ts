@@ -1,17 +1,18 @@
 import { defineConfig } from "drizzle-kit";
 
 /**
- * Migrations are generated here and applied with
- * `wrangler d1 migrations apply brandupme` (add --remote for production).
+ * Migrations are generated from the schema and applied with `pnpm db:migrate`.
  *
- * Dialect is sqlite/d1-http rather than a direct connection: D1 has no TCP
- * endpoint, so drizzle-kit generates the SQL and wrangler ships it.
+ * Postgres has a real connection, so drizzle-kit talks to Neon directly -
+ * unlike D1, which had no TCP endpoint and needed wrangler to ship SQL files.
  */
 export default defineConfig({
   schema: "./lib/db/schema/index.ts",
   out: "./drizzle",
-  dialect: "sqlite",
-  driver: "d1-http",
+  dialect: "postgresql",
+  dbCredentials: {
+    url: process.env.DATABASE_URL!,
+  },
   verbose: true,
   strict: true,
 });

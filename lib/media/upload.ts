@@ -1,14 +1,17 @@
+import { del, put } from "@vercel/blob";
+
 /**
- * Image uploads to R2.
+ * Image uploads to Vercel Blob.
  *
  * Files are validated by sniffing the magic bytes, not by trusting the
  * Content-Type header or the file extension - both are attacker-controlled. A
- * .jpg that is actually an HTML document served back from our own domain would
- * be a stored XSS.
+ * .jpg that is actually an HTML document, served back from a domain a browser
+ * trusts, is stored XSS.
  *
  * Keys are random, not derived from the uploaded filename. A user-supplied name
- * invites path traversal and collisions between two businesses uploading
- * "logo.png".
+ * invites path traversal and collisions between two businesses both uploading
+ * "logo.png". `addRandomSuffix` would also do it, but an explicit UUID keeps
+ * the stored path predictable for deletion.
  */
 
 const MAX_BYTES = 5 * 1024 * 1024;
@@ -62,27 +65,33 @@ export async function uploadImage(
     return { ok: false, error: "Upload a JPG, PNG or WebP image." };
   }
 
-  const { getCloudflareContext } = await import("@opennextjs/cloudflare");
-  const { env } = await getCloudflareContext({ async: true });
-  const bucket = (env as unknown as { MEDIA?: R2Bucket }).MEDIA;
-  if (!bucket) return { ok: false, error: "Uploads are not configured." };
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    return { ok: false, error: "Uploads are not configured." };
+  }
 
-  const id = crypto.randomUUID();
-  const key = `${prefix}/${id}.${match.ext}`;
-
-  await bucket.put(key, buffer, {
-    httpMetadata: {
+  try {
+    const key = `${prefix}/${crypto.randomUUID()}.${match.ext}`;
+    const blob = await put(key, buffer, {
+      access: "public",
       contentType: match.type,
-      cacheControl: "public, max-age=31536000, immutable",
-    },
-  });
-
-  return { ok: true, url: `/media/${key}`, key };
+      addRandomSuffix: false,
+      cacheControlMaxAge: 31_536_000,
+    });
+    return { ok: true, url: blob.url, key: blob.pathname };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : "Upload failed.",
+    };
+  }
 }
 
-export async function deleteImage(key: string): Promise<void> {
-  const { getCloudflareContext } = await import("@opennextjs/cloudflare");
-  const { env } = await getCloudflareContext({ async: true });
-  const bucket = (env as unknown as { MEDIA?: R2Bucket }).MEDIA;
-  await bucket?.delete(key);
+export async function deleteImage(url: string): Promise<void> {
+  if (!process.env.BLOB_READ_WRITE_TOKEN) return;
+  try {
+    await del(url);
+  } catch {
+    // A blob that cannot be deleted must not block the database row being
+    // removed - an orphaned file is a smaller problem than a stuck UI.
+  }
 }

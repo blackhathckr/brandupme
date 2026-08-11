@@ -1,44 +1,53 @@
-import { drizzle, type DrizzleD1Database } from "drizzle-orm/d1";
+import { neon } from "@neondatabase/serverless";
+import { drizzle, type NeonHttpDatabase } from "drizzle-orm/neon-http";
 import * as schema from "./schema";
 
 /**
- * Request-scoped D1 handle.
+ * Postgres connection.
  *
- * On Workers the binding lives on the request context, not in module scope, so
- * this must be called inside a request. Caching a handle in a module-level
- * variable works locally and then serves one isolate's binding to another
- * request in production, which is a data-leak shape of bug.
+ * Neon's HTTP driver rather than a TCP pool: serverless functions are created
+ * and destroyed constantly, and a pool per invocation exhausts Postgres
+ * connections quickly. HTTP has no connection to leak.
  *
- * `getCloudflareContext` is imported lazily so that anything importing the
- * schema for types - migrations, seeds, tests - does not drag the Workers
- * runtime in with it.
+ * The trade-off is no interactive transactions. Nothing here needs them - the
+ * only multi-write path is registration, and its steps are individually
+ * meaningful rather than all-or-nothing. If that changes, swap to
+ * drizzle-orm/neon-serverless, which is pooled and does support them.
+ *
+ * The client is cached per module instance. Unlike a pooled connection this is
+ * safe: it holds no socket, just a URL and a fetch call.
  */
 
-export type Db = DrizzleD1Database<typeof schema>;
+export type Db = NeonHttpDatabase<typeof schema>;
 
-let warnedMissing = false;
+let cached: Db | null = null;
 
-export async function getDb(): Promise<Db> {
-  const { getCloudflareContext } = await import("@opennextjs/cloudflare");
-  // Async mode is required outside a request scope - during prerender and in
-  // any route the adapter has not already bound. Sync mode throws there.
-  const { env } = await getCloudflareContext({ async: true });
-  const d1 = (env as unknown as { DB?: D1Database }).DB;
+export function getDbSync(): Db {
+  if (cached) return cached;
 
-  if (!d1) {
-    // A clear failure here beats a confusing "cannot read property prepare of
-    // undefined" three layers down a query.
+  const url = process.env.DATABASE_URL;
+  if (!url) {
+    // Explicit, because the alternative is a confusing failure deep inside a
+    // query about `undefined` not being a valid connection string.
     throw new Error(
-      "D1 binding `DB` is missing. Check wrangler.jsonc and that the dev " +
-        "server was started through the Cloudflare adapter.",
+      "DATABASE_URL is not set. Add your Neon connection string to .env.local " +
+        "for development, and to the Vercel project settings for deployments.",
     );
   }
 
-  if (!warnedMissing && process.env.NODE_ENV === "development") {
-    warnedMissing = true;
-  }
+  cached = drizzle(neon(url), { schema });
+  return cached;
+}
 
-  return drizzle(d1, { schema });
+/**
+ * Async wrapper.
+ *
+ * Kept async so every existing `await getDb()` call site works unchanged - the
+ * D1 binding genuinely had to be awaited, Postgres does not. Not worth touching
+ * a hundred call sites to remove one await.
+ */
+export async function getDb(): Promise<Db> {
+  return getDbSync();
 }
 
 export { schema };

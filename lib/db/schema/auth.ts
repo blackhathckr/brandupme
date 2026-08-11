@@ -1,11 +1,14 @@
 import {
+  boolean,
   index,
   integer,
+  pgTable,
   primaryKey,
-  sqliteTable,
+  serial,
   text,
+  timestamp,
   uniqueIndex,
-} from "drizzle-orm/sqlite-core";
+} from "drizzle-orm/pg-core";
 import { timestamps } from "./core";
 
 /**
@@ -24,12 +27,12 @@ import { timestamps } from "./core";
  * the tokens in it cannot be replayed.
  */
 
-export const users = sqliteTable(
+export const users = pgTable(
   "users",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     email: text("email").notNull().unique(),
-    emailVerifiedAt: integer("email_verified_at", { mode: "timestamp" }),
+    emailVerifiedAt: timestamp("email_verified_at", { withTimezone: true }),
     passwordHash: text("password_hash"),
     name: text("name").notNull(),
     phone: text("phone"),
@@ -41,41 +44,41 @@ export const users = sqliteTable(
     status: text("status", { enum: ["active", "suspended"] })
       .notNull()
       .default("active"),
-    lastLoginAt: integer("last_login_at", { mode: "timestamp" }),
+    lastLoginAt: timestamp("last_login_at", { withTimezone: true }),
     ...timestamps,
   },
   (t) => [index("users_kind_idx").on(t.kind, t.status)],
 );
 
-export const sessions = sqliteTable(
+export const sessions = pgTable(
   "sessions",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     userId: integer("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     /** SHA-256 of the cookie value. The raw token is never stored. */
     tokenHash: text("token_hash").notNull().unique(),
-    expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
     userAgent: text("user_agent"),
     ip: text("ip"),
-    createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
   },
   (t) => [index("sessions_user_idx").on(t.userId)],
 );
 
-export const roles = sqliteTable("roles", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const roles = pgTable("roles", {
+  id: serial("id").primaryKey(),
   slug: text("slug").notNull().unique(),
   name: text("name").notNull(),
   description: text("description"),
   /** Built-in roles cannot be deleted from the admin panel. */
-  isSystem: integer("is_system", { mode: "boolean" }).notNull().default(false),
+  isSystem: boolean("is_system").notNull().default(false),
   ...timestamps,
 });
 
-export const permissions = sqliteTable("permissions", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const permissions = pgTable("permissions", {
+  id: serial("id").primaryKey(),
   /** Dotted verb-object, e.g. "business.verify", "plan.manage". */
   slug: text("slug").notNull().unique(),
   description: text("description"),
@@ -83,7 +86,7 @@ export const permissions = sqliteTable("permissions", {
   groupName: text("group_name").notNull().default("general"),
 });
 
-export const rolePermissions = sqliteTable(
+export const rolePermissions = pgTable(
   "role_permissions",
   {
     roleId: integer("role_id")
@@ -96,7 +99,7 @@ export const rolePermissions = sqliteTable(
   (t) => [primaryKey({ columns: [t.roleId, t.permissionId] })],
 );
 
-export const userRoles = sqliteTable(
+export const userRoles = pgTable(
   "user_roles",
   {
     userId: integer("user_id")
@@ -110,10 +113,10 @@ export const userRoles = sqliteTable(
 );
 
 /** Single-use tokens for password reset and listing claims. */
-export const authTokens = sqliteTable(
+export const authTokens = pgTable(
   "auth_tokens",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     userId: integer("user_id").references(() => users.id, {
       onDelete: "cascade",
     }),
@@ -123,9 +126,9 @@ export const authTokens = sqliteTable(
     }).notNull(),
     /** Extra context, e.g. which business is being claimed. */
     payload: text("payload"),
-    expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
-    usedAt: integer("used_at", { mode: "timestamp" }),
-    createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    usedAt: timestamp("used_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
   },
   (t) => [uniqueIndex("auth_tokens_hash_idx").on(t.tokenHash)],
 );
