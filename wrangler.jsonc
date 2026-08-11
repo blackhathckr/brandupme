@@ -21,10 +21,16 @@
       "migrations_dir": "drizzle"
     }
   ],
-  "r2_buckets": [
-    {
-      "binding": "MEDIA",
-      "bucket_name": "brandupme-media"
-    }
-  ]
+  // R2 is not enabled on this account yet. Enable it in the dashboard, run
+  // `wrangler r2 bucket create brandupme-media`, then uncomment this block and
+  // redeploy. Until then lib/media/upload.ts reports "Uploads are not
+  // configured" rather than throwing, so logo and photo uploads are the only
+  // thing affected.
+  // "r2_buckets": [
+  //   {
+  //     "binding": "MEDIA",
+  //     "bucket_name": "brandupme-media"
+  //   }
+  // ]
+  "r2_buckets": []
 }

@@ -21,6 +21,17 @@ const nextConfig: NextConfig = {
    * instead of exporting.
    */
 
+  /**
+   * Required by the Cloudflare adapter, which bundles from .next/standalone.
+   *
+   * Set here rather than left to the adapter because the build is run
+   * separately - `next build --webpack` then `opennextjs-cloudflare build
+   * --skipNextBuild`. That split exists because the adapter's own invocation
+   * would use Turbopack, which does not emit the middleware manifest the
+   * runtime needs. See AGENTS.md.
+   */
+  output: "standalone",
+
   /** Kept from the static build so existing URLs do not move. */
   trailingSlash: true,
 

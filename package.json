@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "db:generate": "drizzle-kit generate",
@@ -13,9 +13,9 @@
     "db:seed": "wrangler d1 execute brandupme --local --file=./db/seed.sql",
     "db:seed:remote": "wrangler d1 execute brandupme --remote --file=./db/seed.sql",
     "seed:build": "tsx lib/db/seed/build-seed.ts",
-    "opennext:build": "opennextjs-cloudflare build",
-    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "opennext:build": "next build --webpack && node scripts/normalise-next-paths.mjs && opennextjs-cloudflare build --skipNextBuild",
+    "preview": "pnpm opennext:build && wrangler dev",
+    "deploy": "pnpm opennext:build && wrangler deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
