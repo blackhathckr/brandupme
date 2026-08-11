@@ -5,26 +5,15 @@ import { neon } from "@neondatabase/serverless";
  * Applies a .sql file to the Neon database.
  *
  * Neon's HTTP driver sends one statement per request, so the file is split
- * rather than sent whole. The splitter is deliberately simple - it only has to
- * handle SQL this project generates, which never contains semicolons inside
- * string literals except in escaped quotes.
+ * rather than sent whole. The splitter only has to handle SQL this project
+ * generates, which never contains a semicolon inside a string literal except
+ * as an escaped quote.
+ *
+ * Everything runs inside main() because tsx transpiles this to CommonJS, which
+ * cannot host a top-level await.
  *
  * Usage: pnpm db:seed  /  pnpm db:fixtures
  */
-
-const file = process.argv[2];
-if (!file) {
-  console.error("usage: tsx scripts/run-sql.ts <file.sql>");
-  process.exit(1);
-}
-
-const url = process.env.DATABASE_URL;
-if (!url) {
-  console.error(
-    "DATABASE_URL is not set. Put your Neon connection string in .env.local.",
-  );
-  process.exit(1);
-}
 
 /** Split on semicolons that are not inside a quoted string. */
 function statements(sql: string): string[] {
@@ -59,25 +48,45 @@ function statements(sql: string): string[] {
   if (tail) out.push(tail);
 
   // Comment-only fragments are not worth a round trip.
-  return out.filter((s) => !s.split("\n").every((l) => l.trim().startsWith("--") || !l.trim()));
+  return out.filter(
+    (s) => !s.split("\n").every((l) => l.trim().startsWith("--") || !l.trim()),
+  );
 }
 
-const sql = neon(url);
-const parts = statements(readFileSync(file, "utf-8"));
-
-console.log(`applying ${parts.length} statements from ${file}`);
-
-let done = 0;
-for (const statement of parts) {
-  try {
-    await sql.query(statement);
-    done++;
-  } catch (err) {
-    console.error(`\nfailed on statement ${done + 1}:`);
-    console.error(statement.slice(0, 300));
-    console.error(err instanceof Error ? err.message : err);
+async function main() {
+  const file = process.argv[2];
+  if (!file) {
+    console.error("usage: tsx scripts/run-sql.ts <file.sql>");
     process.exit(1);
   }
+
+  const url = process.env.DATABASE_URL;
+  if (!url) {
+    console.error(
+      "DATABASE_URL is not set. Put your Neon connection string in .env.local.",
+    );
+    process.exit(1);
+  }
+
+  const sql = neon(url);
+  const parts = statements(readFileSync(file, "utf-8"));
+
+  console.log(`applying ${parts.length} statements from ${file}`);
+
+  let done = 0;
+  for (const statement of parts) {
+    try {
+      await sql.query(statement);
+      done++;
+    } catch (err) {
+      console.error(`\nfailed on statement ${done + 1}:`);
+      console.error(statement.slice(0, 300));
+      console.error(err instanceof Error ? err.message : err);
+      process.exit(1);
+    }
+  }
+
+  console.log(`applied ${done} statements`);
 }
 
-console.log(`applied ${done} statements`);
+main();
