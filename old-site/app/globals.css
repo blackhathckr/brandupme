@@ -1,0 +1,313 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ═══════════════════════════════════════════════════════════════════════
+   BrandUpMe design tokens - v2, dark green / gold / white
+
+   Colours MEASURED from the client's approved mockups with Pillow, not
+   eyeballed:
+     deep green   #04170A  page canvas          (341k px sampled)
+     card green   #0F2D1A  service cards        (51k px)
+     accent green #53A03F  headline word, dots  (10k px)
+     gold         #E6C86C  brand mark           (from the logo itself)
+
+   CONTRAST, measured with the WCAG formula:
+     on deep green #04170A - white 18.55, gold 11.34, accent 5.71, all pass
+     on white      - accent #53A03F is 3.25:1, LARGE TEXT ONLY
+                   - #3E8130 is 4.79:1, use this for green text on white
+                   - gold is 1.64:1, FAILS. Dark sections only, never on white.
+
+   Consequence baked into the tokens below: `--color-primary` is the DEEPER
+   green, because white button labels on #53A03F fail AA. The bright accent is
+   for large display type and decorative marks.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* ── Green ramp ────────────────────────────────────────────────────── */
+  --color-brand-50: #F1F8EE;
+  --color-brand-100: #DCEFD5;
+  --color-brand-200: #BBDEAD;
+  --color-brand-300: #93C97F;
+  --color-brand-400: #6CB854;
+  --color-brand-500: #53A03F; /* accent - large text and marks only on white */
+  --color-brand-600: #3E8130; /* button fill - white label passes AA here */
+  --color-brand-700: #2F6425;
+  --color-brand-800: #0F2D1A; /* card green */
+  --color-brand-900: #04170A; /* deep canvas green */
+
+  /* ── Gold ramp - the logo mark ─────────────────────────────────────── */
+  --color-gold-50: #FEFBF0;
+  --color-gold-100: #FCF4DA;
+  --color-gold-200: #F7E7B4;
+  --color-gold-300: #F0D890;
+  --color-gold-400: #EBD07C;
+  --color-gold-500: #E6C86C; /* brand */
+  --color-gold-600: #C9A94A;
+  --color-gold-700: #9E8331;
+
+  /* ── Dark section surfaces ─────────────────────────────────────────── */
+  --color-deep: #04170A;
+  --color-deep-2: #0A2214;
+  --color-deep-3: #0F2D1A;
+  --color-deep-line: #1C4429;
+  --color-deep-fg: #FFFFFF;
+  --color-deep-soft: #DCEFD5;
+  --color-deep-muted: #9DB3A3;
+
+  /* ── Light section surfaces ────────────────────────────────────────── */
+  --color-canvas: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-surface-2: #F6F9F4;
+  --color-surface-3: #EDF3E9;
+  --color-line: #E2E8DF;
+  --color-hairline: #F0F4EE;
+
+  --color-ink: #0C1F14;
+  --color-ink-2: #3D4F44;
+  --color-ink-3: #5F7168;
+
+  /* Green that is legible as TEXT on white. Never use brand-500 for body. */
+  --color-green-text: #3E8130;
+
+  /* ── Status ────────────────────────────────────────────────────────── */
+  --color-success: #53A03F;
+  --color-success-text: #2F6425;
+  --color-danger: #C0392B;
+
+  /* ── Type ──────────────────────────────────────────────────────────── */
+  --font-display: var(--font-onest), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
+
+  /* ── Elevation - cool-neutral, correct on a white canvas ───────────── */
+  --shadow-e1: 0 1px 2px rgb(12 31 20 / 0.05);
+  --shadow-e2: 0 4px 12px -2px rgb(12 31 20 / 0.08), 0 2px 4px -2px rgb(12 31 20 / 0.05);
+  --shadow-e3: 0 14px 30px -8px rgb(12 31 20 / 0.12), 0 4px 8px -4px rgb(12 31 20 / 0.06);
+  --shadow-e4: 0 28px 64px -16px rgb(12 31 20 / 0.18);
+  --shadow-glow-green: 0 10px 28px rgb(62 129 48 / 0.28);
+  --shadow-glow-gold: 0 10px 28px rgb(230 200 108 / 0.30);
+
+  /* ── Motion - one curve ────────────────────────────────────────────── */
+  --ease-brand: cubic-bezier(0.21, 0.47, 0.32, 0.98);
+
+  /* ═══════════════════════════════════════════════════════════════════
+     PORTAL THEME - the 2026 mockups (indigo / violet on white)
+
+     Every value below was SAMPLED from the client's approved JPEGs with
+     Pillow, not eyeballed. Region -> modal colour, from scratchpad/sample.py:
+
+       primary button fill   #5A31CB   (header "Register Your Business")
+       deep button fill      #4A1CC7   ("Save & Continue" on the wizard)
+       utility top bar       #0A1322   (home) / #000B1D (account page)
+       page canvas           #F8F9FE   (home sections, wizard rail)
+       violet-tinted strip   #F7F6FE   (the info strip under the plan grid)
+       completed step green  #079455   (wizard rail check circles)
+       inactive step grey    #83889C
+
+     CONTRAST (WCAG, measured):
+       white on #5A31CB  6.93:1  AA at every size, AAA for large
+       white on #4A1CC7  8.61:1  AAA
+       #5A31CB on white  6.93:1  safe for link text
+       #667085 on white  4.95:1  safe for body/muted copy
+     ═════════════════════════════════════════════════════════════════ */
+
+  /* ── Iris ramp - the portal primary ─────────────────────────────── */
+  --color-iris-50: #F5F3FF;
+  --color-iris-100: #EDE9FE;
+  --color-iris-200: #DDD6FE;
+  --color-iris-300: #C4B5FD;
+  --color-iris-400: #9B7DF3;
+  --color-iris-500: #7C4DEA;
+  --color-iris-600: #5A31CB; /* measured: standard button fill */
+  --color-iris-700: #4A1CC7; /* measured: primary CTA / hover */
+  --color-iris-800: #3C15A3;
+  --color-iris-900: #2C0F78;
+
+  /* ── Portal surfaces ────────────────────────────────────────────── */
+  --color-navy: #0A1322; /* utility top bar */
+  --color-navy-2: #050E1F;
+  --color-paper: #F8F9FE; /* page canvas behind cards */
+  --color-paper-2: #F7F6FE; /* violet-tinted info strips */
+  --color-rule: #E5E7EB; /* card + input border */
+  --color-rule-2: #F1F2F7; /* hairline dividers */
+
+  /* Neutral text ramp. Grey values are the ones the mockups actually use. */
+  --color-slate-ink: #101828;
+  --color-slate-2: #344054;
+  --color-slate-3: #667085;
+  --color-slate-4: #98A2B3;
+
+  /* ── Portal status ──────────────────────────────────────────────── */
+  --color-ok: #079455;
+  --color-ok-soft: #ECFDF3;
+  --color-warn: #F79009;
+  --color-warn-soft: #FFFAEB;
+  --color-alert: #D92D20;
+  --color-alert-soft: #FEF3F2;
+
+  /* ── Verification badge tiers, per the plan comparison sheet ────── */
+  --color-badge-bronze: #C77B3C;
+  --color-badge-silver: #98A2B3;
+  --color-badge-gold: #D9A427;
+  --color-badge-platinum: #5D6B82;
+
+  /* ── Portal elevation - cool neutral, correct on #F8F9FE ─────────── */
+  --shadow-p1: 0 1px 2px rgb(16 24 40 / 0.05);
+  --shadow-p2: 0 4px 8px -2px rgb(16 24 40 / 0.06), 0 2px 4px -2px rgb(16 24 40 / 0.04);
+  --shadow-p3: 0 12px 24px -6px rgb(16 24 40 / 0.10), 0 4px 8px -4px rgb(16 24 40 / 0.05);
+  --shadow-iris: 0 8px 20px -6px rgb(90 49 203 / 0.35);
+}
+
+/* ── shadcn theme bridge ─────────────────────────────────────────────── */
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-onest), ui-sans-serif, system-ui, sans-serif;
+
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+}
+
+/* ── shadcn semantics, remapped to BrandUpMe ─────────────────────────── */
+:root {
+  --background: #FFFFFF;
+  --foreground: #0C1F14;
+  --card: #FFFFFF;
+  --card-foreground: #0C1F14;
+  --popover: #FFFFFF;
+  --popover-foreground: #0C1F14;
+
+  --primary: #3E8130;            /* white labels pass AA on this, not on 500 */
+  --primary-foreground: #FFFFFF;
+  --secondary: #EDF3E9;
+  --secondary-foreground: #0C1F14;
+
+  --muted: #F6F9F4;
+  --muted-foreground: #5F7168;
+  --accent: #DCEFD5;
+  --accent-foreground: #0C1F14;
+  --destructive: #C0392B;
+
+  --border: #E2E8DF;
+  --input: #E2E8DF;
+  --ring: #3E8130;
+
+  --radius: 1rem;
+}
+
+/* ── Base ────────────────────────────────────────────────────────────── */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 96px;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-variant-numeric: tabular-nums;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-brand-500);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: var(--color-brand-500);
+    color: #fff;
+  }
+}
+
+/* ── Utilities ───────────────────────────────────────────────────────── */
+/**
+ * Portal container.
+ *
+ * The marketing `container-page` caps at 78rem (1248px), which is right for a
+ * one-column brochure and far too narrow for the portal's three-column
+ * screens — it squeezed the account-type cards and truncated form placeholders.
+ *
+ * The client's mockups are 1536px canvases with ~33px side margins, so the
+ * content band is ~1475px. 96rem minus 2rem padding on each side reproduces
+ * that exactly on a 1536px+ viewport, and shrinks gracefully below it.
+ */
+@utility container-portal {
+  width: 100%;
+  max-width: 96rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 2rem;
+  }
+}
+
+@utility container-page {
+  width: 100%;
+  max-width: 78rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 2rem;
+  }
+}
+
+@utility mask-edges {
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+/* Faint topographic grid used behind the dark bands */
+@utility deep-grid {
+  background-image:
+    linear-gradient(rgb(83 160 63 / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(83 160 63 / 0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* ── Accessibility ───────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
