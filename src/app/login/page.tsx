@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   ArrowRight,
   Briefcase,
@@ -36,12 +37,12 @@ const ACCOUNT_TYPES = [
 ];
 
 const ROLE_CARDS = [
-  { name: "Business Owner", icon: UserRound },
-  { name: "Category Referral Partner", icon: Network },
-  { name: "Business Referral Partner", icon: Briefcase },
-  { name: "Influencer", icon: UserRound },
-  { name: "Promoter", icon: Megaphone },
-  { name: "Customer", icon: Users },
+  { name: "Business Owner", icon: UserRound, href: "/join-business" },
+  { name: "Category Referral Partner", icon: Network, href: null },
+  { name: "Business Referral Partner", icon: Briefcase, href: null },
+  { name: "Influencer", icon: UserRound, href: null },
+  { name: "Promoter", icon: Megaphone, href: null },
+  { name: "Customer", icon: Users, href: null },
 ];
 
 const FORGOT_STEPS = ["Email", "Verify Code", "Reset Password"];
@@ -538,20 +539,30 @@ export default function LoginPage() {
               Select the account type that best describes you to get started.
             </p>
             <div className="mt-6 grid grid-cols-3 gap-2.5">
-              {ROLE_CARDS.map(({ name, icon: Icon }) => (
-                <button
-                  key={name}
-                  className="flex flex-col items-center gap-2 rounded-2xl border border-[#DDE5DE] p-3 text-center transition-all hover:-translate-y-0.5 hover:border-[#6FA52B] hover:bg-[#F4F9F1]"
-                >
-                  <span className="relative flex h-[74px] w-[74px] items-center justify-center rounded-full bg-[#EFF7E9] text-[#5D8F23]">
-                    <Icon className="h-7 w-7" strokeWidth={1.7} />
-                    {name === "Influencer" && (
-                      <Star className="absolute bottom-1.5 right-1.5 h-3.5 w-3.5 fill-[#5D8F23] text-[#5D8F23]" strokeWidth={2} />
-                    )}
-                  </span>
-                  <p className="text-[12.5px] font-semibold leading-tight text-[#101510]">{name}</p>
-                </button>
-              ))}
+              {ROLE_CARDS.map(({ name, icon: Icon, href }) => {
+                const cardClass =
+                  "flex flex-col items-center gap-2 rounded-2xl border border-[#DDE5DE] p-3 text-center transition-all hover:-translate-y-0.5 hover:border-[#6FA52B] hover:bg-[#F4F9F1]";
+                const inner = (
+                  <>
+                    <span className="relative flex h-[74px] w-[74px] items-center justify-center rounded-full bg-[#EFF7E9] text-[#5D8F23]">
+                      <Icon className="h-7 w-7" strokeWidth={1.7} />
+                      {name === "Influencer" && (
+                        <Star className="absolute bottom-1.5 right-1.5 h-3.5 w-3.5 fill-[#5D8F23] text-[#5D8F23]" strokeWidth={2} />
+                      )}
+                    </span>
+                    <p className="text-[12.5px] font-semibold leading-tight text-[#101510]">{name}</p>
+                  </>
+                );
+                return href ? (
+                  <Link key={name} href={href} className={cardClass}>
+                    {inner}
+                  </Link>
+                ) : (
+                  <button key={name} className={cardClass}>
+                    {inner}
+                  </button>
+                );
+              })}
             </div>
             <SecurityStrip />
           </>
