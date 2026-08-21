@@ -14,6 +14,10 @@ function isActive(pathname: string, href: string) {
   return pathname === base || pathname.startsWith(base + "/");
 }
 
+function hasNavigableChildren(item: { children?: { label: string; href: string }[] }) {
+  return !!item.children?.length && item.children.every((c) => !c.href.includes("#"));
+}
+
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
 
@@ -29,7 +33,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         </span>
       </div>
 
-      <nav className="flex-1 overflow-y-auto px-3 pb-4">
+      <nav className="dark-scrollbar flex-1 overflow-y-auto px-3 pb-4">
         {dashboardNav.map((group, i) => (
           <div key={i} className={i === 0 ? "" : "mt-5"}>
             {group.label && (
@@ -40,30 +44,62 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
             <div className="flex flex-col gap-0.5">
               {group.items.map((item) => {
                 const active = isActive(pathname, item.href);
+                const expandable = hasNavigableChildren(item);
+                const expanded = expandable && active;
                 const Icon = item.icon;
                 return (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    onClick={onNavigate}
-                    className={
-                      "flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13.5px] font-medium transition-colors " +
-                      (active ? "bg-[#3E8130] text-white" : "text-white/70 hover:bg-white/[0.06] hover:text-white")
-                    }
-                  >
-                    {Icon && <Icon className="h-[17px] w-[17px] shrink-0" strokeWidth={1.8} />}
-                    <span className="flex-1 leading-tight">{item.label}</span>
-                    {typeof item.badge === "number" && (
-                      <span
-                        className={
-                          "rounded-full px-1.5 py-0.5 text-[10.5px] font-bold leading-none " +
-                          (active ? "bg-white text-[#194C11]" : "bg-white/10 text-white/80")
-                        }
-                      >
-                        {item.badge}
-                      </span>
+                  <div key={item.label}>
+                    <Link
+                      href={item.href}
+                      onClick={onNavigate}
+                      className={
+                        "flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13.5px] font-medium transition-colors " +
+                        (active && !expandable
+                          ? "bg-[#3E8130] text-white"
+                          : expanded
+                            ? "text-white"
+                            : "text-white/70 hover:bg-white/[0.06] hover:text-white")
+                      }
+                    >
+                      {Icon && <Icon className="h-[17px] w-[17px] shrink-0" strokeWidth={1.8} />}
+                      <span className="flex-1 leading-tight">{item.label}</span>
+                      {typeof item.badge === "number" && (
+                        <span
+                          className={
+                            "rounded-full px-1.5 py-0.5 text-[10.5px] font-bold leading-none " +
+                            (active ? "bg-white text-[#194C11]" : "bg-white/10 text-white/80")
+                          }
+                        >
+                          {item.badge}
+                        </span>
+                      )}
+                      {expandable && (
+                        <ChevronDown className={"h-3.5 w-3.5 shrink-0 text-white/40 transition-transform " + (expanded ? "rotate-180" : "")} />
+                      )}
+                    </Link>
+
+                    {expanded && (
+                      <div className="ml-[26px] mt-0.5 flex flex-col gap-0.5 border-l border-white/10 pl-3.5">
+                        {item.children!.map((child) => {
+                          const childActive = pathname === child.href;
+                          return (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              onClick={onNavigate}
+                              className={
+                                "flex items-center gap-2 rounded-md py-1.5 pl-1.5 pr-2 text-[12.5px] leading-tight transition-colors " +
+                                (childActive ? "bg-white/[0.08] font-semibold text-white" : "text-white/55 hover:text-white/85")
+                              }
+                            >
+                              <span className={"h-1.5 w-1.5 shrink-0 rounded-full " + (childActive ? "bg-[#6FBE55]" : "bg-white/25")} />
+                              {child.label}
+                            </Link>
+                          );
+                        })}
+                      </div>
                     )}
-                  </Link>
+                  </div>
                 );
               })}
             </div>

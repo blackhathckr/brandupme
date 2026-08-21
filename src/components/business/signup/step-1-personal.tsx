@@ -32,14 +32,6 @@ export function Step1Personal({
   const [showPw, setShowPw] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const canContinue =
-    data.fullName.trim() &&
-    data.mobile.trim() &&
-    data.email.trim() &&
-    REQS.every((r) => r.test(data.password)) &&
-    data.password === data.confirmPassword &&
-    data.agreed;
-
   return (
     <div>
       <p className="text-[13px] font-bold uppercase tracking-[0.08em] text-[#3E8130]">Step 1 of 5</p>
@@ -164,9 +156,8 @@ export function Step1Personal({
             Cancel
           </button>
           <button
-            disabled={!canContinue}
             onClick={onNext}
-            className="flex h-11 flex-1 items-center justify-center gap-2 rounded-full bg-[#3E8130] text-[13.5px] font-semibold text-white transition-colors hover:bg-[#2F6425] disabled:cursor-not-allowed disabled:opacity-40 sm:flex-none sm:px-8"
+            className="flex h-11 flex-1 items-center justify-center gap-2 rounded-full bg-[#3E8130] text-[13.5px] font-semibold text-white transition-colors hover:bg-[#2F6425] sm:flex-none sm:px-8"
           >
             Continue
             <span aria-hidden>→</span>

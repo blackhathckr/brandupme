@@ -25,8 +25,6 @@ export function Step5Review({
   const total = Math.round((price + vat) * 100) / 100;
   const durationLabel = duration ? duration.label : `1 Month`;
 
-  const canProceed = agreeTerms && agreePrivacy;
-
   return (
     <div>
       <p className="text-[13px] font-bold uppercase tracking-[0.08em] text-[#3E8130]">Step 5 of 5</p>
@@ -126,9 +124,8 @@ export function Step5Review({
               Back
             </button>
             <button
-              disabled={!canProceed}
               onClick={() => onProceed({ planName: plan.name, durationLabel, price, vat, total })}
-              className="flex h-11 items-center gap-2 rounded-full bg-[#3E8130] px-6 text-[13.5px] font-semibold text-white transition-colors hover:bg-[#2F6425] disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex h-11 items-center gap-2 rounded-full bg-[#3E8130] px-6 text-[13.5px] font-semibold text-white transition-colors hover:bg-[#2F6425]"
             >
               Proceed to Payment
               <span aria-hidden>→</span>

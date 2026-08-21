@@ -49,7 +49,6 @@ export function Step3BusinessProfile({
     onChange({ images: next });
   }
 
-  const canContinue = !!data.logo && data.images.some(Boolean);
 
   return (
     <div>
@@ -162,9 +161,8 @@ export function Step3BusinessProfile({
           Back
         </button>
         <button
-          disabled={!canContinue}
           onClick={onNext}
-          className="flex h-11 items-center gap-2 rounded-full bg-[#3E8130] px-6 text-[13.5px] font-semibold text-white transition-colors hover:bg-[#2F6425] disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex h-11 items-center gap-2 rounded-full bg-[#3E8130] px-6 text-[13.5px] font-semibold text-white transition-colors hover:bg-[#2F6425]"
         >
           Continue
           <span aria-hidden>→</span>

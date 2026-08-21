@@ -21,7 +21,6 @@ export function Step4Verification({
   onBack: () => void;
 }) {
   const fileRef = useRef<HTMLInputElement>(null);
-  const canContinue = data.tradeLicenseNumber.trim() && data.fileName;
 
   return (
     <div>
@@ -97,9 +96,8 @@ export function Step4Verification({
           Back
         </button>
         <button
-          disabled={!canContinue}
           onClick={onNext}
-          className="flex h-11 items-center gap-2 rounded-full bg-[#3E8130] px-6 text-[13.5px] font-semibold text-white transition-colors hover:bg-[#2F6425] disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex h-11 items-center gap-2 rounded-full bg-[#3E8130] px-6 text-[13.5px] font-semibold text-white transition-colors hover:bg-[#2F6425]"
         >
           Continue
           <span aria-hidden>→</span>

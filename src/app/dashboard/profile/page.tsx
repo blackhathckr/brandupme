@@ -50,12 +50,12 @@ const DOCS = [
 function Card({
   id,
   title,
-  editStep,
+  editHref,
   children,
 }: {
   id: string;
   title: string;
-  editStep: number;
+  editHref: string;
   children: React.ReactNode;
 }) {
   return (
@@ -63,7 +63,7 @@ function Card({
       <div className="flex items-center justify-between">
         <p className="text-[14.5px] font-bold text-[#0B1F13]">{title}</p>
         <Link
-          href={`/dashboard/profile/edit?step=${editStep}`}
+          href={editHref}
           className="flex items-center gap-1.5 rounded-lg border border-[#DDE6DC] px-3 py-1.5 text-[11.5px] font-semibold text-[#0B1F13] hover:bg-[#F4F9F1]"
         >
           <Pencil className="h-3 w-3" />
@@ -115,7 +115,7 @@ export default function MyProfilePage() {
       <div className="mt-5 grid gap-4 lg:grid-cols-[1fr_1fr_300px]">
         <div className="flex flex-col gap-4 lg:col-span-2">
           <div className="grid gap-4 sm:grid-cols-2">
-            <Card id="personal-information" title="Personal Information" editStep={1}>
+            <Card id="personal-information" title="Personal Information" editHref="/dashboard/profile/personal-information">
               <div className="flex items-center gap-3">
                 <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full">
                   <Image src="/avatar/seated.webp" alt="" fill sizes="64px" className="object-cover" />
@@ -129,7 +129,7 @@ export default function MyProfilePage() {
               </div>
             </Card>
 
-            <Card id="business-information" title="Business Information" editStep={1}>
+            <Card id="business-information" title="Business Information" editHref="/dashboard/profile/business-information">
               <Row label="Business Name" value="ABC Business Setup Services" />
               <Row label="Category" value="Business Setup & Consultancy" />
               <Row label="Business Type" value="Limited Liability Company (LLC)" />
@@ -140,7 +140,7 @@ export default function MyProfilePage() {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <Card id="business-address" title="Business Address" editStep={2}>
+            <Card id="business-address" title="Business Address" editHref="/dashboard/profile/business-address">
               <p className="text-[13px] leading-relaxed text-[#3D4B44]">
                 Office No. 510, Business Bay
                 <br />
@@ -154,7 +154,7 @@ export default function MyProfilePage() {
               </div>
             </Card>
 
-            <Card id="business-profile" title="Business Profile" editStep={3}>
+            <Card id="business-profile" title="Business Profile" editHref="/dashboard/profile/business-profile">
               <p className="text-[13px] font-semibold text-[#194C11]">Business Setup &amp; Growth Experts in UAE</p>
               <p className="mt-1.5 text-[12.5px] leading-relaxed text-[#3D4B44]">
                 ABC Business Setup Services is a trusted business consultancy specializing in company formation, PRO
@@ -170,7 +170,7 @@ export default function MyProfilePage() {
             </Card>
           </div>
 
-          <Card id="website-social-links" title="Website & Social Links" editStep={4}>
+          <Card id="website-social-links" title="Website & Social Links" editHref="/dashboard/profile/website-social-links">
             <p className="text-[12px] text-[#5F7168]">BrandUpMe Business Page</p>
             <a href="#" className="text-[13px] font-semibold text-[#3E8130] hover:underline">
               brandupme.ae/business/abc-business
@@ -195,7 +195,7 @@ export default function MyProfilePage() {
             </div>
           </Card>
 
-          <Card id="business-images" title="Business Images" editStep={5}>
+          <Card id="business-images" title="Business Images" editHref="/dashboard/profile/business-images">
             <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-6">
               {IMAGES.map((img) => (
                 <div key={img.label} className="flex flex-col items-center gap-1">
@@ -208,7 +208,7 @@ export default function MyProfilePage() {
             </div>
           </Card>
 
-          <Card id="business-documents" title="Business Documents" editStep={6}>
+          <Card id="business-documents" title="Business Documents" editHref="/dashboard/profile/business-documents">
             <div className="flex flex-col gap-2">
               {DOCS.map((d) => (
                 <div key={d.label} className="flex items-center gap-3 rounded-lg border border-[#EEF1EC] p-2.5">
@@ -266,7 +266,7 @@ export default function MyProfilePage() {
             </div>
 
             <Link
-              href="/dashboard/profile/edit?step=6"
+              href="/dashboard/profile/business-documents"
               className="mt-4 flex h-10 w-full items-center justify-center gap-1.5 rounded-full bg-[#3E8130] text-[12.5px] font-semibold text-white hover:bg-[#2F6425]"
             >
               Complete Remaining

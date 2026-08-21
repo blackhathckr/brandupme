@@ -172,12 +172,12 @@ export const PLANS: Plan[] = [
 ];
 
 export const PROFILE_EDIT_STEPS = [
-  { n: 1, title: "Business Information" },
-  { n: 2, title: "Business Address" },
-  { n: 3, title: "Business Profile" },
-  { n: 4, title: "Website & Social Links" },
-  { n: 5, title: "Business Images" },
-  { n: 6, title: "Business Documents" },
+  { n: 1, title: "Business Information", slug: "business-information" },
+  { n: 2, title: "Business Address", slug: "business-address" },
+  { n: 3, title: "Business Profile", slug: "business-profile" },
+  { n: 4, title: "Website & Social Links", slug: "website-social-links" },
+  { n: 5, title: "Business Images", slug: "business-images" },
+  { n: 6, title: "Business Documents", slug: "business-documents" },
 ];
 
 export const PAYMENT_METHODS = [

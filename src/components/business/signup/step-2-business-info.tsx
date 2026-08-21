@@ -31,8 +31,6 @@ export function Step2BusinessInfo({
   onBack: () => void;
 }) {
   const subOptions = categoryOptions.find((c) => c.name === data.category)?.subcategories ?? [];
-  const canContinue =
-    data.name.trim() && data.category && data.about.trim() && data.emirate && data.building.trim() && data.area.trim();
 
   return (
     <div>
@@ -195,9 +193,8 @@ export function Step2BusinessInfo({
           Back
         </button>
         <button
-          disabled={!canContinue}
           onClick={onNext}
-          className="flex h-11 items-center gap-2 rounded-full bg-[#3E8130] px-6 text-[13.5px] font-semibold text-white transition-colors hover:bg-[#2F6425] disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex h-11 items-center gap-2 rounded-full bg-[#3E8130] px-6 text-[13.5px] font-semibold text-white transition-colors hover:bg-[#2F6425]"
         >
           Continue
           <span aria-hidden>→</span>
