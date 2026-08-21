@@ -39,6 +39,15 @@ export function YoutubeIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function TikTokIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d="M13 3v11.2a2.9 2.9 0 1 1-2.2-2.82" />
+      <path d="M13 3c.3 2.1 1.9 3.7 4 4v2.3c-1.5 0-2.9-.5-4-1.3" />
+    </svg>
+  );
+}
+
 export function XIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" {...props}>

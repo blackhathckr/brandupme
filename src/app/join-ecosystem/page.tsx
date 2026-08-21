@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   ArrowRight,
   Briefcase,
@@ -149,13 +150,13 @@ export default function JoinEcosystemPage() {
         </div>
         <div className="flex shrink-0 items-center gap-3">
           <p className="hidden text-[11.5px] text-white/50 sm:block">It&rsquo;s free and easy to get started!</p>
-          <a
-            href="#"
+          <Link
+            href={selected === "owner" ? "/join-business" : "#"}
             className="flex h-[46px] items-center justify-center gap-2 rounded-[10px] bg-[#D9A52A] px-6 text-[14px] font-semibold text-[#17301F] transition-colors hover:bg-[#c99a1f]"
           >
             Register Now
             <ArrowRight className="h-4 w-4" />
-          </a>
+          </Link>
         </div>
       </div>
     </ModalPage>
