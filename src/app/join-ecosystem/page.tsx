@@ -75,8 +75,8 @@ export default function JoinEcosystemPage() {
         {/* discover / connect / grow */}
         <div className="mt-6 flex items-center justify-between gap-2 rounded-xl border border-[#D9E4D3] bg-[#FBFCFA] p-3">
           {DCG.map(({ title, icon: Icon, copy }, i) => (
-            <div key={title} className="flex flex-1 items-center gap-2">
-              <div className="flex flex-1 items-center gap-2.5">
+            <div key={title} className="flex min-w-0 flex-1 items-center gap-2">
+              <div className="flex min-w-0 flex-1 flex-col items-center gap-1.5 text-center sm:flex-row sm:gap-2.5 sm:text-left">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#EFF7E9] text-[#2F6F18]">
                   <Icon className="h-4 w-4" strokeWidth={1.8} />
                 </span>
@@ -85,7 +85,7 @@ export default function JoinEcosystemPage() {
                   <p className="hidden text-[10px] leading-snug text-[#58635B] sm:block">{copy}</p>
                 </div>
               </div>
-              {i < DCG.length - 1 && <ArrowRight className="h-3.5 w-3.5 shrink-0 text-[#D9E4D3]" />}
+              {i < DCG.length - 1 && <ArrowRight className="hidden h-3.5 w-3.5 shrink-0 text-[#D9E4D3] sm:block" />}
             </div>
           ))}
         </div>

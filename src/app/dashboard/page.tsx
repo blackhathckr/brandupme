@@ -20,7 +20,7 @@ import { DashboardShell } from "@/components/business/dashboard-shell";
 import { DonutChart } from "@/components/business/donut-chart";
 import { StatCard } from "@/components/business/stat-card";
 import { StatusBadge } from "@/components/business/status-badge";
-import { leadOverview, leads } from "@/lib/dashboard-sample-data";
+import { leadOverview, leads, websiteTrafficSources } from "@/lib/dashboard-sample-data";
 
 const TOP_ACTIONS = [
   { label: "Visit Website", value: 183, icon: Globe2 },
@@ -102,7 +102,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
         <StatCard icon={UserPlus} iconBg="bg-[#EFF4FF]" iconColor="text-[#2F6FE4]" label="Leads Received" value={86} change={18.6} />
         <StatCard icon={Users} iconBg="bg-[#FDF3E4]" iconColor="text-[#B87A17]" label="Leads Pending" value={21} change={16.7} />
         <StatCard icon={UserCheck} iconBg="bg-[#F1EEFC]" iconColor="text-[#6D5FD1]" label="Leads in Negotiation" value={14} change={12.5} />
@@ -117,9 +117,13 @@ export default function DashboardPage() {
         <div className="rounded-2xl border border-[#E5EAE3] bg-white p-5">
           <p className="text-[14px] font-bold text-[#0B1F13]">Traffic &amp; Source Overview</p>
           <div className="mt-4 flex items-center gap-5">
-            <DonutChart segments={leadOverview.sourceAnalytics.map((s) => ({ label: s.label, value: s.value, color: s.color }))} total={86} totalLabel="Total Leads" />
+            <DonutChart
+              segments={websiteTrafficSources.sources.map((s) => ({ label: s.label, value: s.value, color: s.color }))}
+              total={websiteTrafficSources.total.toLocaleString()}
+              totalLabel="Total Visitors"
+            />
             <div className="flex flex-1 flex-col gap-1.5">
-              {leadOverview.sourceAnalytics.map((s) => (
+              {websiteTrafficSources.sources.map((s) => (
                 <div key={s.label} className="flex items-center justify-between gap-2 text-[11.5px]">
                   <span className="flex items-center gap-1.5 text-[#3D4B44]">
                     <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: s.color }} />
@@ -177,7 +181,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[1.3fr_1fr]">
-        <div className="rounded-2xl border border-[#E5EAE3] bg-white p-5">
+        <div className="min-w-0 rounded-2xl border border-[#E5EAE3] bg-white p-5">
           <div className="flex items-center justify-between">
             <p className="text-[14px] font-bold text-[#0B1F13]">Latest Leads</p>
             <Link href="/dashboard/leads" className="flex items-center gap-1 text-[11.5px] font-semibold text-[#3E8130] hover:underline">

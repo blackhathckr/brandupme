@@ -51,16 +51,13 @@ export default function DealsDashboardPage() {
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_320px]">
-        <div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-5">
+        <div className="min-w-0">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
             <StatCard icon={Briefcase} iconBg="bg-[#EFF4FF]" iconColor="text-[#2F6FE4]" label="Total Deals" value={dealOverview.total} change={dealOverview.changeVsLastWeek.total} />
             <StatCard icon={Clock} iconBg="bg-[#FDF3E4]" iconColor="text-[#B87A17]" label="Pending Deals" value={dealOverview.pending} change={dealOverview.changeVsLastWeek.pending} />
             <StatCard icon={UserCheck} iconBg="bg-[#F1EEFC]" iconColor="text-[#6D5FD1]" label="In Negotiation" value={dealOverview.negotiation} change={dealOverview.changeVsLastWeek.negotiation} />
             <StatCard icon={CheckCircle2} iconBg="bg-[#EAF6DF]" iconColor="text-[#2F6F18]" label="Closed Won" value={dealOverview.closedWon} change={dealOverview.changeVsLastWeek.closedWon} />
             <StatCard icon={XCircle} iconBg="bg-[#FDECEC]" iconColor="text-[#D51F1F]" label="Closed Lost" value={dealOverview.closedLost} change={dealOverview.changeVsLastWeek.closedLost} />
-          </div>
-
-          <div className="mt-3">
             <StatCard
               icon={MoveUpRight}
               iconBg="bg-[#EAF6DF]"

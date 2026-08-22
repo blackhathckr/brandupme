@@ -12,10 +12,7 @@ export function RakbankAd({ variant = "growth" }: { variant?: "growth" | "power"
   const isPower = variant === "power";
   return (
     <div>
-      <div
-        className="relative mx-auto flex w-full items-center overflow-hidden rounded-xl bg-gradient-to-r from-[#0B1F3A] to-[#173763]"
-        style={{ aspectRatio: "970 / 90" }}
-      >
+      <div className="relative mx-auto flex w-full items-center overflow-hidden rounded-xl bg-gradient-to-r from-[#0B1F3A] to-[#173763] py-3 sm:aspect-[970/90] sm:py-0">
         <div className="absolute inset-y-0 right-0 w-[46%]">
           <Image
             src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=900&auto=format&fit=crop"
@@ -162,10 +159,7 @@ export function TallyAd() {
 export function DuBusinessAd() {
   return (
     <div className="@container">
-      <div
-        className="relative mx-auto flex w-full items-center gap-5 overflow-hidden rounded-xl border border-[#E5EAE3] bg-white px-6"
-        style={{ aspectRatio: "970 / 90" }}
-      >
+      <div className="relative mx-auto flex w-full items-center gap-3 overflow-hidden rounded-xl border border-[#E5EAE3] bg-white px-4 py-3 @2xl:aspect-[970/90] @2xl:gap-5 @2xl:px-6 @2xl:py-0">
         <div className="flex shrink-0 items-center gap-2">
           <span aria-hidden className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#00AEEF] to-[#0072BC] text-[13px] font-extrabold text-white">
             du
@@ -173,7 +167,7 @@ export function DuBusinessAd() {
           <span className="text-[12px] font-bold text-[#00AEEF]">Business</span>
         </div>
 
-        <div className="shrink-0">
+        <div className="hidden shrink-0 @sm:block">
           <p className="text-[14px] font-extrabold leading-tight text-[#0072BC]">STAY CONNECTED.</p>
           <p className="text-[14px] font-extrabold leading-tight text-[#0072BC]">GROW EVERYWHERE.</p>
         </div>

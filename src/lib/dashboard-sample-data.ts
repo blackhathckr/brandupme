@@ -1,5 +1,17 @@
 export type LeadStatus = "New" | "Pending" | "In Negotiation" | "Closed" | "Rejected";
 
+export const websiteTrafficSources = {
+  total: 2450,
+  sources: [
+    { label: "SEO / Organic Search", value: 1036, pct: 42, color: "#2F6FE4" },
+    { label: "Digital Business Card", value: 686, pct: 28, color: "#2F6F18" },
+    { label: "Direct Web Page", value: 294, pct: 12, color: "#7C5CD1" },
+    { label: "Social Media", value: 245, pct: 10, color: "#E07A1F" },
+    { label: "BrandUpMe Search", value: 122, pct: 5, color: "#D1418E" },
+    { label: "Other Sources", value: 67, pct: 3, color: "#B0BAB4" },
+  ],
+};
+
 export const leads: {
   id: string;
   name: string;
@@ -101,7 +113,7 @@ export const dealOverview = {
   closedWon: 7,
   closedLost: 2,
   totalValue: 285000,
-  changeVsLastWeek: { total: 23.1, pending: 33.3, negotiation: 16.7, closedWon: 25, closedLost: -33.3, totalValue: 18.6 },
+  changeVsLastWeek: { total: 23.1, pending: 33.3, negotiation: 20, closedWon: 16.7, closedLost: -33.3, totalValue: 18.6 },
   byStage: [
     { label: "Closed Won", value: 175000, pct: 61.4, color: "#3E8130" },
     { label: "In Negotiation", value: 65000, pct: 22.8, color: "#7C5CD1" },

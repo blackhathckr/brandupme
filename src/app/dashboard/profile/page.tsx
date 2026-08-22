@@ -77,12 +77,12 @@ function Card({
 
 function Row({ label, value, verified }: { label: string; value: string; verified?: boolean }) {
   return (
-    <div className="flex items-center justify-between gap-3 py-1.5 text-[12.5px]">
-      <span className="text-[#5F7168]">{label}</span>
-      <span className="flex items-center gap-1.5 text-right font-semibold text-[#0B1F13]">
-        {value}
+    <div className="flex items-start justify-between gap-3 py-1.5 text-[12.5px]">
+      <span className="shrink-0 text-[#5F7168]">{label}</span>
+      <span className="flex min-w-0 flex-1 items-center justify-end gap-1.5 text-right font-semibold text-[#0B1F13]">
+        <span className="min-w-0 break-words">{value}</span>
         {verified && (
-          <span className="rounded bg-[#EAF6DF] px-1.5 py-0.5 text-[10px] font-bold text-[#2F6F18]">Verified</span>
+          <span className="shrink-0 rounded bg-[#EAF6DF] px-1.5 py-0.5 text-[10px] font-bold text-[#2F6F18]">Verified</span>
         )}
       </span>
     </div>
@@ -113,7 +113,7 @@ export default function MyProfilePage() {
       </div>
 
       <div className="mt-5 grid gap-4 lg:grid-cols-[1fr_1fr_300px]">
-        <div className="flex flex-col gap-4 lg:col-span-2">
+        <div className="flex min-w-0 flex-col gap-4 lg:col-span-2">
           <div className="grid gap-4 sm:grid-cols-2">
             <Card id="personal-information" title="Personal Information" editHref="/dashboard/profile/personal-information">
               <div className="flex items-center gap-3">

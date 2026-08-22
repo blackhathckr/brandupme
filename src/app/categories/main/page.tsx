@@ -306,9 +306,9 @@ export default function CategoriesPage() {
                       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#F4F9F1] text-[#3E8130] group-hover:bg-white">
                         <Icon className="h-5 w-5" strokeWidth={1.7} />
                       </span>
-                      <span className="leading-tight">
-                        <span className="block text-[15px] font-semibold text-[#0B1F13]">{name}</span>
-                        <span className="block text-[12px] text-[#5F7168]">
+                      <span className="min-w-0 leading-tight">
+                        <span className="block break-words text-[15px] font-semibold text-[#0B1F13]">{name}</span>
+                        <span className="block break-words text-[12px] text-[#5F7168]">
                           {count}+ {name === "More Categories" ? "Categories" : "Businesses"}
                         </span>
                       </span>

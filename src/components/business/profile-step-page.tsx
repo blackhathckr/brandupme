@@ -35,7 +35,7 @@ export function ProfileStepPage({
         <ProfileEditStepper current={step} />
 
         <div className="mt-6 grid gap-5 lg:grid-cols-[1fr_300px]">
-          <div className="rounded-2xl border border-[#E5EAE3] bg-white p-6 sm:p-7">
+          <div className="min-w-0 rounded-2xl border border-[#E5EAE3] bg-white p-6 sm:p-7">
             <p className="flex items-center gap-2 text-[13px] font-bold text-[#3E8130]">
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#3E8130] text-[11px] text-white">{step}</span>
               STEP {step} OF 6

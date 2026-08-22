@@ -168,7 +168,7 @@ export default function DigitalCardPage() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 lg:col-span-2">
+        <div className="flex min-w-0 flex-col gap-4 lg:col-span-2">
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {[
               ["Card Opens", 184, "16.5%"],

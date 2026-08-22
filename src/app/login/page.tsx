@@ -541,10 +541,10 @@ export default function LoginPage() {
             <div className="mt-6 grid grid-cols-3 gap-2.5">
               {ROLE_CARDS.map(({ name, icon: Icon, href }) => {
                 const cardClass =
-                  "flex flex-col items-center gap-2 rounded-2xl border border-[#DDE5DE] p-3 text-center transition-all hover:-translate-y-0.5 hover:border-[#6FA52B] hover:bg-[#F4F9F1]";
+                  "flex flex-col items-center gap-2 rounded-2xl border border-[#DDE5DE] p-2 text-center transition-all hover:-translate-y-0.5 hover:border-[#6FA52B] hover:bg-[#F4F9F1] sm:p-3";
                 const inner = (
                   <>
-                    <span className="relative flex h-[74px] w-[74px] items-center justify-center rounded-full bg-[#EFF7E9] text-[#5D8F23]">
+                    <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#EFF7E9] text-[#5D8F23] sm:h-[74px] sm:w-[74px]">
                       <Icon className="h-7 w-7" strokeWidth={1.7} />
                       {name === "Influencer" && (
                         <Star className="absolute bottom-1.5 right-1.5 h-3.5 w-3.5 fill-[#5D8F23] text-[#5D8F23]" strokeWidth={2} />

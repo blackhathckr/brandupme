@@ -113,7 +113,7 @@ export function OnboardingShell({
 
       <div className="border-t border-[#E5EAE3] bg-white px-6 py-5 sm:px-8">
         <div className="mx-auto flex max-w-[1320px] flex-col items-center justify-between gap-4 sm:flex-row">
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
+          <div className="grid w-full grid-cols-2 gap-x-6 gap-y-3 sm:flex sm:w-auto sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-8 sm:gap-y-2">
             {TRUST_STATS.map((s) => (
               <div key={s.label} className="text-center sm:text-left">
                 <p className="text-[15px] font-extrabold leading-none text-[#0B1F13]">{s.value}</p>

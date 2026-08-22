@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Calendar, CheckCircle2, Clock, MoreHorizontal, Phone, RotateCcw, Search, Video } from "lucide-react";
+import { Calendar, CheckCircle2, Clock, MoreHorizontal, Phone, RotateCcw, Search, Video, XCircle } from "lucide-react";
 import { DashboardShell } from "@/components/business/dashboard-shell";
 import { DonutChart } from "@/components/business/donut-chart";
 import { StatCard } from "@/components/business/stat-card";
@@ -41,13 +41,14 @@ export default function VideoCallsDashboardPage() {
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_320px]">
-        <div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-5">
+        <div className="min-w-0">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
             <StatCard icon={Video} iconBg="bg-[#EFF4FF]" iconColor="text-[#2F6FE4]" label="Total Requests" value={callOverview.total} change={callOverview.changeVsLastWeek.total} />
             <StatCard icon={Calendar} iconBg="bg-[#EFF4FF]" iconColor="text-[#2F6FE4]" label="Upcoming Calls" value={callOverview.upcoming} change={callOverview.changeVsLastWeek.upcoming} />
             <StatCard icon={Clock} iconBg="bg-[#FDF3E4]" iconColor="text-[#B87A17]" label="Pending Requests" value={callOverview.pending} change={callOverview.changeVsLastWeek.pending} />
             <StatCard icon={RotateCcw} iconBg="bg-[#F1EEFC]" iconColor="text-[#6D5FD1]" label="Rescheduled" value={callOverview.rescheduled} change={callOverview.changeVsLastWeek.rescheduled} />
             <StatCard icon={CheckCircle2} iconBg="bg-[#EAF6DF]" iconColor="text-[#2F6F18]" label="Completed" value={callOverview.completed} change={callOverview.changeVsLastWeek.completed} />
+            <StatCard icon={XCircle} iconBg="bg-[#FDECEC]" iconColor="text-[#D51F1F]" label="Rejected / Cancelled" value={callOverview.rejected} change={callOverview.changeVsLastWeek.rejected} />
           </div>
 
           <div className="mt-4 rounded-2xl border border-[#E5EAE3] bg-white p-4">
@@ -78,26 +79,26 @@ export default function VideoCallsDashboardPage() {
             </div>
 
             <div className="mt-3 overflow-x-auto">
-              <table className="w-full min-w-[760px] text-left text-[12.5px]">
+              <table className="w-full min-w-[980px] text-left text-[12.5px]">
                 <thead>
                   <tr className="text-[10.5px] uppercase tracking-wide text-[#5F7168]">
-                    <th className="pb-2 font-semibold">Request ID</th>
-                    <th className="pb-2 font-semibold">Customer Name</th>
-                    <th className="pb-2 font-semibold">Purpose</th>
-                    <th className="pb-2 font-semibold">Requested On</th>
-                    <th className="pb-2 font-semibold">Preferred Date &amp; Time</th>
-                    <th className="pb-2 font-semibold">Status</th>
-                    <th className="pb-2 font-semibold">Action</th>
+                    <th className="whitespace-nowrap pb-2 pr-4 font-semibold">Request ID</th>
+                    <th className="whitespace-nowrap pb-2 pr-4 font-semibold">Customer Name</th>
+                    <th className="pb-2 pr-4 font-semibold">Purpose</th>
+                    <th className="whitespace-nowrap pb-2 pr-4 font-semibold">Requested On</th>
+                    <th className="whitespace-nowrap pb-2 pr-4 font-semibold">Preferred Date &amp; Time</th>
+                    <th className="whitespace-nowrap pb-2 pr-4 font-semibold">Status</th>
+                    <th className="whitespace-nowrap pb-2 font-semibold">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filtered.map((c) => (
                     <tr key={c.id} className="border-t border-[#EEF1EC]">
-                      <td className="py-2.5 font-semibold text-[#3E8130]">{c.id}</td>
-                      <td className="py-2.5 font-semibold text-[#0B1F13]">{c.customerName}</td>
-                      <td className="py-2.5 text-[#3D4B44]">{c.purpose}</td>
-                      <td className="py-2.5 text-[#5F7168]">{c.requestedOn}</td>
-                      <td className="py-2.5 text-[#5F7168]">{c.preferredDateTime}</td>
+                      <td className="whitespace-nowrap py-2.5 pr-4 font-semibold text-[#3E8130]">{c.id}</td>
+                      <td className="whitespace-nowrap py-2.5 pr-4 font-semibold text-[#0B1F13]">{c.customerName}</td>
+                      <td className="py-2.5 pr-4 text-[#3D4B44]">{c.purpose}</td>
+                      <td className="whitespace-nowrap py-2.5 pr-4 text-[#5F7168]">{c.requestedOn}</td>
+                      <td className="whitespace-nowrap py-2.5 pr-4 text-[#5F7168]">{c.preferredDateTime}</td>
                       <td className="py-2.5">
                         <StatusBadge status={c.status} />
                       </td>

@@ -88,7 +88,7 @@ export default function InfluencersPage() {
           <div className="relative mx-auto aspect-square w-full max-w-[260px]">
             <div className="absolute inset-0 overflow-hidden rounded-2xl">
               <Image
-                src="/assets/influencer-hero-crop.png"
+                src="/assets/influencer-hero-crop-v2.png"
                 alt="Influencer creating content for BrandUpMe partner brands — 10K+ followers, brand collaborations, earn rewards"
                 fill
                 sizes="260px"

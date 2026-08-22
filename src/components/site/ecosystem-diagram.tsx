@@ -43,7 +43,35 @@ export function EcosystemDiagram() {
             </a>
           </div>
 
-          <div className="relative mx-auto aspect-square w-full max-w-[560px]">
+          {/* below lg: centre mark + role cards, no absolute positioning */}
+          <div className="lg:hidden">
+            <div className="mx-auto flex h-[124px] w-[124px] flex-col items-center justify-center gap-1 rounded-full border border-[#E6C86C]/30 bg-[#05160E] text-center shadow-[0_0_50px_10px_rgb(230_200_108/12%)]">
+              <Image src="/brand/logo-mark.png" alt="" width={40} height={40} className="h-9 w-9 object-contain" />
+              <span className="text-[13px] font-bold text-white">BrandUpMe</span>
+              <span className="text-[9px] text-[#7FA88F]">Connect | Grow | Succeed</span>
+            </div>
+
+            <div className="mt-8 grid gap-3 sm:grid-cols-2">
+              {ecosystemRoles.map(({ name, benefit, icon: Icon }) => (
+                <div
+                  key={name}
+                  className="flex items-center gap-3 rounded-2xl border border-white/10 bg-[#05160E] p-3.5"
+                >
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#E6C86C]/30 bg-[#020F08] text-[#E6C86C]">
+                    <Icon className="h-[18px] w-[18px]" strokeWidth={1.7} />
+                  </span>
+                  <span className="min-w-0 leading-tight">
+                    <span className="block text-[13px] font-semibold text-white">{name}</span>
+                    <span className="block text-[11px] text-[#6CB854]">{benefit}</span>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* lg+: the circular wheel. Its labels sit 180px outside the 560px circle,
+              so it needs ~830px of horizontal room — below lg we stack instead. */}
+          <div className="relative mx-auto hidden aspect-square w-full max-w-[560px] lg:block">
             <div className="absolute inset-[20%] rounded-full border border-dashed border-white/15" />
 
             {/* spokes — center to each role node */}

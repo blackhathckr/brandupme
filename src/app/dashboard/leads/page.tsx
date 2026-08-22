@@ -13,6 +13,7 @@ import {
   UserCheck,
   UserPlus,
   Users,
+  XCircle,
 } from "lucide-react";
 import { DashboardShell } from "@/components/business/dashboard-shell";
 import { DonutChart } from "@/components/business/donut-chart";
@@ -63,13 +64,14 @@ export default function LeadsDashboardPage() {
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_320px]">
-        <div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-5">
+        <div className="min-w-0">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
             <StatCard icon={UserPlus} iconBg="bg-[#EFF4FF]" iconColor="text-[#2F6FE4]" label="Total Leads" value={leadOverview.total} change={leadOverview.changeVsLastWeek.total} />
             <StatCard icon={UserPlus} iconBg="bg-[#EFF4FF]" iconColor="text-[#2F6FE4]" label="New Leads" value={leadOverview.new} change={leadOverview.changeVsLastWeek.new} />
             <StatCard icon={Users} iconBg="bg-[#FDF3E4]" iconColor="text-[#B87A17]" label="Pending Leads" value={leadOverview.pending} change={leadOverview.changeVsLastWeek.pending} />
             <StatCard icon={UserCheck} iconBg="bg-[#F1EEFC]" iconColor="text-[#6D5FD1]" label="In Negotiation" value={leadOverview.negotiation} change={leadOverview.changeVsLastWeek.negotiation} />
             <StatCard icon={CheckCircle2} iconBg="bg-[#EAF6DF]" iconColor="text-[#2F6F18]" label="Closed Leads" value={leadOverview.closed} change={leadOverview.changeVsLastWeek.closed} />
+            <StatCard icon={XCircle} iconBg="bg-[#FDECEC]" iconColor="text-[#D51F1F]" label="Rejected Leads" value={leadOverview.rejected} change={leadOverview.changeVsLastWeek.rejected} />
           </div>
 
           <div className="mt-4 rounded-2xl border border-[#E5EAE3] bg-white p-4">
