@@ -8,7 +8,6 @@ import {
   FileEdit,
   Gift,
   Handshake,
-  Heart,
   Megaphone,
   PlayCircle,
   ShieldCheck,
@@ -80,38 +79,18 @@ export default function InfluencersPage() {
             </a>
           </div>
 
-          {/* hero photo, re-cropped to drop the ring-light/tripod/social-app-icon
-              cluster baked into the raw asset; "Brand Collaborations" badge is
-              still baked in on the right, "10K+ Followers" and "Earn Rewards"
-              are recreated as floating badges since the crop that keeps them
-              also keeps the equipment/icon clutter */}
-          <div className="relative mx-auto aspect-square w-full max-w-[260px]">
-            <div className="absolute inset-0 overflow-hidden rounded-2xl">
-              <Image
-                src="/assets/influencer-hero-crop-v2.png"
-                alt="Influencer creating content for BrandUpMe partner brands — 10K+ followers, brand collaborations, earn rewards"
-                fill
-                sizes="260px"
-                className="object-cover"
-                priority
-              />
-            </div>
-            <div className="absolute -left-3 -top-3 flex items-center gap-1.5 rounded-xl bg-white px-2.5 py-2 shadow-[0_6px_16px_rgba(0,0,0,0.15)]">
-              <Heart className="h-4 w-4 fill-[#6FA52B] text-[#6FA52B]" />
-              <p className="text-[11px] font-bold leading-tight text-[#101510]">
-                10K+
-                <br />
-                Followers
-              </p>
-            </div>
-            <div className="absolute -bottom-3 -left-3 flex items-center gap-1.5 rounded-xl bg-white px-2.5 py-2 shadow-[0_6px_16px_rgba(0,0,0,0.15)]">
-              <TrendingUp className="h-4 w-4 text-[#6FA52B]" />
-              <p className="text-[11px] font-bold leading-tight text-[#101510]">
-                Earn
-                <br />
-                Rewards
-              </p>
-            </div>
+          {/* hero photo: the full artwork, uncropped. The box matches the asset ratio
+              (1536x1024 = 3:2) and object-contain, so the whole image is shown and
+              centred. Every badge is baked in, so none are recreated in markup. */}
+          <div className="relative mx-auto aspect-[3/2] w-full max-w-[380px]">
+            <Image
+              src="/assets/influencer-hero.png"
+              alt="Influencer creating content for BrandUpMe partner brands — 10K+ followers, brand collaborations, earn rewards"
+              fill
+              sizes="380px"
+              className="object-contain"
+              priority
+            />
           </div>
         </div>
 
