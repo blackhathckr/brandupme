@@ -42,7 +42,7 @@ export default function VideoCallsDashboardPage() {
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_320px]">
         <div className="min-w-0">
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             <StatCard icon={Video} iconBg="bg-[#EFF4FF]" iconColor="text-[#2F6FE4]" label="Total Requests" value={callOverview.total} change={callOverview.changeVsLastWeek.total} />
             <StatCard icon={Calendar} iconBg="bg-[#EFF4FF]" iconColor="text-[#2F6FE4]" label="Upcoming Calls" value={callOverview.upcoming} change={callOverview.changeVsLastWeek.upcoming} />
             <StatCard icon={Clock} iconBg="bg-[#FDF3E4]" iconColor="text-[#B87A17]" label="Pending Requests" value={callOverview.pending} change={callOverview.changeVsLastWeek.pending} />

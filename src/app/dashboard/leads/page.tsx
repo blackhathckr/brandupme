@@ -65,7 +65,7 @@ export default function LeadsDashboardPage() {
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_320px]">
         <div className="min-w-0">
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             <StatCard icon={UserPlus} iconBg="bg-[#EFF4FF]" iconColor="text-[#2F6FE4]" label="Total Leads" value={leadOverview.total} change={leadOverview.changeVsLastWeek.total} />
             <StatCard icon={UserPlus} iconBg="bg-[#EFF4FF]" iconColor="text-[#2F6FE4]" label="New Leads" value={leadOverview.new} change={leadOverview.changeVsLastWeek.new} />
             <StatCard icon={Users} iconBg="bg-[#FDF3E4]" iconColor="text-[#B87A17]" label="Pending Leads" value={leadOverview.pending} change={leadOverview.changeVsLastWeek.pending} />

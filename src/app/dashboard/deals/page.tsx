@@ -52,7 +52,7 @@ export default function DealsDashboardPage() {
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_320px]">
         <div className="min-w-0">
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             <StatCard icon={Briefcase} iconBg="bg-[#EFF4FF]" iconColor="text-[#2F6FE4]" label="Total Deals" value={dealOverview.total} change={dealOverview.changeVsLastWeek.total} />
             <StatCard icon={Clock} iconBg="bg-[#FDF3E4]" iconColor="text-[#B87A17]" label="Pending Deals" value={dealOverview.pending} change={dealOverview.changeVsLastWeek.pending} />
             <StatCard icon={UserCheck} iconBg="bg-[#F1EEFC]" iconColor="text-[#6D5FD1]" label="In Negotiation" value={dealOverview.negotiation} change={dealOverview.changeVsLastWeek.negotiation} />

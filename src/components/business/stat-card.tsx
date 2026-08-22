@@ -23,8 +23,8 @@ export function StatCard({
         <Icon className="h-[18px] w-[18px]" strokeWidth={1.8} />
       </span>
       <div className="min-w-0">
-        <p className="text-[11.5px] leading-tight text-[#5F7168]">{label}</p>
-        <p className="text-[20px] font-extrabold leading-tight text-[#0B1F13]">{value}</p>
+        <p className="break-words text-[11.5px] leading-tight text-[#5F7168]">{label}</p>
+        <p className="break-words text-[20px] font-extrabold leading-tight text-[#0B1F13]">{value}</p>
         {(sub || typeof change === "number") && (
           <p className="mt-0.5 flex items-center gap-1 text-[10.5px]">
             {typeof change === "number" && (
